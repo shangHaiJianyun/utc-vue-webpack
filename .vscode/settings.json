@@ -1,0 +1,12 @@
+{
+  "editor.codeActionsOnSave": {},
+  "editor.codeActionsOnSaveTimeout": 1500,
+  "html.format.enable": true,
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "editor.formatOnSave": true,
+  // javascript setup
+  "javascript.format.enable": true,
+  "javascript.validate.enable": false,
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSaveTimeout": 1500
+}
