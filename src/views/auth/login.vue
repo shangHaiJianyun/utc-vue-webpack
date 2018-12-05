@@ -10,10 +10,26 @@
             <div class="log-logo">Welcome!</div>
             <div class="log-text">@doterlin</div>
         </div>
-        <div class="log-email">
-            <input type="text" placeholder="Email" :class="'log-input' + (account==''?' log-input-empty':'')" v-model="account"><input type="password" placeholder="Password" :class="'log-input' + (password==''?' log-input-empty':'')" v-model="password">
-            <a href="javascript:;" class="log-btn" @click="login">Login</a>
-        </div>
+        <!--<div class="log-email">-->
+            <!--<input type="text" placeholder="Email" :class="'log-input' + (account==''?' log-input-empty':'')" v-model="from.account"><input type="password" placeholder="Password" :class="'log-input' + (password==''?' log-input-empty':'')" v-model="from.password">-->
+            <!--<a href="javascript:;" class="log-btn" @click="login">Login</a>-->
+        <!--</div>-->
+      <div class="log-email">
+        <b-container fluid>
+          <b-row class="my-1">
+            <b-col sm="3"><label >Type name:</label></b-col>
+            <b-col sm="9"><b-form-input  v-model="from.username"></b-form-input></b-col>
+          </b-row>
+          <b-row class="my-1">
+            <b-col sm="3"><label >Type password:</label></b-col>
+            <b-col sm="9"><b-form-input  v-model="from.password"></b-form-input></b-col>
+          </b-row>
+          <b-row class="my-1">
+            <b-col sm="12"><label ><a href="javascript:;" class="log-btn" @click="login">Login</a></label></b-col>
+
+          </b-row>
+        </b-container>
+      </div>
         <!-- <Loading v-if="isLoging" marginTop="-30%"></Loading> -->
     </div>
 </template>
@@ -21,13 +37,17 @@
 
 <script>
 // import Loading from "./Loading.vue";
+import user from '../../api/user'
 export default {
-  name: "Login",
+  name: "login",
   data() {
     return {
-      isLoging: false,
-      account: "",
-      password: ""
+      // isLoging: false,
+      from:{
+        username: "",
+        password: ""
+      }
+
     };
   },
   components: {
@@ -36,33 +56,34 @@ export default {
   methods: {
     //登录逻辑
     login() {
-      if (this.account != "" && this.password != "") {
-        this.toLogin();
+      if (this.from.username != "" && this.from.password != "") {
+        this.toLogin(this.from);
       }
     },
 
     //登录请求
-    toLogin() {
+    toLogin(params) {
+      user.login(params)
       // js 在  index.html 中已加载
       //一般要跟后端了解密码的加密规则
       //这里例子用的哈希算法来自./js/sha1.min.js
-      let password_sha = hex_sha1(hex_sha1(this.password));
+      // let password_sha = hex_sha1(hex_sha1(this.password));
 
       //需要想后端发送的登录参数
-      let loginParam = {
-        account: this.account,
-        password_sha
-      };
+      // let loginParam = {
+      //   account: this.account,
+      //   password_sha
+      // };
 
       //设置在登录状态
-      this.isLoging = true;
-      console.log("login..", this.isLoging);
-      console.log("store", this.$store.state.isLoggedIn);
-      let expireDays = 1000 * 60 * 60 * 24 * 15;
-      this.setCookie("session", "blablablablabla...", expireDays);
-      //   this.$store.state.isLoggedIn = true;
-      this.$store.commit("set_token", "Authentication-Token");
-      this.$router.push("/admin-home");
+      // this.isLoging = true;
+      // console.log("login..", this.isLoging);
+      // console.log("store", this.$store.state.isLoggedIn);
+      // let expireDays = 1000 * 60 * 60 * 24 * 15;
+      // this.setCookie("session", "blablablablabla...", expireDays);
+      // //   this.$store.state.isLoggedIn = true;
+      // this.$store.commit("set_token", "Authentication-Token");
+      // this.$router.push("/admin-home");
 
       //   if ($store.state.token) {
       //     this.$router.push("/admin-home");
@@ -81,7 +102,7 @@ export default {
           let expireDays = 1000 * 60 * 60 * 24 * 15;
           this.setCookie('session', response.data.session, expireDays);
           //登录成功后
-          this.$router.push('/user_info'); 
+          this.$router.push('/user_info');
         }
 	    }, (response) => {
 	        //Error
@@ -101,3 +122,4 @@ export default {
   }
 };
 </script>
+

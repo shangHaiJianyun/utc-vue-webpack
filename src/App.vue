@@ -43,6 +43,6 @@ export default {
   margin-top: 60px;
 }
 .bg-info {
-  background-color: b9e7ef;
+  background-color: #b9e7ef;
 }
 </style>

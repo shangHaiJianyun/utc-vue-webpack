@@ -20,7 +20,7 @@
             <b-nav-item-dropdown text="Dists" left>
 
                 <b-dropdown-item href="#">
-
+                    4464
                 </b-dropdown-item>
                 <!-- <b-dropdown-item href="#">
                     <router-link to="/settings">settings</router-link>
