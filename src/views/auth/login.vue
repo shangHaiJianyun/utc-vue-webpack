@@ -56,6 +56,10 @@ export default {
   methods: {
     //登录逻辑
     login() {
+      console.log("store", this.$store.state.token);
+      let expireDays = 1000 * 60 * 60 * 24 * 15;
+      this.setCookie("session", "blablablablabla...", expireDays);
+      // this.$router.push("/admin-home");
       if (this.from.username != "" && this.from.password != "") {
         this.toLogin(this.from);
       }
@@ -63,7 +67,27 @@ export default {
 
     //登录请求
     toLogin(params) {
-      user.login(params)
+      // user.login(params)
+      // this.$axios.post("/users/login",{params: params}).then(res=>{
+      //   console.log(res)
+      // }).catch(err=>{
+      //   console.log(err)
+      // })
+      console.log(this.$parent.user_type)
+      this.$parent.user_type = 'Dist'
+      let rol =this.$parent.user_type
+      if(rol == 'Admin'){
+        this.$router.push("/admin-home");
+      }else{
+        this.$router.push("/dists");
+      }
+      // this.$axios.post("/users/login",{params: params}).then(res=>{
+      //   console.log(res)
+      // }).catch(err=>{
+      //   console.log(err)
+      // })
+
+
       // js 在  index.html 中已加载
       //一般要跟后端了解密码的加密规则
       //这里例子用的哈希算法来自./js/sha1.min.js

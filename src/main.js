@@ -7,6 +7,8 @@ import VueAxios from 'vue-axios'
 import VueAuthenticate from 'vue-authenticate'
 import axios from 'axios'
 import BootstrapVue from 'bootstrap-vue'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import {
   store
 } from './store/store'
@@ -14,6 +16,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+Vue.use(ElementUI);
 Vue.use(BootstrapVue);
 Vue.use(VueAxios, axios)
 Vue.use(VueAuthenticate, {
@@ -26,6 +29,8 @@ Vue.use(VueAuthenticate, {
   //     }
   // }
 })
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = 'http://127.0.0.1:5000'
 Vue.config.productionTip = false
 
 Vue.prototype.setCookie = (c_name, value, expiredays) => {
@@ -46,6 +51,7 @@ Vue.prototype.getCookie = getCookie;
 
 //删除cookie
 Vue.prototype.delCookie = (name) => {
+  console.log("000000")
   var exp = new Date();
   exp.setTime(exp.getTime() - 1);
   var cval = getCookie(name);
@@ -56,6 +62,7 @@ Vue.prototype.delCookie = (name) => {
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  render: h => h(App),
   router,
   store,
   components: {
@@ -77,7 +84,7 @@ new Vue({
         console.log('session not exists');
 
       } else {
-        // this.$router.push('/dists');
+        // this.$router.push('/routerdists');
         console.log('session exists', this.getCookie('session'));
 
       }

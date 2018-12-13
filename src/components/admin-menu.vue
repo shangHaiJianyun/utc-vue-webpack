@@ -1,6 +1,6 @@
 <template>
     <b-navbar toggleable="md" variant="light">
-        <b-navbar-brand href="#">My Project</b-navbar-brand>
+        <b-navbar-brand href="#">管理员</b-navbar-brand>
         <b-navbar-nav>
             <b-nav-item href="#">
                 <router-link to="/">Home</router-link>

@@ -1,12 +1,18 @@
-
 import http from './http'
+import router from '../router/index'
+import { store } from '../store/store'
+import axios from 'axios'
 const user = {
   /**
    * 登录
    */
   login: (params) => {
-    console.log("6666666",params)
-    http.post('http://127.0.0.1:5000/passport/login', params, data => {
+    // console.log("6666666",params)
+    // console.log("33333",render.user_type)
+    // console.log("store", store.state.token);
+    // store.commit("set_token", "1");
+    // console.log("store", store.state.token);
+    http.post('/passport/login', params, data => {
 
       console.log("6666666",data)
       if (data == null) {
@@ -14,19 +20,13 @@ const user = {
       }
       if (data.status == true) {
         console.log("login..", this.isLoging);
-        console.log("store", this.$store.state.isLoggedIn);
+        console.log("store", store.state.isLoggedIn);
         let expireDays = 1000 * 60 * 60 * 24 * 15;
         this.setCookie("session", "blablablablabla...", expireDays);
         //   this.$store.state.isLoggedIn = true;
         this.$store.commit("set_token", "Authentication-Token");
-        this.$router.push("/admin-home");
+        router.push("/admin-home");
 
-        //   if ($store.state.token) {
-        //     this.$router.push("/admin-home");
-        //     console.log($store.state.token);
-        //   } else {
-        //     this.$router.replace("/login");
-        //   }
 
         // example
         // https://blog.csdn.net/qq_34825875/article/details/79569579

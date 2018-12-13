@@ -6,6 +6,9 @@
     <div v-if="user_type==='Dist'">
       <DistMenu />
     </div>
+    <div v-if="user_type==='User'">
+      <UserMenu />
+    </div>
     <div id="app">
       <b-container>
         <router-view />
@@ -17,6 +20,7 @@
 <script>
 import AdminMenu from "@/components/admin-menu.vue";
 import DistMenu from "@/components/dist-menu.vue";
+import UserMenu from "@/components/user-menu.vue";
 
 export default {
   name: "App",
@@ -27,7 +31,8 @@ export default {
   },
   components: {
     AdminMenu,
-    DistMenu
+    DistMenu,
+    UserMenu
   }
 };
 </script>
