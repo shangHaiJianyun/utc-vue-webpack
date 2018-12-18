@@ -3,17 +3,17 @@
         <b-navbar-brand href="#">管理员</b-navbar-brand>
         <b-navbar-nav>
             <b-nav-item href="#">
-                <router-link to="/">Home</router-link>
+                <router-link to="/admin">主页</router-link>
             </b-nav-item>
             <b-nav-item href="#">
-                <router-link to="/home">UserHome</router-link>
+                <router-link to="/admin-users">用户列表</router-link>
             </b-nav-item>
             <b-nav-item href="#">
-                <router-link to="/admin-home">Home2</router-link>
+                <router-link to="/admin-dists">员工列表</router-link>
             </b-nav-item>
-            <b-nav-item href="#">
-                <router-link to="/dists">dists</router-link>
-            </b-nav-item>
+            <!--<b-nav-item href="#">-->
+                <!--<router-link to="/dists">dists</router-link>-->
+            <!--</b-nav-item>-->
             <b-nav-item href="#">
                 <router-link to="/projects">projects</router-link>
             </b-nav-item>

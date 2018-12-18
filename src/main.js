@@ -13,8 +13,19 @@ import {
   store
 } from './store/store'
 
+import '@progress/kendo-ui'
+import '@progress/kendo-theme-default/dist/all.css'
+import {GridInstaller ,Grid}from '@progress/kendo-grid-vue-wrapper'
+import { DataSourceInstaller } from '@progress/kendo-datasource-vue-wrapper'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+
+
+
+// import { Grid, GridInstaller } from '@progress/kendo-grid-vue-wrapper'
+Vue.use(GridInstaller)
+Vue.use(DataSourceInstaller)
 
 Vue.use(ElementUI);
 Vue.use(BootstrapVue);
@@ -66,7 +77,7 @@ new Vue({
   router,
   store,
   components: {
-    App
+      App,Grid,DataSourceInstaller
   },
   template: '<App/>',
   watch: {
@@ -79,15 +90,15 @@ new Vue({
     checkLogin() {
 
       //检查是否存在session
-      if (!this.getCookie('session')) {
-        this.$router.push('/login');
-        console.log('session not exists');
-
-      } else {
-        // this.$router.push('/routerdists');
-        console.log('session exists', this.getCookie('session'));
-
-      }
+      // if (!this.getCookie('session')) {
+      //   this.$router.push('/login');
+      //   console.log('session not exists');
+      //
+      // } else {
+      //   // this.$router.push('/routerdists');
+      //   console.log('session exists', this.getCookie('session'));
+      //
+      // }
     }
   }
   //   methods: {
@@ -114,3 +125,4 @@ new Vue({
   //     }
   //   }
 })
+kendo.culture("zh-CN");//中文显示

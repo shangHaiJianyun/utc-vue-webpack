@@ -22,11 +22,12 @@ import AdminMenu from "@/components/admin-menu.vue";
 import DistMenu from "@/components/dist-menu.vue";
 import UserMenu from "@/components/user-menu.vue";
 
+
 export default {
   name: "App",
   data() {
     return {
-      user_type: "Dist"
+      user_type: ""
     };
   },
   components: {

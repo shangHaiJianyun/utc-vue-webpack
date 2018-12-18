@@ -10,6 +10,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@progress/kendo-datasource-vue-wrapper": "^2018.3.1025",
+    "@progress/kendo-grid-vue-wrapper": "^2018.3.1025",
+    "@progress/kendo-theme-default": "^2.62.0",
+    "@progress/kendo-ui": "^2018.3.1212",
     "ajv": "^6.5.4",
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",

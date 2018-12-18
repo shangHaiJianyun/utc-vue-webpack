@@ -23,12 +23,16 @@ const router= new Router({
     },
     // admin
     {
-      path: "/admin-home",
+      path: "/admin",
       component: () => import("@/views/admin/index")
     },
     {
-      path: "/dists",
+      path: "/admin-dists",
       component: () => import("@/views/admin/dists")
+    },
+    {
+      path: "/admin-users",
+      component: () => import("@/views/admin/users")
     },
     {
       path: "/projects",
@@ -40,7 +44,7 @@ const router= new Router({
     },
     // Dists
     {
-      path: "/dist-home",
+      path: "/dist",
       component: () => import("@/views/dists/index")
     },
     {
@@ -52,12 +56,35 @@ const router= new Router({
       component: () => import("@/views/dists/dispute-project")
     },
     {
-      path: '/user-home',
+      path: '/user',
       component: () => import("@/views/user/index")
     }
 
   ]
 });
 export default router
+
+
+
+router.beforeEach(function (to, from, next) {//to即为要跳转的页面，该页面需要验证时，进行登录验证
+  if(to.path === '/login') {
+    if (window.sessionStorage.getItem('token')) {
+      next({
+        path:'/admin',
+        query:{
+          admin:'Admin'
+        }
+      })
+    }
+    next()
+  }
+  else {
+    if(!window.sessionStorage.getItem('token')) {
+      router.push({path: '/login'})
+    }else{
+      next()
+    }
+  }
+})
 
 

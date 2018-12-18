@@ -73,13 +73,16 @@ export default {
       // }).catch(err=>{
       //   console.log(err)
       // })
+      this.$store.commit('set_token','222222')
       console.log(this.$parent.user_type)
-      this.$parent.user_type = 'Dist'
+      this.$parent.user_type = 'User'
       let rol =this.$parent.user_type
       if(rol == 'Admin'){
-        this.$router.push("/admin-home");
+        this.$router.push("/admin");
+      }else if(rol == "Dist"){
+        this.$router.push("/dist");
       }else{
-        this.$router.push("/dists");
+        this.$router.push("/user");
       }
       // this.$axios.post("/users/login",{params: params}).then(res=>{
       //   console.log(res)
