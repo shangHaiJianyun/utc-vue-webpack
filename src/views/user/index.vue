@@ -47,10 +47,28 @@
       <!--</el-table-column>-->
     <!--</el-table>-->
 
+
+    <h2>Show Dists</h2>
+    <!-- Content here -->
+    <b-row class="text-center">
+    <b-col cols="3">filter</b-col>
+    <b-col cols="9">
+    results
+    <b-table striped hover :items="items"></b-table>
+    </b-col>
+    </b-row>
+    <!--<a href="javascript:;" class="log-btn" @click="showtocken">showtocken</a>-->
+
   </div>
 </template>
 
 <script>
+  const user_item = [
+    { isActive: true, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
+    { isActive: false, age: 21, first_name: "Larsen", last_name: "Shaw" },
+    { isActive: false, age: 89, first_name: "Geneva", last_name: "Wilson" },
+    { isActive: true, age: 38, first_name: "Jami", last_name: "Carney" }
+  ];
   const items = [{
     Name: '天龙八部',
     Mobile: '15564896358',
@@ -81,8 +99,22 @@
     name: "UsersHome",
     data () {
       return {
-        tableData: items
+        tableData: items,
+        items:user_item
       }
+    },
+    created(){
+      console.log("token", this.$store.state.token)
+      this.$axios.get("/user/index",{headers:{"Authorization":'Bearer ' + this.$store.state.token}}).then(res=>{
+        console.log(res)
+      }).catch(err=>{
+        console.log(err)
+      })
     }
   };
 </script>
+<style scoped>
+  .home{
+    border:1px solid red;
+  }
+</style>

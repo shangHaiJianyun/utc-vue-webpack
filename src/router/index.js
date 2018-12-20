@@ -69,12 +69,7 @@ export default router
 router.beforeEach(function (to, from, next) {//to即为要跳转的页面，该页面需要验证时，进行登录验证
   if(to.path === '/login') {
     if (window.sessionStorage.getItem('token')) {
-      next({
-        path:'/admin',
-        query:{
-          admin:'Admin'
-        }
-      })
+      next({path:'/admin'})
     }
     next()
   }

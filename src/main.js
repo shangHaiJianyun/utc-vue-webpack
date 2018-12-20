@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+// import Vueresource from 'vue-resource'
 import App from './App'
 import router from './router'
 import VueAxios from 'vue-axios'
@@ -8,6 +9,8 @@ import VueAuthenticate from 'vue-authenticate'
 import axios from 'axios'
 import BootstrapVue from 'bootstrap-vue'
 import ElementUI from 'element-ui';
+
+
 import 'element-ui/lib/theme-chalk/index.css';
 import {
   store
@@ -26,12 +29,13 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 // import { Grid, GridInstaller } from '@progress/kendo-grid-vue-wrapper'
 Vue.use(GridInstaller)
 Vue.use(DataSourceInstaller)
+// Vue.use(Vueresource)
 
 Vue.use(ElementUI);
 Vue.use(BootstrapVue);
 Vue.use(VueAxios, axios)
 Vue.use(VueAuthenticate, {
-  baseUrl: 'http://localhost:3000', // Your API domain
+  // baseUrl: 'http://localhost:3000', // Your API domain
 
   // providers: {
   //     github: {
@@ -41,7 +45,9 @@ Vue.use(VueAuthenticate, {
   // }
 })
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = 'http://127.0.0.1:5000'
+axios.defaults.baseURL = '/api'
+// axios.defaults.headers.common['Authorization'] = 'Bearer '+ store.state.token
+// console.log("000",axios.defaults.headers.common['Authorization'])
 Vue.config.productionTip = false
 
 Vue.prototype.setCookie = (c_name, value, expiredays) => {

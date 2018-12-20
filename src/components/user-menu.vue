@@ -28,13 +28,24 @@
       <b-nav-item href="#" right>
         <router-link to="/login">login</router-link>
       </b-nav-item>
+      <b-nav-item href="#" right @click="logout">
+        退出登录
+      </b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>
 
 <script>
     export default {
-        name: "user"
+      name: "user",
+      methods:{
+        logout(){
+          console.log("00000")
+          this.$store.commit("del_token","")
+          this.$parent.user_type = ''
+          this.$router.push("/login")
+        }
+      }
     }
 </script>
 
