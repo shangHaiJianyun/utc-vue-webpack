@@ -33,11 +33,10 @@
 
     <kendo-grid :height="600"
     :data-source="tableData"
-    :navigatable="true"
     :pageable="true"
-    :editable="true"
+    :editable="'popup'"
     :sortable="true"
-    :toolbar="['create', 'save', 'cancel']">
+    :toolbar="['create']">
     <kendo-grid-column :field="'Name'"
     :title="'Name'"
     :width="200"></kendo-grid-column>
@@ -49,10 +48,10 @@
     :title="'Dept'"
     :width="120"></kendo-grid-column>
     <kendo-grid-column :field="'cn_name'" :title="'cn_name'" :width="120"></kendo-grid-column>
-    <kendo-grid-column :field="'email'" :title="'email'" :width="200"></kendo-grid-column>
-    <kendo-grid-column :command="['destroy']"
+    <kendo-grid-column :field="'email'" :title="'email'" :width="180"></kendo-grid-column>
+    <kendo-grid-column :command="['edit', 'destroy']"
     :title="'&nbsp;'"
-    :width="100"></kendo-grid-column>
+    :width="120"></kendo-grid-column>
     </kendo-grid>
     </div>
 

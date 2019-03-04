@@ -1,9 +1,5 @@
 <template>
   <div class="hello">
-    <h1>component: HelloWorld {{ msg }}</h1>
-    <h2>Essential Links</h2>
-
-    <h2>Ecosystem</h2>
     <!--<el-table-->
     <!--:data="tableData"-->
     <!--border-->
@@ -71,9 +67,9 @@
                   :data-source="tableData"
                   :navigatable="true"
                   :pageable="true"
-                  :editable="true"
+                  :editable="'popup'"
                   :sortable="true"
-                  :toolbar="['create', 'save', 'cancel']">
+                  :toolbar="['create']">
         <kendo-grid-column :field="'Name'"
                            :title="'Name'"
                            :width="200"></kendo-grid-column>
@@ -85,11 +81,11 @@
                            :title="'Dept'"
                            :width="120"></kendo-grid-column>
         <kendo-grid-column :field="'cn_name'" :title="'cn_name'" :width="120"></kendo-grid-column>
-        <kendo-grid-column :field="'email'" :title="'email'" :width="200"></kendo-grid-column>
+        <kendo-grid-column :field="'email'" :title="'email'" :width="180"></kendo-grid-column>
         <kendo-grid-column :field="'wechat'" :title="'wechat'" :width="120"></kendo-grid-column>
-        <kendo-grid-column :command="['destroy']"
+        <kendo-grid-column :command="['edit','destroy']"
                            :title="'&nbsp;'"
-                           :width="100"></kendo-grid-column>
+                           :width="120"></kendo-grid-column>
       </kendo-grid>
     </div>
 
