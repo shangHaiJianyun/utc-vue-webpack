@@ -4,7 +4,7 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-const router= new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [{
@@ -56,8 +56,12 @@ const router= new Router({
       component: () => import("@/views/dists/dispute-project")
     },
     {
-      path: '/user',
+      path: '/index',
       component: () => import("@/views/user/index")
+    },
+    {
+      path: '/ClientOrders',
+      component: () => import("@/views/user/order-list")
     }
 
   ]
@@ -66,20 +70,21 @@ export default router
 
 
 
-router.beforeEach(function (to, from, next) {//to即为要跳转的页面，该页面需要验证时，进行登录验证
-  if(to.path === '/login') {
+router.beforeEach(function (to, from, next) { //to即为要跳转的页面，该页面需要验证时，进行登录验证
+  if (to.path === '/login') {
     if (window.sessionStorage.getItem('token')) {
-      next({path:'/admin'})
+      next({
+        path: '/admin'
+      })
     }
     next()
-  }
-  else {
-    if(!window.sessionStorage.getItem('token')) {
-      router.push({path: '/login'})
-    }else{
+  } else {
+    if (!window.sessionStorage.getItem('token')) {
+      router.push({
+        path: '/login'
+      })
+    } else {
       next()
     }
   }
 })
-
-

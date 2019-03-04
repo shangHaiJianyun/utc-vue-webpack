@@ -1,6 +1,8 @@
 import http from './http'
 import router from '../router/index'
-import { store } from '../store/store'
+import {
+  store
+} from '../store/store'
 import axios from 'axios'
 const user = {
   /**
@@ -13,8 +15,7 @@ const user = {
     // store.commit("set_token", "1");
     // console.log("store", store.state.token);
     http.post('/passport/login', params, data => {
-
-      console.log("6666666",data)
+      console.log("6666666", data)
       if (data == null) {
         return;
       }

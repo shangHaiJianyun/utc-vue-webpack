@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container fluid>
-      <div v-if="user_type==='Admin'">
+      <!-- <div v-if="user_type==='Admin'">
         <AdminMenu />
       </div>
       <div v-if="user_type==='Dist'">
@@ -9,7 +9,8 @@
       </div>
       <div v-if="user_type==='User'">
         <UserMenu />
-      </div>
+      </div> -->
+      <UserMenu />
 
     </b-container>
     <div id="app">
@@ -26,12 +27,11 @@ import AdminMenu from "@/components/admin-menu.vue";
 import DistMenu from "@/components/dist-menu.vue";
 import UserMenu from "@/components/user-menu.vue";
 
-
 export default {
   name: "App",
   data() {
     return {
-      user_type: window.sessionStorage.getItem('role')
+      user_type: window.sessionStorage.getItem("role")
     };
   },
   components: {
@@ -39,17 +39,17 @@ export default {
     DistMenu,
     UserMenu
   },
-  created(){
-    console.log('sexxx',window.sessionStorage.getItem('role'))
+  created() {
+    console.log("session created", window.sessionStorage.getItem("role"));
   }
 };
 </script>
 
 <style>
 /* <style lang = "scss" >  */
-body{
+body {
   /*width: 100%;*/
-  margin:  0px;
+  margin: 0px;
   padding: 0px;
   /*border:1px solid blue;*/
 }
