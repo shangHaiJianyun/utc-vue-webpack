@@ -18,8 +18,14 @@ import {
 
 import '@progress/kendo-ui'
 import '@progress/kendo-theme-default/dist/all.css'
-import {GridInstaller ,Grid}from '@progress/kendo-grid-vue-wrapper'
-import { DataSourceInstaller } from '@progress/kendo-datasource-vue-wrapper'
+import {
+  GridInstaller,
+  Grid
+} from '@progress/kendo-grid-vue-wrapper'
+import {
+  DataSourceInstaller
+} from '@progress/kendo-datasource-vue-wrapper'
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -83,7 +89,9 @@ new Vue({
   router,
   store,
   components: {
-      App,Grid,DataSourceInstaller
+    App,
+    Grid,
+    DataSourceInstaller
   },
   template: '<App/>',
   watch: {
@@ -131,4 +139,4 @@ new Vue({
   //     }
   //   }
 })
-kendo.culture("zh-CN");//中文显示
+kendo.culture("zh-CN"); //中文显示
