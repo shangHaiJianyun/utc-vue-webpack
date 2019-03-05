@@ -7,25 +7,42 @@
 
     <ul class="wrk-list">
       <li
-        v-for="j in toDispatch"
+        v-for="(j,index) in toDispatch"
         :key="j"
       >
         <div class="view">
-          <button class="destroy">{{j}} -</button>
+          <button class="destroy" @click="moveDist(index)">{{j}} -</button>
         </div>
       </li>
     </ul>
     <h3>选择技师</h3>
-    <ul class="wrk-list">
-      <li
-        v-for="wk in workers"
-        :key="wk.uid"
-      >
-        <div class="view">
-          <button class="destroy">{{wk.uid}} {{wk.nick_name}}--</button>
-        </div>
-      </li>
-    </ul>
+    <!--<ul class="wrk-list">-->
+      <!--<li-->
+        <!--v-for="wk in workers"-->
+        <!--:key="wk.uid"-->
+      <!--&gt;-->
+        <!--<div class="view">-->
+          <!--<button class="destroy">{{wk.uid}} {{wk.nick_name}}&#45;&#45;</button>-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ul>-->
+
+    <!--<select name="" id="" @change="getValue" v-model="uid">-->
+      <!--<option value="">&#45;&#45;请选择员工&#45;&#45;</option>-->
+      <!--<option v-for="wk in workers"-->
+              <!--:key="wk.uid" :value="wk.uid">{{wk.nick_name}}</option>-->
+    <!--</select>-->
+    <div>
+      <el-select v-model="uid" placeholder="请选择" @change="getValue" >
+        <el-option
+          v-for="wk in workers"
+          :key="wk.uid"
+          :label="wk.nick_name"
+          :value="wk.uid" class="select">
+        </el-option>
+      </el-select>
+    </div>
+
 
     <kendo-datasource
       ref="datasource1"
@@ -107,14 +124,15 @@ export default {
     return {
       orders: [],
       toDispatch: [],
-      workers: []
+      workers: [],
+      uid:""
     };
   },
   created() {
     let wrk_url = "http://dev.upctech.com.cn/api/dis/getworklist";
     axios.get(wrk_url).then(res => {
       console.log(res);
-      this.workers = res.data.data;
+      this.workers = res.data;
     });
   },
   methods: {
@@ -131,7 +149,7 @@ export default {
       // this.data.toDispatch.append(dataItem.order_no);
       this.toDispatch.push(dataItem.order_no);
       console.log(dataItem.order_no);
-    }
+    },
     // GetOrders() {
     //   let params = {
     //     // access_key: "xunjiepf",
@@ -141,6 +159,42 @@ export default {
     //     console.log(res.data);
     //   });
     // }
+    moveDist(j){
+      console.log(j)
+      if(j == 0){
+        this.toDispatch.shift()
+      }else{
+        this.toDispatch.splice(j,1)
+      }
+
+    },
+    getValue(){
+      console.log("...",this.uid)
+      let orders=""
+      if(this.toDispatch.length == 1){
+        orders += this.toDispatch[0]
+      }else{
+        for(let i =0;i< this.toDispatch.length;i++){
+
+          if(this.toDispatch.length == i+1){
+            orders += this.toDispatch[i]
+          }else{
+            orders += this.toDispatch[i]+','
+          }
+        }
+      }
+      console.log(orders)
+      let params = {}
+      params.uid=parseInt(this.uid)
+      params.order_ids=orders
+      console.log("00",params)
+      this.$axios.post("/dis/dispatchorder",params).then(res=>{
+        this.toDispatch =[]
+        console.log(res)
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
   }
 };
 </script>
@@ -166,4 +220,7 @@ a {
 .grids {
   width: 90%;
 }
+  .select{
+    display: block;
+  }
 </style>
