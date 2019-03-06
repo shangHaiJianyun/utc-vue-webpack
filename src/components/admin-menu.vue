@@ -13,30 +13,35 @@
       </b-nav-item>
       <b-nav-item href="#">
         <router-link to="/admin-dists">员工列表</router-link>
-      </b-nav-item>
+      </b-nav-item>      <b-nav-item href="#">
+      <router-link to="/Arealist">区域列表</router-link>
+    </b-nav-item>
       <!--<b-nav-item href="#">-->
       <!--<router-link to="/dists">dists</router-link>-->
       <!--</b-nav-item>-->
       <b-nav-item href="#">
-        <router-link to="/projects">projects</router-link>
+        <router-link to="/ClientOrders">洗车预约单</router-link>
       </b-nav-item>
-      <b-nav-item-dropdown
-        text="Setting"
-        left
-      >
+      <!--<b-nav-item href="#">-->
+        <!--<router-link to="/projects">projects</router-link>-->
+      <!--</b-nav-item>-->
+      <!--<b-nav-item-dropdown-->
+        <!--text="Setting"-->
+        <!--left-->
+      <!--&gt;-->
 
-        <b-dropdown-item href="#">
-          <router-link to="/settings">settings</router-link>
+        <!--<b-dropdown-item href="#">-->
+          <!--<router-link to="/settings">settings</router-link>-->
 
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
+        <!--</b-dropdown-item>-->
+      <!--</b-nav-item-dropdown>-->
 
-      <b-nav-item
-        href="#"
-        right
-      >
-        <router-link to="/login">login</router-link>
-      </b-nav-item>
+      <!--<b-nav-item-->
+        <!--href="#"-->
+        <!--right-->
+      <!--&gt;-->
+        <!--<router-link to="/login">login</router-link>-->
+      <!--</b-nav-item>-->
       <b-nav-item
         href="#"
         right

@@ -8,9 +8,7 @@
       <b-nav-item href="#">
         <router-link to="/user">主页</router-link>
       </b-nav-item>
-      <b-nav-item href="#">
-        <router-link to="/ClientOrders">洗车预约单</router-link>
-      </b-nav-item>
+
       <!--<b-nav-item href="#">-->
       <!--<router-link to="/admin-home">Home2</router-link>-->
       <!--</b-nav-item>-->

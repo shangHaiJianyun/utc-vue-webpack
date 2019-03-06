@@ -68,6 +68,11 @@
         :width="220"
       ></kendo-grid-column>
       <kendo-grid-column
+        :field="'order_id'",
+        :title = "'系统订单编号'"
+        :width="120"
+      ></kendo-grid-column>
+      <kendo-grid-column
         :field="'nick_name'"
         :title="'用户昵称'"
         :width="220"
@@ -117,6 +122,7 @@
 import axios from "axios";
 // Vue.prototype.$http = axios;
 import { DropdownsInstaller } from "@progress/kendo-ui";
+import time from "../api/time"
 
 export default {
   name: "client_orders",
@@ -147,8 +153,16 @@ export default {
       var dataItem = grid.dataItem(e.currentTarget.closest("tr"));
       // alert('"' + dataItem.order_no + '" 准备派单.');
       // this.data.toDispatch.append(dataItem.order_no);
-      this.toDispatch.push(dataItem.order_no);
-      console.log(dataItem.order_no);
+      if(dataItem.order_status == 2){
+        this.toDispatch.push(dataItem.order_no);
+        console.log(dataItem.order_no);
+      }else{
+        this.$message({
+          showClose: true,
+          message: '此单不能派发！'
+        });
+      }
+
     },
     // GetOrders() {
     //   let params = {
@@ -184,9 +198,11 @@ export default {
         }
       }
       console.log(orders)
+      // console.log("time",time)
       let params = {}
       params.uid=parseInt(this.uid)
       params.order_ids=orders
+      // params.datetime=time
       console.log("00",params)
       this.$axios.post("/dis/dispatchorder",params).then(res=>{
         this.toDispatch =[]
@@ -219,6 +235,7 @@ a {
 
 .grids {
   width: 90%;
+  margin:auto;
 }
   .select{
     display: block;

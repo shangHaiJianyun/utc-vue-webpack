@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container fluid>
-      <!-- <div v-if="user_type==='Admin'">
+       <div v-if="user_type==='Admin'">
         <AdminMenu />
       </div>
       <div v-if="user_type==='Dist'">
@@ -9,8 +9,8 @@
       </div>
       <div v-if="user_type==='User'">
         <UserMenu />
-      </div> -->
-      <UserMenu />
+      </div>
+      <!--<UserMenu />-->
 
     </b-container>
     <div id="app">
