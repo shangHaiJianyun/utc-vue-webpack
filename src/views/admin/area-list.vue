@@ -1,18 +1,19 @@
 <template>
     <div>
-      <Arealist />
+      <AreaLists />
     </div>
 </template>
 
 <script>
-    import Arealist from "@/components/area.vue"
+    import AreaLists from "@/components/area.vue"
     export default {
         name: "area-list",
+
         data(){
           return {}
         },
         components:{
-          Arealist
+          AreaLists
         }
     }
 </script>
