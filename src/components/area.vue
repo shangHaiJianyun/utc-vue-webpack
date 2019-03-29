@@ -25,17 +25,27 @@
           :width="220"
         ></kendo-grid-column>
         <kendo-grid-column
-          :field="'rate_id'",
-          :title = "'价格区域'"
+          :field="'address'",
+          :title = "'地址'"
           :width="120"
         ></kendo-grid-column>
         <kendo-grid-column
-          :field="'cen_loc'"
-          :title="'中心点'"
-          :width="220"
+          :field="'business'",
+          :title = "'具体地址'"
+          :width="120"
         ></kendo-grid-column>
         <kendo-grid-column
-          :field="'rate_level'"
+          :field="'surrounds'",
+          :title = "'周围建筑'"
+          :width="120"
+        ></kendo-grid-column>
+        <!--<kendo-grid-column-->
+          <!--:field="'cen_loc'"-->
+          <!--:title="'中心点'"-->
+          <!--:width="220"-->
+        <!--&gt;</kendo-grid-column>-->
+        <kendo-grid-column
+          :field="'level'"
           :title="'价格系数'"
           :width="220"
         ></kendo-grid-column>

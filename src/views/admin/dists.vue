@@ -114,6 +114,7 @@ export default {
     },
     parameterMap: function(options, operation) {
       if (operation !== 'read' && options.models) {
+        console.log(kendo.stringify(options.models))
         return { models: kendo.stringify(options.models) }
       }
     }

@@ -64,8 +64,16 @@ const router = new Router({
       component: () => import("@/views/user/order-list")
     },
     {
+      path: '/ClientOrdersAll',
+      component: () => import("@/views/admin/order-list-all")
+    },
+    {
       path:"/Arealist",
       component:() => import("@/views/admin/area-list")
+    },
+    {
+      path:"/map",
+      component:() => import("@/views/admin/map-list")
     }
 
   ]

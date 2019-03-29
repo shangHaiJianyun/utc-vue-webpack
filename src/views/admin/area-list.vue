@@ -1,16 +1,18 @@
 <template>
     <div>
-      <AreaLists />
+      <AreaLists></AreaLists>
     </div>
 </template>
 
 <script>
-    import AreaLists from "@/components/area.vue"
+    import AreaLists from "@/components/area"
     export default {
         name: "area-list",
 
         data(){
-          return {}
+          return {
+            msg:"hello"
+          }
         },
         components:{
           AreaLists

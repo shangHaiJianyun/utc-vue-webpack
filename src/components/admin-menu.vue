@@ -13,7 +13,8 @@
       </b-nav-item>
       <b-nav-item href="#">
         <router-link to="/admin-dists">员工列表</router-link>
-      </b-nav-item>      <b-nav-item href="#">
+      </b-nav-item>
+      <b-nav-item href="#">
       <router-link to="/Arealist">区域列表</router-link>
     </b-nav-item>
       <!--<b-nav-item href="#">-->
@@ -21,6 +22,12 @@
       <!--</b-nav-item>-->
       <b-nav-item href="#">
         <router-link to="/ClientOrders">洗车预约单</router-link>
+      </b-nav-item>
+      <b-nav-item href="#">
+        <router-link to="/ClientOrdersAll">洗车订单</router-link>
+      </b-nav-item>
+      <b-nav-item href="#">
+        <router-link to="/map">地图显示</router-link>
       </b-nav-item>
       <!--<b-nav-item href="#">-->
         <!--<router-link to="/projects">projects</router-link>-->
