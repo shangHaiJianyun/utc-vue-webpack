@@ -1,6 +1,15 @@
 <template>
   <div>
     <h1>洗车单</h1>
+     <el-form label-width="80px" :ref="amount" :model="amount"  v-show="flag" class="from">
+      <el-form-item label="返回金额">
+        <el-input v-model="amount.back"></el-input>
+      </el-form-item>
+      
+      <el-form-item>
+        <el-button type="primary" @click="fromtext">关闭</el-button>
+      </el-form-item>
+    </el-form>
     <!--<div class="orders">-->
       <!--<h3>待派单</h3>-->
       <!-- <p>{{toDispatch}}</p> -->
@@ -10,14 +19,14 @@
           <!--v-for="(j,index) in toDispatch"-->
           <!--:key="j"-->
         <!--&gt;-->
-          <!--<div class="view">-->
+          <!--<div class="view">-->    
             <!--<button class="destroy" @click="moveDist(index)">{{j}} -</button>-->
           <!--</div>-->
         <!--</li>-->
       <!--</ul>-->
       <!--<h3>选择技师</h3>-->
       <!--<div >-->
-        <!--<el-select v-model="worker_id" placeholder="请选择" @change="getValue" :disabled="disabled">-->
+        <!--<el-select v-model="worker_id" placeholder="请选择" @chang     e="getValue" :disabled="disabled">-->
           <!--<el-option-->
             <!--v-for="wk in workers"-->
             <!--:key="wk.uid"-->
@@ -40,7 +49,7 @@
       </kendo-datasource>
       <kendo-grid
         ref="grid"
-        :data-source-ref="'datasource1'"
+        :data-source-ref="'datasource1'" 
         :sortable-mode="'multiple'"
         :sortable-allow-unsort="true"
         :sortable-show-indexes="true"
@@ -100,7 +109,12 @@
           :width="120"
         ></kendo-grid-column>
         <kendo-grid-column
-          :command="{ text: '更新', click: showDetails }"
+          :command="{ text: '更改', click: showDetails }"
+          :title="'&nbsp;'"
+          :width="100"
+        ></kendo-grid-column>
+       <kendo-grid-column
+          :command="{ text: '详情', click: shows}"
           :title="'&nbsp;'"
           :width="100"
         ></kendo-grid-column>
@@ -133,6 +147,11 @@
         order_list:{},
         worker :{},
         disabled:true,
+        amount:{
+          back:"",
+
+        },
+        flag:false
       };
     },
     created() {
@@ -143,7 +162,8 @@
       //   console.log(res);
       //   this.workers = res.data;
       // });
-      // this.GetOrders()
+      // this.GetOrders();
+      
     },
     methods: {
       // parameterMap: function(options, operation) {
@@ -151,6 +171,20 @@
       //     return { models: kendo.stringify(options.models) };
       //   }
       // },
+      shows:function(e){
+        let that = this
+        e.preventDefault();
+        var grid = this.$refs.grid.kendoWidget();
+        var dataItem = grid.dataItem(e.currentTarget.closest("tr"));
+        console.log("详情信息",dataItem)
+        
+       let params = {}
+        params.order_no = dataItem.order_no
+        
+      },
+      fromtext(){
+        this.flag = false
+    },
       showDetails: function(e) {
         e.preventDefault();
         var grid = this.$refs.grid.kendoWidget();

@@ -24,7 +24,7 @@
       <el-form-item label="总价格">
         <el-input v-model="mapsd.money"></el-input>
       </el-form-item>
-      <el-form-item label="实际价格">
+      <el-form-item label="技师价格">
         <el-input v-model="mapsd.true_money"></el-input>
       </el-form-item>
 
@@ -98,6 +98,12 @@
           :title="'用户昵称'"
           :width="220"
         ></kendo-grid-column>
+        <kendo-grid-column
+          :field="'create_time'"
+          :title="'下单时间'"
+          :width="220"
+        ></kendo-grid-column>
+       
         <kendo-grid-column
           :field="'item_title'"
           :title="'服务项目'"
@@ -214,9 +220,6 @@ export default {
       e.preventDefault();
       var grid = this.$refs.grid.kendoWidget();
       var dataItem = grid.dataItem(e.currentTarget.closest("tr"));
-      // alert('"' + dataItem.order_no + '" 准备派单.');
-      // this.data.toDispatch.append(dataItem.order_no);
-
       //获取数据
       this.orders_id =dataItem.order_id
 
@@ -286,7 +289,6 @@ export default {
           message: '此单不能派发！'
         });
        }
-
     },
     GetOrders() {
       let that = this
@@ -321,7 +323,6 @@ export default {
       });
     },
     moveDist(j){
-      console.log(j)
       if(j == 0){
         // this.orders_id.shift()
         this.toDispatch.shift()
@@ -346,9 +347,8 @@ export default {
       e.preventDefault();
       var grid = this.$refs.grid.kendoWidget();
       var dataItem = grid.dataItem(e.currentTarget.closest("tr"));
-      // alert('"' + dataItem.order_no + '" 准备派单.');
-      // this.data.toDispatch.append(dataItem.order_no);
       console.log("详情信息",dataItem)
+      
       let params = {}
       params.order_no = dataItem.order_no
       that.$axios.post("/dis/getOrderDetail",params).then(res=>{
@@ -384,7 +384,7 @@ export default {
         this.orders=[]
         this.disabled = true
         this.$message({
-          message: res.data[0].errmsg,
+          message: res.data[0][0].errmsg,
           type: 'success'
         });
         console.log(res)
@@ -443,7 +443,7 @@ a {
   }
 .from{
   width: 50%;
-  position: absolute;
+  position: fixed;
   margin: 60px auto;
   left: 0;
   right: 0;

@@ -1,205 +1,297 @@
 <template>
-    <!-- <b-navbar toggleable="md" variant="light">
-        <b-navbar-brand href="#">BootstrapVue</b-navbar-brand>
-        <b-navbar-nav>
-            <b-nav-item href="#">
-                <router-link to="/">Home</router-link>
-            </b-nav-item>
-            <b-nav-item href="#">
-                <router-link to="/home">UserHome</router-link>
-            </b-nav-item>
-            <b-nav-item-dropdown text="Admin" left>
-                <b-dropdown-item href="#">
-                    <router-link to="/admin-home">Admin Home</router-link>
-
-                </b-dropdown-item>
-                <b-dropdown-item href="#">
-                    <router-link to="/dists">dists</router-link>
-
-                </b-dropdown-item>
-                <b-dropdown-item href="#">
-                    <router-link to="/projects">projects</router-link>
-
-                </b-dropdown-item>
-                <b-dropdown-item href="#">
-                    <router-link to="/settings">settings</router-link>
-
-                </b-dropdown-item>
-            </b-nav-item-dropdown>
-            <b-nav-item-dropdown text="Dists" left>
-                <b-dropdown-item href="#">
-                    <router-link to="/admin-home">Admin Home</router-link>
-
-                </b-dropdown-item>
-                <b-dropdown-item href="#">
-                    <router-link to="/dists">dists</router-link>
-
-                </b-dropdown-item>
-                <b-dropdown-item href="#">
-                    <router-link to="/projects">projects</router-link>
-
-                </b-dropdown-item>
-                <b-dropdown-item href="#">
-                    <router-link to="/settings">settings</router-link>
-
-                </b-dropdown-item>
-            </b-nav-item-dropdown>
-
-            <b-nav-item href="#" right>
-                <router-link to="/login">login</router-link>
-            </b-nav-item>
-        </b-navbar-nav>
-    </b-navbar> -->
     <div class="home">
-      <h2>管理员主页</h2>
-      <!--<el-table-->
-        <!--:data="tableData"-->
-        <!--border-->
-        <!--style="width: 100%">-->
-        <!--<el-table-column-->
-          <!--fixed-->
-          <!--prop="Name"-->
-          <!--label="Name"-->
-          <!--width="170">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="Mobile"-->
-          <!--label="Mobile"-->
-          <!--width="180">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="Dept"-->
-          <!--label="Dept"-->
-          <!--width="140">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="cn_name"-->
-          <!--label="cn_name"-->
-          <!--width="140">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--prop="email"-->
-          <!--label="email"-->
-          <!--width="300">-->
-        <!--</el-table-column>-->
-        <!--&lt;!&ndash;<el-table-column&ndash;&gt;-->
-          <!--&lt;!&ndash;prop="zip"&ndash;&gt;-->
-          <!--&lt;!&ndash;label="邮编"&ndash;&gt;-->
-          <!--&lt;!&ndash;width="120">&ndash;&gt;-->
-        <!--&lt;!&ndash;</el-table-column>&ndash;&gt;-->
-        <!--<el-table-column-->
-          <!--fixed="right"-->
-          <!--label="操作"-->
-          <!--width="100">-->
-          <!--<template slot-scope="scope">-->
-            <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
-            <!--<el-button type="text" size="small">编辑</el-button>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-      <!--</el-table>-->
-
-
-
-
-      <!--<div id="vueapp" class="vue-app">-->
-        <!--<kendo-datasource ref="datasource1"-->
-                          <!--:transport-read-url="'https://demos.telerik.com/kendo-ui/service/Products'"-->
-                          <!--:transport-read-data-type="'jsonp'"-->
-                          <!--:transport-update-url="'https://demos.telerik.com/kendo-ui/service/Products/Update'"-->
-                          <!--:transport-update-data-type="'jsonp'"-->
-                          <!--:transport-destroy-url="'https://demos.telerik.com/kendo-ui/service/Products/Destroy'"-->
-                          <!--:transport-destroy-data-type="'jsonp'"-->
-                          <!--:transport-create-url="'https://demos.telerik.com/kendo-ui/service/Products/Create'"-->
-                          <!--:transport-create-data-type="'jsonp'"-->
-                          <!--:transport-parameter-map="parameterMap"-->
-                          <!--:schema-model-id="'ProductID'"-->
-                          <!--:schema-model-fields="schemaModelFields"-->
-                          <!--:batch='true'-->
-                          <!--:page-size='20'>-->
-        <!--</kendo-datasource>-->
-
-        <!--<kendo-grid :height="600"-->
-                    <!--:data-source="tableData"-->
-                    <!--:navigatable="true"-->
-                    <!--:pageable="true"-->
-                    <!--:editable="true"-->
-                    <!--:sortable="true"-->
-                    <!--:toolbar="['create', 'save', 'cancel']">-->
-          <!--<kendo-grid-column :field="'Name'"-->
-                             <!--:title="'Name'"-->
-                             <!--:width="200"></kendo-grid-column>-->
-          <!--<kendo-grid-column :field="'Mobile'"-->
-                             <!--:title="'Mobile'"-->
-                             <!--:width="150"-->
-                             <!--:format="'{0:c}'"></kendo-grid-column>-->
-          <!--<kendo-grid-column :field="'Dept'"-->
-                             <!--:title="'Dept'"-->
-                             <!--:width="120"></kendo-grid-column>-->
-          <!--<kendo-grid-column :field="'cn_name'" :title="'cn_name'" :width="120"></kendo-grid-column>-->
-          <!--<kendo-grid-column :field="'email'" :title="'email'" :width="200"></kendo-grid-column>-->
-          <!--<kendo-grid-column :command="['destroy']"-->
-                             <!--:title="'&nbsp;'"-->
-                             <!--:width="100"></kendo-grid-column>-->
-        <!--</kendo-grid>-->
-      <!--</div>-->
-
-
+      <h2>Welcome</h2>
+      <div class="todayclub">
+       <el-row type="flex" class="row-bg" justify="space-around">
+        <el-col :span="5" class="block1">
+          <h5 class="h5">总订单数</h5>
+          <div class="ordernumber">{{general_order}}</div>
+          <p class="remarks">GENERAL　ORDER</p>
+            </el-col>
+          <el-col :span="5" class="block2">
+            <h5 class="h5">已派单数</h5>
+              <div class="ordernumber">{{sent_list}}</div>
+              <p class="remarks">SENT　LIST</p>
+          </el-col>
+          <el-col :span="5" class="block3">
+            <h5 class="h5">待派单数</h5>
+            <div class="ordernumber">{{pending_number}}</div>
+            <p class="remarks">PENDING　NUMBER</p>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="echats">   
+        <div id="myChart" :style="{width: '50%', height: '600px'}"></div>
+        <div id="hourcontrast" :style="{width: '50%', height: '600px'}"></div>
+        
+      </div>
+        <div id="Worker" :style="{width: '100%', height: '600px'}"></div>
     </div>
 </template>
 
 <script>
-  const items = [{
-    Name: '天龙八部',
-    Mobile: '15564896358',
-    Dept: '人事',
-    cn_name: '000',
-    email: '1105148155@qq.com',
-  }, {
-    Name: '天龙八部',
-    Mobile: '15564896358',
-    Dept: '人事',
-    cn_name: '000',
-    email: '1105148155@qq.com',
-  }, {
-    Name: '天龙八部',
-    Mobile: '15564896358',
-    Dept: '人事',
-    cn_name: '000',
-    email: '1105148155@qq.com',
-  }, {
-    Name: '天龙八部',
-    Mobile: '15564896358',
-    Dept: '人事',
-    cn_name: '000',
-    email: '1105148155@qq.com',
-  }]
+
 export default {
   name: "AdminHome",
   data () {
     return {
-      tableData: items,
-      schemaModelFields: {
-        ProductID: { editable: false, nullable: true },
-        Name: { validation: { required: true } },
-        Mobile: { type: 'number', validation: { required: true, min: 1 } },
-        Dept: { type: 'boolean' },
-        cn_name: { type: 'number', validation: { min: 0, required: true } },
-        email: { type: 'number', validation: { min: 0, required: true } }
-      }
+      general_order:"123",
+      sent_list:"456",
+      pending_number:"789"
+
     }
   },
   created(){
-    this.$parent.user_type = 'Admin'
+    
+  },
+   mounted(){
+    this.drawLine();
+    this.hourcontrast();
+    this.Worker()
   },
   methods: {
-    parameterMap: function(options, operation) {
-      if (operation !== 'read' && options.models) {
-        return { models: kendo.stringify(options.models) }
-      }
+    drawLine(){
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = this.$echarts.init(document.getElementById('myChart'))
+        // 绘制图表
+        myChart.setOption({
+            title : {
+              text: '区域订单',
+              subtext: '工时需求',
+              x:'center'
+            },
+              tooltip:{
+                trigger:'item',
+                show:true,
+            },
+            grid: { // 控制图的大小，调整下面这些值就可以，
+              show:true,
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true,
+               backgroundColor:"#e4e4e6",
+                x: 40,
+                x2: 100,
+                y2: 150// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+              },
+            legend: {
+                data:['销量'],
+                 left:'10%',
+                 top: '10%',
+                 
+            },
+            xAxis: {
+                type: 'category',
+                data: ['2019-03-1706:00:00', '2019-03-17 07:00:00', '2019-03-17 08:00:00', '2019-03-17 09:00:00', '2019-03-17 10:00:00','2019-03-1706:00:00', '2019-03-17 07:00:00', '2019-03-17 08:00:00', '2019-03-17 09:00:00', '2019-03-17 10:00:00'],
+                
+                axisTick:{
+                    alignWithLabel:true
+                },
+                splitLine: {
+                    show: false,
+                    interval: 'auto',
+                    lineStyle:{
+                      color: ['#315070'],
+                      width: 1,
+                      type: 'solid'
+                  }
+            　　},
+                axisLabel:{  
+                    interval:0 ,  
+                  rotate:90 
+                }
+            },
+            yAxis: {
+                type: 'value',
+            },
+           series: [{ 
+             name:"销量",
+              type:'bar',
+              data:[0.27, 0.76, 1.29, 1.94,2.11,0.27, 0.76, 1.29, 1.94,2.11],
+              itemStyle:{
+                  color:"#e54933"
+              },
+          }]
+        });
+    },
+     hourcontrast(){
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = this.$echarts.init(document.getElementById('hourcontrast'))
+        // 绘制图表
+        myChart.setOption({
+          title : {
+              text: '区域洗车',
+              subtext: '工时需求 和 工人工时',
+              x:'center'
+          },
+          grid: { // 控制图的大小，调整下面这些值就可以，
+              show:true,
+               backgroundColor:"#e4e4e6",
+                x: 40,
+                x2: 100,
+                y2: 150// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+              },
+            legend: {
+               left:'10%',
+                 top: '10%',
+            },
+            tooltip:{
+              show:true
+          },
+          dataset: {
+              dimensions: ['product', "req_hrs", 'wrk_hrs'],
+              source: [
+                 {product: '2019-03-1706:00:00', 'req_hrs': 43.3, 'wrk_hrs': 85.8,},
+                  {product: '2019-03-17 07:00:00', 'req_hrs': 83.1, 'wrk_hrs': 73.4, },
+                  {product: '2019-03-17 08:00:00', 'req_hrs': 86.4, 'wrk_hrs': 65.2,},
+                  {product: '2019-03-17 09:00:00', 'req_hrs': 72.4, 'wrk_hrs': 53.9,},
+                   {product: '2019-03-17 10:00:00', 'req_hrs': 43.3, 'wrk_hrs': 85.8,},
+                  {product: '2019-03-17 11:00:00', 'req_hrs': 83.1, 'wrk_hrs': 73.4, },
+                  {product: '2019-03-17 12:00:00', 'req_hrs': 86.4, 'wrk_hrs': 65.2,},
+                  {product: '2019-03-17 13:00:00', 'req_hrs': 72.4, 'wrk_hrs': 53.9,}
+              ]
+          },
+          xAxis: {type: 'category',
+               axisTick:{
+                    alignWithLabel:true
+                },
+                axisLabel:{  
+                    interval:0 ,  
+                  rotate:90 
+                }
+          },
+          yAxis: {},
+          // Declare several bar series, each will be mapped
+          // to a column of dataset.source by default.
+          series: [
+              {type: 'bar'},
+              {type: 'bar',
+              barGap: '0%',
+              itemStyle:{
+                color:"#1b88e5"
+              }}
+          ]   
+        });
+    },
+    Worker(){
+        let myChart = this.$echarts.init(document.getElementById('Worker'))
+        myChart.setOption({
+             title : {
+                  text: '工人洗车单',//标题
+                  subtext: '纯属虚构',//副标题
+                  x:'center'//位置
+              },
+              tooltip : {
+                  trigger: 'item'//提示框
+              },
+              legend: {//小图标
+                  show: true,
+                  data: ['结束'],
+                  left: '3%',
+                  top:'1%',
+                  containLabel: true
+              },
+              grid: {
+                  left: '3%',
+                  right: '4%',
+                  bottom: '3%',
+                  containLabel: true
+              },
+              xAxis: {
+                  type : 'category',
+                  splitLine: {show:false},
+                  data : ['总费用','房租','水电费','交通费','伙食费','日用品数']
+              },
+              yAxis: {
+                  type : 'value'
+              },
+              series: [
+                  {
+                      name: '开始',
+                      type: 'bar',
+                      stack:  '总量',
+                      itemStyle: {
+                          normal: {
+                              barBorderColor: 'rgba(0,0,0,0)',
+                              color: 'rgba(0,0,0,0)'
+                          },
+                          emphasis: {
+                              barBorderColor: 'rgba(0,0,0,0)',
+                              color: 'rgba(0,0,0,0)'
+                          }
+                      },
+                      data: [0, 1700, 1400, 1200, 300, 0]
+                  },
+                  {
+                      name: '结束',
+                      type: 'bar',
+                      stack: '总量',
+                      label: {
+                          normal: {
+                              show: true,//
+                              position: 'inside'
+                          }
+                      },
+                      data:[2900, 1200, 300, 200, 900, 300]
+                  }
+              ] 
+        });
     }
   }
 };
 </script>
 <style scoped>
-
+  h2{
+    color:#b1afaf;
+    line-height:80px;
+    text-align:left;
+    padding-left: 20px;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0px 7px 7px -7px #5E5E5E; 
+  }
+  .todayclub{
+    margin-top:70px;
+  }
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+ .block1{
+   color:white;
+   background:#1b88e5
+ }
+ .block2{
+     color:white;
+  background:#7560ed
+ }
+ .block3{
+     color:white;
+  background:#26c5d8
+ }
+  .h5{
+    text-indent:1em;
+      text-align: left;
+    font-size: 14px;
+    line-height: 40px;
+    margin: 0;
+  }
+  .ordernumber{
+    font-size: 40px;
+    line-height:60px;
+  }
+  .remarks{
+    font-size:12px;
+  }
+  #myChart{
+    float:left
+  }
+   #hourcontrast{
+    float:right
+  }
 </style>

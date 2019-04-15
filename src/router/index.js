@@ -8,73 +8,77 @@ const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [{
-      path: "/",
-      component: () => import("@/views/Home")
-    },
-    {
-      path: "/home",
-      // name: "myhome",
-      component: () => import("@/components/HelloWorld")
+    path: "/",
+    component: () => import("@/views/Home")
+  },
+  {
+    path: "/home",
+    // name: "myhome",
+    component: () => import("@/components/HelloWorld")
 
-    },
-    {
-      path: "/login",
-      component: () => import("@/views/auth/login")
-    },
-    // admin
-    {
-      path: "/admin",
-      component: () => import("@/views/admin/index")
-    },
-    {
-      path: "/admin-dists",
-      component: () => import("@/views/admin/dists")
-    },
-    {
-      path: "/admin-users",
-      component: () => import("@/views/admin/users")
-    },
-    {
-      path: "/projects",
-      component: () => import("@/views/admin/projects")
-    },
-    {
-      path: "/settings",
-      component: () => import("@/views/admin/settings")
-    },
-    // Dists
-    {
-      path: "/dist",
-      component: () => import("@/views/dists/index")
-    },
-    {
-      path: "/submit-project",
-      component: () => import("@/views/dists/submit-project")
-    },
-    {
-      path: "/dispute-project",
-      component: () => import("@/views/dists/dispute-project")
-    },
-    {
-      path: '/index',
-      component: () => import("@/views/user/index")
-    },
-    {
-      path: '/ClientOrders',
-      component: () => import("@/views/user/order-list")
-    },
-    {
-      path: '/ClientOrdersAll',
-      component: () => import("@/views/admin/order-list-all")
-    },
-    {
-      path:"/Arealist",
-      component:() => import("@/views/admin/area-list")
-    },
-    {
-      path:"/map",
-      component:() => import("@/views/admin/map-list")
-    }
+  },
+  {
+    path: "/login",
+    component: () => import("@/views/auth/login")
+  },
+  // admin
+  {
+    path: "/admin",
+    component: () => import("@/views/admin/index")
+  },
+  {
+    path: "/admin-dists",
+    component: () => import("@/views/admin/dists")
+  },
+  {
+    path: "/admin-users",
+    component: () => import("@/views/admin/users")
+  },
+  {
+    path: "/projects",
+    component: () => import("@/views/admin/projects")
+  },
+  {
+    path: "/settings",
+    component: () => import("@/views/admin/settings")
+  },
+  // Dists
+  {
+    path: "/dist",
+    component: () => import("@/views/dists/index")
+  },
+  {
+    path: "/submit-project",
+    component: () => import("@/views/dists/submit-project")
+  },
+  {
+    path: "/dispute-project",
+    component: () => import("@/views/dists/dispute-project")
+  },
+  {
+    path: '/index',
+    component: () => import("@/views/user/index")
+  },
+  {
+    path: '/ClientOrders',
+    component: () => import("@/views/user/order-list")
+  },
+  {
+    path: '/ClientOrdersAll',
+    component: () => import("@/views/admin/order-list-all")
+  },
+  {
+    path: "/Arealist",
+    component: () => import("@/views/admin/area-list")
+  },
+  {
+    path: "/map",
+    component: () => import("@/views/admin/map-list")
+  },
+  {
+    path: "/simulated-form",
+    component: () => import("@/views/admin/simulated-form")
+  }
 
   ]
 });

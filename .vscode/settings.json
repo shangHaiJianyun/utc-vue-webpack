@@ -8,5 +8,6 @@
   "javascript.format.enable": true,
   "javascript.validate.enable": false,
   "eslint.autoFixOnSave": true,
-  "editor.formatOnSaveTimeout": 1500
+  "editor.formatOnSaveTimeout": 1500,
+  "git.ignoreLimitWarning": true
 }

@@ -9,6 +9,8 @@ import VueAuthenticate from 'vue-authenticate'
 import axios from 'axios'
 import BootstrapVue from 'bootstrap-vue'
 import ElementUI from 'element-ui';
+import echarts from 'echarts'
+
 
 
 import 'element-ui/lib/theme-chalk/index.css';
@@ -51,6 +53,7 @@ Vue.use(VueAuthenticate, {
   // }
 })
 Vue.prototype.$axios = axios
+Vue.prototype.$echarts = echarts
 axios.defaults.baseURL = '/api'
 // axios.defaults.headers.common['Authorization'] = 'Bearer '+ store.state.token
 // console.log("000",axios.defaults.headers.common['Authorization'])

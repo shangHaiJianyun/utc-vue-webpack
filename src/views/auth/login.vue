@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" :style="{height:heights}">
     <!--<a href="javascript:;" class="log-close"><i class="icons close"></i></a>-->
     <!--<div class="log-bg">-->
     <!--<div class="log-cloud cloud1"></div>-->
@@ -82,6 +82,7 @@ export default {
   name: "login",
   data() {
     return {
+      heights:document.documentElement.clientHeight+"px",
       isLoging: false,
       form: {
         username: "admin",
@@ -99,6 +100,7 @@ export default {
     // }
   },
   methods: {
+   
     //登录逻辑
     login() {
       // console.log("store", this.$store.state.token);
