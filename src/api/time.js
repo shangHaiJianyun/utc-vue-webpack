@@ -17,5 +17,4 @@ Date.prototype.Format = function (fmt) {
 
 var time1 = new Date().Format("yyyy-MM-dd");
 var time2 = new Date().Format("yyyy-MM-dd HH:mm:ss");
-
 export default time2

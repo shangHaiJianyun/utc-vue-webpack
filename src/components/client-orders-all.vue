@@ -213,7 +213,7 @@
           console.log("系统ID",params)
           this.$axios.post("/dis/updateOrderStatus",params).then(res=>{
             this.toDispatch.push(dataItem.order_no);
-            console.log(res)
+           
             //派单数据
             this.$message({
               showClose: true,
@@ -222,6 +222,9 @@
 
 
           })
+           .catch(function (error) {
+          console.log(error);
+        });
         }else {
           this.$message({
             showClose: true,
