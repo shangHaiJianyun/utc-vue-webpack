@@ -85,6 +85,10 @@ const router = new Router({
     {
       path: "/gould-map",
       component: () => import("@/views/admin/gould-map")
+    },
+    {
+      path: "/official-activities",
+      component: () => import("@/views/admin/official-activities")
     }
 
   ]

@@ -13,6 +13,7 @@ import echarts from 'echarts'
 
 
 
+
 import 'element-ui/lib/theme-chalk/index.css';
 import {
   store
@@ -30,8 +31,8 @@ import {
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-
-
+import VueAMap from "vue-amap";
+Vue.use(VueAMap);
 
 
 // import { Grid, GridInstaller } from '@progress/kendo-grid-vue-wrapper'

@@ -38,6 +38,9 @@
       <el-menu-item index="/gould-map">
         <router-link to="/gould-map">高德地图</router-link>
       </el-menu-item>
+      <el-menu-item index="/official-activities">
+        <router-link to="/official-activities">官方活动</router-link>
+      </el-menu-item>
       <el-menu-item index="8" @click="logout">退出登录</el-menu-item>
     </el-menu>
   </div>
