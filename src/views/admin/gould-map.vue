@@ -29,7 +29,8 @@ export default {
       uiVersion: "1.0"
     });
   },
-  mounted() {}
+  mounted() {},
+  methods: {}
 };
 </script>
 <style scoped>
