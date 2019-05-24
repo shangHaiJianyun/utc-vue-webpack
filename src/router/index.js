@@ -89,6 +89,10 @@ const router = new Router({
     {
       path: "/official-activities",
       component: () => import("@/views/admin/official-activities")
+    },
+    {
+      path: "/sharing-activities",
+      component: () => import("@/views/admin/sharing-activities")
     }
 
   ]

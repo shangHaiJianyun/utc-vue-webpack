@@ -41,6 +41,9 @@
       <el-menu-item index="/official-activities">
         <router-link to="/official-activities">官方活动</router-link>
       </el-menu-item>
+      <el-menu-item index="/sharing-activities">
+        <router-link to="/sharing-activities">用户活动</router-link>
+      </el-menu-item>
       <el-menu-item index="8" @click="logout">退出登录</el-menu-item>
     </el-menu>
   </div>

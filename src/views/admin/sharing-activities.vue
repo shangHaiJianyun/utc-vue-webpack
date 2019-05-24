@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 表格显示 -->
-    <div class="pagetitle">官方活动</div>
+    <div class="pagetitle">用户活动</div>
 
     <el-button type="primary" @click="createactivity() " class="add">添加</el-button>
     <el-table :data="tableData" border style="width: 100%">
