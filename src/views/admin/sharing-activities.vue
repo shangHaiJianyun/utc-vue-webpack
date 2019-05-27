@@ -10,7 +10,7 @@
       <el-table-column prop="created_on" label="创建日期"></el-table-column>
       <el-table-column prop="description" label="活动介绍"></el-table-column>
       <el-table-column prop="modified_on" label="修改时间"></el-table-column>
-      <el-table-column prop="scene_str" label="活动key"></el-table-column>
+      <el-table-column prop="qr_action_name" label="活动名称"></el-table-column>
 
       <el-table-column prop="image" label="活动海报" width="300">
         <template slot-scope="scope">
@@ -22,14 +22,12 @@
           >
         </template>
       </el-table-column>
-      <el-table-column prop="qr_url" label="活动二维码" width="300">
+      <!-- <el-table-column prop="qr_url" label="活动二维码" width="300">
         <template slot-scope="scope">
           <img :src="scope.row.qr_url" width="40" height="40" class="head_pic">
         </template>
-      </el-table-column>
-      <el-table-column prop="modified_on" label="修改时间"></el-table-column>
+      </el-table-column>-->
       <el-table-column prop="event_type" label="活动对象" width="120" :formatter="callobject"></el-table-column>
-      <el-table-column prop="is_active" label="活动状态" width="120" :formatter="formatSex"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
           <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
@@ -45,11 +43,11 @@
         <el-form-item label="活动名称" :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.name"></el-input>
         </el-form-item>
-        <el-form-item label="活动对象" :label-width="formLabelWidth">
-          <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
-            <el-option label="用户" value="ME"></el-option>
-            <el-option label="技师" value="MT"></el-option>
-          </el-select>
+        <el-form-item label="活动时间" :label-width="formLabelWidth">
+          <el-input v-model="creatactivitydata.qr_expire_days"></el-input>
+        </el-form-item>
+        <el-form-item label="活动时间" :label-width="formLabelWidth">
+          <el-input v-model="creatactivitydata.qr_action_name" readonly="readonly"></el-input>
         </el-form-item>
         <el-form-item label="活动介绍" :label-width="formLabelWidth">
           <el-input
@@ -59,6 +57,14 @@
             v-model="creatactivitydata.description"
           ></el-input>
         </el-form-item>
+        <el-form-item label="活动对象" :label-width="formLabelWidth">
+          <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
+            <el-option label="用户对用户" value="MM"></el-option>
+            <el-option label="技师对用户" value="WM"></el-option>
+            <el-option label="技师对技师" value="WW"></el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="活动海报" :label-width="formLabelWidth">
           <div>
             <input type="file" @change="uploads">
@@ -74,7 +80,6 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -85,6 +90,8 @@ export default {
       formLabelWidth: "120px",
       tableData: [],
       creatactivitydata: {
+        qr_action_name: "QR_STR_SCENE",
+        qr_expire_days: "30",
         name: "",
         event_type: "",
         description: "",
@@ -94,7 +101,7 @@ export default {
   },
   mounted() {
     this.$axios
-      .get("http://dev.upctech.com.cn/wx/event/market_event_temp/list/")
+      .get("http://dev.upctech.com.cn/wx/event/user_event_temp/list/")
       .then(res => {
         this._data.tableData = res.data;
       });
@@ -115,11 +122,13 @@ export default {
         this.$message.error("没有填写活动内容");
       } else if (this._data.creatactivitydata.post_url == "") {
         this.$message.error("抱歉没有选择图片");
+      } else if (this._data.creatactivitydata.qr_expire_days == "") {
+        this.$message.error("没有填写活动时间");
       } else {
         this._data.createactivityoperate = false;
         this.$axios
           .post(
-            "http://dev.upctech.com.cn/wx/event/market_event_temp/create/",
+            "http://dev.upctech.com.cn/wx/event/user_event_temp/create/",
             this._data.creatactivitydata
           )
           .then(res => {
@@ -146,18 +155,13 @@ export default {
           console.log(err);
         });
     },
-    formatSex(row, column, cellValue) {
-      if (cellValue === true) {
-        return "进行中";
-      } else if (cellValue === false) {
-        return "已结束";
-      }
-    },
     callobject(row, column, cellValue) {
-      if (cellValue === "MT") {
-        return "技师";
-      } else if (cellValue === "ME") {
-        return "用户";
+      if (cellValue === "MM") {
+        return "用户对用户";
+      } else if (cellValue === "WM") {
+        return "技师对用户";
+      } else if (cellValue === "WW") {
+        return "技师对技师 ";
       }
     }
   }

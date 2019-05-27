@@ -45,12 +45,7 @@
         <el-form-item label="活动名称" :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.name"></el-input>
         </el-form-item>
-        <el-form-item label="活动对象" :label-width="formLabelWidth">
-          <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
-            <el-option label="用户" value="ME"></el-option>
-            <el-option label="技师" value="MT"></el-option>
-          </el-select>
-        </el-form-item>
+
         <el-form-item label="活动介绍" :label-width="formLabelWidth">
           <el-input
             type="textarea"
@@ -58,6 +53,12 @@
             placeholder="请输入内容"
             v-model="creatactivitydata.description"
           ></el-input>
+        </el-form-item>
+        <el-form-item label="活动对象" :label-width="formLabelWidth">
+          <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
+            <el-option label="用户" value="ME"></el-option>
+            <el-option label="技师" value="MT"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="活动海报" :label-width="formLabelWidth">
           <div>
@@ -155,9 +156,9 @@ export default {
     },
     callobject(row, column, cellValue) {
       if (cellValue === "MT") {
-        return "技师";
+        return "会员推广";
       } else if (cellValue === "ME") {
-        return "用户";
+        return "用户推广";
       }
     }
   }
