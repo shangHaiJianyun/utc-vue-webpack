@@ -1,25 +1,23 @@
 <template>
-  <div>
+  <div style="height:100%">
     <b-container fluid>
-       <div v-if="user_type==='Admin'">
-        <AdminMenu />
+      <div v-if="user_type==='Admin'">
+        <AdminMenu/>
       </div>
       <div v-if="user_type==='Dist'">
-        <DistMenu />
+        <DistMenu/>
       </div>
       <div v-if="user_type==='User'">
-        <UserMenu />
+        <UserMenu/>
       </div>
       <!--<UserMenu />-->
-
     </b-container>
     <div id="app">
-      <div>
-        <router-view />
+      <div style="height:100%">
+        <router-view/>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -46,14 +44,12 @@ export default {
 </script>
 
 <style>
-/* <style lang = "scss" >  */
 body {
-  /*width: 100%;*/
   margin: 0px;
   padding: 0px;
-  /*border:1px solid blue;*/
 }
 #app {
+  height: calc(100% - 61px);
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

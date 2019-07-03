@@ -1,86 +1,120 @@
 <template>
   <div id="app">
+    <el-button type="primary" :autofocus="true" @click="Todaylist">今日订单</el-button>
+    <el-button type="primary" @click="tomorrowlist">明日订单</el-button>
     <div id="allmap" ref="allmap" :style="{height:heights}"></div>
     <router-view></router-view>
   </div>
 </template>
  
 <script>
-import mapimg1 from "../../assets/images/y-map.png";
-import mapimg2 from "../../assets/images/r-map.png";
-import mapimg3 from "../../assets/images/v-map.png";
-import mapimg4 from "../../assets/images/b-map.png";
-import mapimg5 from "../../assets/images/g-map.png";
+import mapimg1 from "../../assets/images/r-map.png";
 export default {
   name: "App",
   data() {
     return {
-      heights: document.documentElement.clientHeight - 61 + "px",
-      mapimg: [mapimg1, mapimg2, mapimg3, mapimg4, mapimg5]
+      Yesterday: "",
+      Today: "",
+      tomorrow: "",
+      tomorrows: "",
+      list: [],
+      heights: document.documentElement.clientHeight - 101 + "px"
     };
   },
+  mounted() {
+    var _that = this;
+    _that._data.Yesterday = this.GetDateStr(-1);
+    _that._data.Today = this.GetDateStr(0);
+    _that._data.tomorrow = this.GetDateStr(1);
+    _that._data.tomorrows = this.GetDateStr(2);
+    _that.Todaylist();
+  },
   methods: {
+    GetDateStr(AddDayCount) {
+      var dd = new Date();
+      dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期
+      var y = dd.getFullYear();
+      var m = dd.getMonth() + 1; //获取当前月份的日期
+      var d = dd.getDate();
+      return y + "-" + m + "-" + d;
+    },
+    Todaylist() {
+      var _that = this;
+      _that._data.list = [];
+
+      _that.$axios
+        .post("http://dev.upctech.com.cn/api/dis/getorderlist", {
+          start_service_date: _that._data.Yesterday,
+          end_service_date: _that._data.tomorrow
+        })
+        .then(res => {
+          res.data.forEach(function(element, index) {
+            var obj = {};
+            obj.lat = element.address_latitude;
+            obj.lon = element.address_longitude;
+            obj.text = element.address_detail;
+            _that._data.list.push(obj);
+          });
+          _that.map();
+        });
+    },
+    tomorrowlist() {
+      var _that = this;
+      _that._data.list = [];
+
+      _that.$axios
+        .post("http://dev.upctech.com.cn/api/dis/getorderlist", {
+          start_service_date: _that._data.Today,
+          end_service_date: _that._data.tomorrows,
+          order_status: 2
+        })
+        .then(res => {
+          res.data.forEach(function(element, index) {
+            var obj = {};
+            obj.lat = element.address_latitude;
+            obj.lon = element.address_longitude;
+            obj.text = element.address_detail;
+            _that._data.list.push(obj);
+          });
+          _that.map();
+        });
+    },
     map() {
       var _that = this;
-      let sendmap = {
-        loc: [
-          [121.5444, 31.133756],
-          [121.5174, 31.159264],
-          [121.5158, 31.127223],
-          [121.5534, 31.128088],
-          [121.5168, 31.126905],
-          [121.5445, 31.119619],
-          [121.5194, 31.152233],
-          [121.5186, 31.132619],
-          [121.5585, 31.138564],
-          [121.5666, 31.15448],
-          [121.55, 31.117452],
-          [121.5534, 31.135111],
-          [121.5374, 31.15685],
-          [121.5333, 31.123844],
-          [121.5204, 31.133615],
-          [121.5158, 31.114979],
-          [121.5199, 31.122665],
-          [121.5406, 31.123645],
-          [121.5365, 31.133494],
-          [121.5443, 31.150115]
-        ]
-      };
-      _that.$axios
-        .post("http://dev.upctech.com.cn/api/map/cluster_address", sendmap)
-        .then(res => {
-          for (let ind in res.data) {
-            for (let x in res.data[ind]) {
-              var sendarr = res.data[ind][x];
-              map.panTo(sendarr[0].lng, sendarr[0].lng); //将地图的中心点更改为给定的点
-              for (var s = 0; s < sendarr.length; s++) {
-                var points = new BMap.Point(sendarr[s].lng, sendarr[s].lat); //创建坐标点
-                markerFun(points, _that.mapimg[x]);
-              }
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
       var map = new BMap.Map("allmap"); // 百度地图API功能
-      var point = new BMap.Point(120.382029, 30.312903); // 默认点
-      map.centerAndZoom(point, 18);
-
+      var point = new BMap.Point(121.487899486, 31.24916171); // 默认点
+      map.centerAndZoom(point, 12);
       map.enableScrollWheelZoom(); //启用滚轮放大缩小，默认禁用
       map.enableContinuousZoom();
-      function markerFun(points, mapimg) {
-        var icon = new BMap.Icon(mapimg, new BMap.Size(100, 100), {
+      for (var i = 0; i < _that._data.list.length; i++) {
+        var points = new BMap.Point(
+          _that._data.list[i].lon,
+          _that._data.list[i].lat
+        ); //创建坐标点
+
+        markerFun(points, _that._data.list[i].text);
+      }
+      function markerFun(points, texts) {
+        var icon = new BMap.Icon(mapimg1, new BMap.Size(100, 100), {
           anchor: new BMap.Size(100, 100)
         });
-        var mkr = new BMap.Marker(points, { icon: icon }); // 创建标注
-        map.addOverlay(mkr); //方法addOverlay() 向地图中添加覆盖物
+        var markers = new BMap.Marker(points, { icon: icon });
+        var opts = {
+          position: points, // 指定文本标注所在的地理位置
+          offset: new BMap.Size(-150, -150) //设置文本偏移量
+        };
+        var label = new BMap.Label(texts, opts); // 创建文本标注对象
+        label.setStyle({
+          color: "red",
+          fontSize: "14px",
+          height: "20px",
+          lineHeight: "20px",
+          fontFamily: "微软雅黑"
+        });
+        map.addOverlay(label);
+        map.addOverlay(markers);
       }
     }
-  },
-  mounted() {
-    this.map();
   }
 };
 </script>

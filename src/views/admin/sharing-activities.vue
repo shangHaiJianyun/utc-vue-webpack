@@ -43,6 +43,18 @@
         <el-form-item label="活动名称" :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.name"></el-input>
         </el-form-item>
+        <el-form-item label="分享人所得积分" :label-width="formLabelWidth">
+          <el-input v-model="creatactivitydata.points"></el-input>
+        </el-form-item>
+        <el-form-item label="优惠劵id" :label-width="formLabelWidth">
+          <el-input v-model="creatactivitydata.coupon_class_id"></el-input>
+        </el-form-item>
+        <el-form-item label="被分享人所得积分" :label-width="formLabelWidth">
+          <el-input v-model="creatactivitydata.usr_points"></el-input>
+        </el-form-item>
+        <el-form-item label="被分享人所得优惠劵id" :label-width="formLabelWidth">
+          <el-input v-model="creatactivitydata.usr_coupon_class_id"></el-input>
+        </el-form-item>
         <el-form-item label="活动时间" :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.qr_expire_days"></el-input>
         </el-form-item>
@@ -95,13 +107,17 @@ export default {
         name: "",
         event_type: "",
         description: "",
-        post_url: ""
+        post_url: "",
+        points: "",
+        coupon_class_id: "",
+        usr_points: "",
+        usr_coupon_class_id: ""
       }
     };
   },
   mounted() {
     this.$axios
-      .get("http://dev.upctech.com.cn/wx/event/user_event_temp/list/")
+      .get("http://wx.upctech.com.cn/wx/event/user_event_temp/list/")
       .then(res => {
         this._data.tableData = res.data;
       });
@@ -122,13 +138,23 @@ export default {
         this.$message.error("没有填写活动内容");
       } else if (this._data.creatactivitydata.post_url == "") {
         this.$message.error("抱歉没有选择图片");
+      } else if (
+        this._data.creatactivitydata.points == "" ||
+        this._data.creatactivitydata.usr_points == ""
+      ) {
+        this.$message.error("抱歉没有选择积分");
+      } else if (
+        this._data.creatactivitydata.coupon_class_id == "" ||
+        this._data.creatactivitydata.usr_coupon_class_id == ""
+      ) {
+        this.$message.error("请输入优惠劵id");
       } else if (this._data.creatactivitydata.qr_expire_days == "") {
         this.$message.error("没有填写活动时间");
       } else {
         this._data.createactivityoperate = false;
         this.$axios
           .post(
-            "http://dev.upctech.com.cn/wx/event/user_event_temp/create/",
+            "http://wx.upctech.com.cn/wx/event/user_event_temp/create/",
             this._data.creatactivitydata
           )
           .then(res => {
@@ -146,7 +172,7 @@ export default {
       formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
       // 服务器只需按照正常的上传程序代码即可
       this.$http
-        .post("http://dev.upctech.com.cn/wx/img/image/upload/", formData)
+        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
           this._data.creatactivitydata.post_url = rs.data.img_name;
           this.$message("上传成功");
@@ -172,7 +198,6 @@ export default {
   float: right;
   margin: 5px 47px 15px 0;
 }
-
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;

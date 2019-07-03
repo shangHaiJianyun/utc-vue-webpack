@@ -28,19 +28,14 @@
       <!--:width="220"-->
       <!--&gt;</kendo-grid-column>-->
       <kendo-grid-column :field="'level'" :title="'价格系数'" :width="220"></kendo-grid-column>
-      <!--<kendo-grid-column-->
-      <!--:command="{ text: '派单', click: showDetails }"-->
-      <!--:title="'&nbsp;'"-->
-      <!--:width="100"-->
-      <!--&gt;</kendo-grid-column>-->
+      <kendo-grid-column :command="{ text: '开启', click:circuiton}" :title="'&nbsp;'" :width="100"></kendo-grid-column>
+      <kendo-grid-column :command="{ text: '关闭', click: circuitoff}" :title="'&nbsp;'" :width="100"></kendo-grid-column>
     </kendo-grid>
   </div>
 </template>
 
 <script>
 export default {
-  name: "area",
-
   data() {
     return {
       area: ""
@@ -50,6 +45,14 @@ export default {
     this.$axios.get("http://dev.upctech.com.cn/api/map/list_area").then(res => {
       console.log(res);
     });
+  },
+  methods: {
+    circuiton() {
+      console.log(1);
+    },
+    circuitoff() {
+      console.log(2);
+    }
   }
 };
 </script>

@@ -95,7 +95,7 @@ export default {
   },
   mounted() {
     this.$axios
-      .get("http://dev.upctech.com.cn/wx/event/market_event_temp/list/")
+      .get("http://wx.upctech.com.cn/wx/event/market_event_temp/list/")
       .then(res => {
         this._data.tableData = res.data;
       });
@@ -120,7 +120,7 @@ export default {
         this._data.createactivityoperate = false;
         this.$axios
           .post(
-            "http://dev.upctech.com.cn/wx/event/market_event_temp/create/",
+            "http://wx.upctech.com.cn/wx/event/market_event_temp/create/",
             this._data.creatactivitydata
           )
           .then(res => {
@@ -138,7 +138,7 @@ export default {
       formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
       // 服务器只需按照正常的上传程序代码即可
       this.$http
-        .post("http://dev.upctech.com.cn/wx/img/image/upload/", formData)
+        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
           this._data.creatactivitydata.post_url = rs.data.img_name;
           this.$message("上传成功");
