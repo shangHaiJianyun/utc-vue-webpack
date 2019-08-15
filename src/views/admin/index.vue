@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="home">
     <h2>Welcome</h2>
@@ -24,7 +26,6 @@
       <div id="myChart" :style="{width: '50%', height: '600px'}"></div>
       <div id="hourcontrast" :style="{width: '50%', height: '600px'}"></div>
     </div>
-    <div id="Worker" :style="{width: '100%', height: '600px'}"></div>
   </div>
 </template>
 
@@ -33,6 +34,27 @@ export default {
   name: "AdminHome",
   data() {
     return {
+      colors: [
+        "color1",
+        "color2",
+        "color3",
+        "color4",
+        "color5",
+        "color6",
+        "color7",
+        "color8",
+        "color9",
+        "color10",
+        "color11",
+        "color12",
+        "color13",
+        "color14",
+        "color15",
+        "color16",
+        "color17"
+      ],
+      data: [99, 71, 78, 25, 36, 92],
+      line: "",
       general_order: "123",
       sent_list: "456",
       pending_number: "789"
@@ -42,7 +64,7 @@ export default {
   mounted() {
     this.drawLine();
     this.hourcontrast();
-    this.Worker();
+    this.calculatePath();
   },
   methods: {
     drawLine() {
@@ -125,6 +147,20 @@ export default {
     },
     hourcontrast() {
       // 基于准备好的dom，初始化echarts实例
+      var _that = this;
+      var data = [];
+      var date = {};
+      _that.$axios
+        .get("http://dev.upctech.com.cn/api/sch/compare_worker_job")
+        .then(res => {
+          for (var k in res.data.jobs_hrs) {
+            date.product = k;
+            date.jobs_hrs = res.data.jobs_hrs[k];
+            date.workers_hrs = res.data.workers_hrs[k];
+            data.push(date);
+            date = {};
+          }
+        });
       let myChart = this.$echarts.init(document.getElementById("hourcontrast"));
       // 绘制图表
       myChart.setOption({
@@ -141,6 +177,7 @@ export default {
           x2: 100,
           y2: 150 // y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
         },
+
         legend: {
           left: "10%",
           top: "10%"
@@ -149,17 +186,8 @@ export default {
           show: true
         },
         dataset: {
-          dimensions: ["product", "req_hrs", "wrk_hrs"],
-          source: [
-            { product: "2019-03-1706:00:00", req_hrs: 43.3, wrk_hrs: 85.8 },
-            { product: "2019-03-17 07:00:00", req_hrs: 83.1, wrk_hrs: 73.4 },
-            { product: "2019-03-17 08:00:00", req_hrs: 86.4, wrk_hrs: 65.2 },
-            { product: "2019-03-17 09:00:00", req_hrs: 72.4, wrk_hrs: 53.9 },
-            { product: "2019-03-17 10:00:00", req_hrs: 43.3, wrk_hrs: 85.8 },
-            { product: "2019-03-17 11:00:00", req_hrs: 83.1, wrk_hrs: 73.4 },
-            { product: "2019-03-17 12:00:00", req_hrs: 86.4, wrk_hrs: 65.2 },
-            { product: "2019-03-17 13:00:00", req_hrs: 72.4, wrk_hrs: 53.9 }
-          ]
+          dimensions: ["product", "jobs_hrs", "workers_hrs"],
+          source: data
         },
         xAxis: {
           type: "category",
@@ -186,74 +214,90 @@ export default {
         ]
       });
     },
-    Worker() {
-      let myChart = this.$echarts.init(document.getElementById("Worker"));
-      myChart.setOption({
-        title: {
-          text: "工人洗车单", //标题
-          subtext: "纯属虚构", //副标题
-          x: "center" //位置
-        },
-        tooltip: {
-          trigger: "item" //提示框
-        },
-        legend: {
-          //小图标
-          show: true,
-          data: ["结束"],
-          left: "3%",
-          top: "1%",
-          containLabel: true
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true
-        },
-        xAxis: {
-          type: "category",
-          splitLine: { show: false },
-          data: ["总费用", "房租", "水电费", "交通费", "伙食费", "日用品数"]
-        },
-        yAxis: {
-          type: "value"
-        },
-        series: [
-          {
-            name: "开始",
-            type: "bar",
-            stack: "总量",
-            itemStyle: {
-              normal: {
-                barBorderColor: "rgba(0,0,0,0)",
-                color: "rgba(0,0,0,0)"
-              },
-              emphasis: {
-                barBorderColor: "rgba(0,0,0,0)",
-                color: "rgba(0,0,0,0)"
-              }
-            },
-            data: [0, 1700, 1400, 1200, 300, 0]
-          },
-          {
-            name: "结束",
-            type: "bar",
-            stack: "总量",
-            label: {
-              normal: {
-                show: true, //
-                position: "inside"
-              }
-            },
-            data: [2900, 1200, 300, 200, 900, 300]
+    calculatePath() {
+      var _that = this;
+      var date = _that.getNowFormatDate();
+      var workers = [];
+      var jobs = [];
+      var obj = {};
+      _that.$axios
+        .post("http://dev.upctech.com.cn/api/sch/load_by_region", {
+          workday: "2019-08-08"
+        })
+        .then(res => {
+          console.log(res.data);
+          for (var i = 0; i < res.data.jobs.length; i++) {
+            obj.startDate = new Date(res.data.jobs[i].start_time);
+            obj.endDate = new Date(res.data.jobs[i].end_time);
+            obj.taskName = res.data.jobs[i].worker_id;
+            obj.status = _that._data.colors[obj.taskName];
+            jobs.push(obj);
+            obj = {};
           }
-        ]
-      });
+          for (var i = 0; i < res.data.workers.length; i++) {
+            workers.push(res.data.workers[i].worker_id);
+          }
+        });
+      var tasks = jobs;
+      setTimeout(function() {
+        var taskStatus = {
+          color1: "color1",
+          color2: "color2",
+          color3: "color3",
+          color4: "color4",
+          color5: "color5",
+          color6: "color6",
+          color7: "color7",
+          color8: "color8",
+          color9: "color9",
+          color10: "color10",
+          color11: "color11",
+          color12: "color12",
+          color13: "color13",
+          color14: "color14",
+          color15: "color15",
+          color16: "color16",
+          color17: "color17"
+        };
+        var taskNames = workers;
+        tasks.sort(function(a, b) {
+          return a.endDate - b.endDate;
+        });
+        var maxDate = tasks[tasks.length - 1].endDate;
+        tasks.sort(function(a, b) {
+          return a.startDate - b.startDate;
+        });
+        var minDate = tasks[0].startDate;
+
+        var format = "%H:%M";
+
+        var gantt = d3
+          .gantt()
+          .taskTypes(taskNames)
+          .taskStatus(taskStatus)
+          .tickFormat(format);
+        gantt(tasks);
+      }, 2000);
+    },
+    getNowFormatDate() {
+      var date = new Date();
+      var seperator1 = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator1 + month + seperator1 + strDate;
+      return currentdate;
     }
   }
 };
 </script>
+
 <style scoped>
 h2 {
   color: #b1afaf;

@@ -90,26 +90,9 @@ export default {
 
     //登录请求
     toLogin(params) {
-      // user.login(params)
-      // this.$axios.post("/users/login",{params: params}).then(res=>{
-      //   console.log(res)
-      // }).catch(err=>{
-      //   console.log(err)
-      // })
-      // this.$store.commit('set_token','222222')
-      // console.log(this.$parent.user_type)
-      // this.$parent.user_type = 'User'
-      // let rol =this.$parent.user_type
-      // if(rol == 'Admin'){
-      //   this.$router.push("/admin");
-      // }else if(rol == "Dist"){
-      //   this.$router.push("/dist");
-      // }else{
-      //   this.$router.push("/user");
-      // }
-      console.log("form", this.form);
+      console.log(params);
       this.$axios
-        .post("/user/login", params)
+        .post("http://dev.upctech.com.cn/api/user/login", params)
         .then(res => {
           this.isLoging = false;
           console.log("login res:", res.data);
@@ -131,61 +114,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-
-      // js 在  index.html 中已加载
-      //一般要跟后端了解密码的加密规则
-      //这里例子用的哈希算法来自./js/sha1.min.js
-      // let password_sha = hex_sha1(hex_sha1(this.password));
-
-      //需要想后端发送的登录参数
-      // let loginParam = {
-      //   account: this.account,
-      //   password_sha
-      // };
-
-      //设置在登录状态
-      // this.isLoging = true;
-      // console.log("login..", this.isLoging);
-      // console.log("store", this.$store.state.isLoggedIn);
-      // let expireDays = 1000 * 60 * 60 * 24 * 15;
-      // this.setCookie("session", "blablablablabla...", expireDays);
-      // //   this.$store.state.isLoggedIn = true;
-      // this.$store.commit("set_token", "Authentication-Token");
-      // this.$router.push("/admin-home");
-
-      //   if ($store.state.token) {
-      //     this.$router.push("/admin-home");
-      //     console.log($store.state.token);
-      //   } else {
-      //     this.$router.replace("/login");
-      //   }
-
-      // example
-      // https://blog.csdn.net/qq_34825875/article/details/79569579
-
-      //请求后端,比如:
-      /*this.$http.post( 'example.com/login.php', {
-  		param: loginParam).then((response) => {
-        if(response.data.code == 1){
-          let expireDays = 1000 * 60 * 60 * 24 * 15;
-          this.setCookie('session', response.data.session, expireDays);
-          //登录成功后
-          this.$router.push('/user_info');
-        }
-	    }, (response) => {
-	        //Error
-	    });
-  		*/
-
-      //演示用
-      //   setTimeout(() => {
-      //     //登录状态15天后过期
-      //     let expireDays = 1000 * 60 * 60 * 24 * 15;
-      //     this.setCookie("session", "blablablablabla...", expireDays);
-      //     this.isLoging = false;
-      //     //登录成功后
-      //     this.$router.push("@views/Home");
-      //   }, 3000);
     }
   }
 };
