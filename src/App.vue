@@ -2,19 +2,21 @@
   <div style="height:100%">
     <b-container fluid>
       <div v-if="user_type==='Admin'">
-        <AdminMenu/>
+        <AdminMenu />
       </div>
+      <!-- 操作员 -->
       <div v-if="user_type==='Dist'">
-        <DistMenu/>
+        <DistMenu />
       </div>
+      <!-- 用户 -->
       <div v-if="user_type==='User'">
-        <UserMenu/>
+        <UserMenu />
       </div>
       <!--<UserMenu />-->
     </b-container>
     <div id="app">
       <div style="height:100%">
-        <router-view/>
+        <router-view />
       </div>
     </div>
   </div>

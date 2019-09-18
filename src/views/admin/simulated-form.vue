@@ -8,16 +8,19 @@
             <el-col :span="24">
               <el-main>
                 <el-form ref="form" :model="form" label-width="80px">
-                  <el-form-item label="工号">
+                  <el-form-item label="订单总数">
                     <el-input v-model="form.n_order"></el-input>
                   </el-form-item>
-                  <el-form-item label="工作项目">
-                    <el-input v-model="form.n_address"></el-input>
-                  </el-form-item>
-                  <el-form-item label="工作区域">
+                  <el-form-item label="区域ID">
                     <el-input v-model="form.regions"></el-input>
                   </el-form-item>
-                  <el-form-item label="工作时间">
+                  <el-form-item label="区域地点数量">
+                    <el-input v-model="form.n_address"></el-input>
+                  </el-form-item>
+                  <el-form-item label="工人总数">
+                    <el-input v-model="form.n_worker"></el-input>
+                  </el-form-item>
+                  <el-form-item label="派单日期">
                     <div class="block">
                       <el-date-picker
                         v-model="form.workday"
@@ -52,7 +55,7 @@
     </el-row>
     <el-row>
       <div class="nametext">派单详情</div>
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" border style="width: 100%"   height="250">
         <el-table-column prop="city" label="城市" width="180"></el-table-column>
         <el-table-column prop="created_on" label="创建时间" width="180"></el-table-column>
         <el-table-column prop="region_id" label="地区系数"></el-table-column>
@@ -101,11 +104,13 @@ export default {
       var regions = this._data.form.regions.split(",");
       var n_order = parseInt(this._data.form.n_order);
       var n_address = parseInt(this._data.form.n_address);
+      var n_worker = parseInt(this._data.form.n_worker);
       this.axios
         .post("http://dev.upctech.com.cn/api/sch/get_sim_data", {
           regions: regions,
           n_order: n_order,
           n_address: n_address,
+          n_worker: n_worker,
           workday: this._data.form.workday
         })
         .then(res => {

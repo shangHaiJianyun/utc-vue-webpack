@@ -19,7 +19,7 @@
             width="40"
             height="40"
             class="head_pic"
-          >
+          />
         </template>
       </el-table-column>
       <!-- <el-table-column prop="qr_url" label="活动二维码" width="300">
@@ -79,9 +79,9 @@
 
         <el-form-item label="活动海报" :label-width="formLabelWidth">
           <div>
-            <input type="file" @change="uploads">
+            <input type="file" @change="uploads" />
             <p></p>
-            <img :src="imgUrl">
+            <img :src="imgUrl" />
           </div>
         </el-form-item>
       </el-form>

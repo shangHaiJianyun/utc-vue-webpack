@@ -44,6 +44,9 @@
       <el-menu-item index="/sharing-activities">
         <router-link to="/sharing-activities">用户活动</router-link>
       </el-menu-item>
+      <el-menu-item index="/simulation-gantt">
+        <router-link to="/simulation-gantt">模拟甘特</router-link>
+      </el-menu-item>
       <el-menu-item index="8" @click="logout">退出登录</el-menu-item>
     </el-menu>
   </div>

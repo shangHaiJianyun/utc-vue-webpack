@@ -8,7 +8,13 @@ const router = new Router({
   base: process.env.BASE_URL,
   routes: [{
       path: "/",
-      component: () => import("@/views/Home")
+      name: "login",
+      component: () => import("@/views/auth/login")
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("@/views/auth/login")
     },
     {
       path: "/home",
@@ -16,11 +22,11 @@ const router = new Router({
       component: () => import("@/components/HelloWorld")
 
     },
+
     {
-      path: "/login",
-      component: () => import("@/views/auth/login")
+      path: "/register",
+      component: () => import("@/views/auth/register")
     },
-    // admin
     {
       path: "/admin",
       component: () => import("@/views/admin/index")
@@ -93,6 +99,10 @@ const router = new Router({
     {
       path: "/sharing-activities",
       component: () => import("@/views/admin/sharing-activities")
+    },
+    {
+      path: "/simulation-gantt",
+      component: () => import("@/views/admin/simulation-gantt")
     }
 
   ]
@@ -102,20 +112,16 @@ export default router
 
 
 router.beforeEach(function (to, from, next) { //to即为要跳转的页面，该页面需要验证时，进行登录验证
-  if (to.path === '/login') {
-    if (window.sessionStorage.getItem('token')) {
-      next({
-        path: '/admin'
-      })
-    }
+  if (window.sessionStorage.getItem('token') != null) {
     next()
   } else {
-    if (!window.sessionStorage.getItem('token')) {
-      router.push({
+    if (to.path === '/login' || to.path === '/register') {
+      next()
+    } else {
+      next({
         path: '/login'
       })
-    } else {
-      next()
     }
   }
+
 })

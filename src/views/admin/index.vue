@@ -26,6 +26,7 @@
       <div id="myChart" :style="{width: '50%', height: '600px'}"></div>
       <div id="hourcontrast" :style="{width: '50%', height: '600px'}"></div>
     </div>
+    <div id="workerss"></div>
   </div>
 </template>
 
@@ -62,6 +63,7 @@ export default {
   },
   created() {},
   mounted() {
+    this.Numberorders();
     this.drawLine();
     this.hourcontrast();
     this.calculatePath();
@@ -222,22 +224,46 @@ export default {
       var obj = {};
       _that.$axios
         .post("http://dev.upctech.com.cn/api/sch/load_by_region", {
-          workday: "2019-08-08"
+          workday: date
         })
         .then(res => {
-          console.log(res.data);
-          for (var i = 0; i < res.data.jobs.length; i++) {
-            obj.startDate = new Date(res.data.jobs[i].start_time);
-            obj.endDate = new Date(res.data.jobs[i].end_time);
-            obj.taskName = res.data.jobs[i].worker_id;
-            obj.status = _that._data.colors[obj.taskName];
-            jobs.push(obj);
-            obj = {};
-          }
-          for (var i = 0; i < res.data.workers.length; i++) {
-            workers.push(res.data.workers[i].worker_id);
+          if (res.data.jobs !== null) {
+            for (var i = 0; i < res.data.jobs.length; i++) {
+              obj.startDate = new Date(res.data.jobs[i].start_time);
+              obj.endDate = new Date(res.data.jobs[i].end_time);
+              obj.taskName = res.data.jobs[i].worker_id;
+              obj.status = _that._data.colors[obj.taskName];
+              jobs.push(obj);
+              obj = {};
+            }
+            for (var i = 0; i < res.data.workers.length; i++) {
+              workers.push(res.data.workers[i].worker_id);
+            }
+            _that.playgantt(jobs, workers);
+          } else {
+            this.$message({
+              showClose: true,
+              message: "今日无单!"
+            });
           }
         });
+    },
+    getNowFormatDate() {
+      var date = new Date();
+      var seperator1 = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator1 + month + seperator1 + strDate;
+      return currentdate;
+    },
+    playgantt(jobs, workers) {
       var tasks = jobs;
       setTimeout(function() {
         var taskStatus = {
@@ -279,20 +305,18 @@ export default {
         gantt(tasks);
       }, 2000);
     },
-    getNowFormatDate() {
-      var date = new Date();
-      var seperator1 = "-";
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      var currentdate = year + seperator1 + month + seperator1 + strDate;
-      return currentdate;
+    Numberorders() {
+      var _that = this;
+      var date = _that.getNowFormatDate();
+      _that.$axios
+        .get(
+          "http://dev.upctech.com.cn/api/sch/jobs_count_today?workday=" + date
+        )
+        .then(res => {
+          _that._data.sent_list = res.data.done_jobs_count;
+          _that._data.general_order = res.data.jobs_count;
+          _that._data.pending_number = res.data.pre_jobs_count;
+        });
     }
   }
 };
