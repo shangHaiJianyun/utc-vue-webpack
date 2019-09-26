@@ -54,15 +54,24 @@ export default {
     },
     //登录请求
     toLogin(params) {
+      var _that = this;
       console.log(params);
-      this.$axios
+
+      _that.$axios
         .post("http://dev.upctech.com.cn/api/user/login", params)
         .then(res => {
-          this.isLoging = false;
-          this.$store.commit("set_token", res.data.token);
-          this.$store.commit("set_role", res.data.user_role);
           let rol = res.data.user_role;
-          this.$router.push("/admin");
+          let promise = new Promise(function(resolve, reject) {
+            _that.$store.commit("set_token", res.data.token);
+            _that.$store.commit("set_role", res.data.user_role);
+            resolve();
+          });
+
+          promise.then(function() {
+            _that.isLoging = false;
+            _that.$router.push("/admin?admin");
+          });
+
           // if (rol == "[Admin]") {
           //   this.$parent.user_type = "Admin";
           //   this.$router.push("/admin");

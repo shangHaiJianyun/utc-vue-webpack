@@ -31,7 +31,7 @@ export default {
   name: "App",
   data() {
     return {
-      user_type: window.sessionStorage.getItem("role")
+      user_type: "Admin"
     };
   },
   components: {

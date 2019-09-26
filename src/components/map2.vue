@@ -1,26 +1,18 @@
 <template>
-  <div>
+  <div class="boxs">
     <el-form label-width="80px" :ref="mapsd" :model="mapsd" v-show="flag" class="from">
-      <el-form-item label="区间ID">
-        <el-input v-model="mapsd.area_id"></el-input>
+      <el-form-item label="区域ID">
+        <el-input v-model="mapsd.region_id"></el-input>
       </el-form-item>
-      <el-form-item label="价格等级">
-        <el-select placeholder="请选择价格等级" v-model="mapsd.level">
-          <el-option label="A" value="A"></el-option>
-          <el-option label="B" value="B"></el-option>
-          <el-option label="C" value="C"></el-option>
-          <el-option label="D" value="D"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="地址">
-        <el-input v-model="mapsd.address"></el-input>
-      </el-form-item>
-      <el-form-item label="地点">
-        <el-input v-model="mapsd.business"></el-input>
+      <el-form-item label="技师人数">
+        <el-input v-model="mapsd.w_count"></el-input>
       </el-form-item>
 
-      <el-form-item label="附近建筑物">
-        <el-input v-model="mapsd.surrounds"></el-input>
+      <el-form-item label="会员人数">
+        <el-input v-model="mapsd.j_count"></el-input>
+      </el-form-item>
+      <el-form-item label="是否开通">
+        <el-switch v-model="mapsd.active" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
 
       <el-form-item>
@@ -28,20 +20,7 @@
         <el-button @click="qvxiao">取消</el-button>
       </el-form-item>
     </el-form>
-
-    <div id="r-result">
-      请输入:
-      <input
-        type="text"
-        id="suggestId"
-        size="20"
-        name="address_detail"
-        v-model="address_detail"
-        style="width:150px;"
-      />
-    </div>
-
-    <div id="map" class="map"></div>
+    <div id="map" class="map" :style="{height:heights}"></div>
   </div>
 </template>
 
@@ -52,6 +31,7 @@ export default {
   name: "map",
   data() {
     return {
+      heights: document.documentElement.clientHeight - 61 + "px",
       list: [],
       level: 13, //地图级别
       initCenter: new BMap.Point(121.3056, 31.204803),
@@ -63,7 +43,7 @@ export default {
       span: null, //当前网格的跨度
       mapAyy: [],
       flag: false,
-      mapsd: "",
+      mapsd: {},
       mapdetail: "",
       address_detail: "", //详细地址
       userlocation: { lng: "", lat: "" }
@@ -81,7 +61,9 @@ export default {
       this.flag = false;
     },
     Zmap() {
+      var onoff2 = true;
       let zmap = this;
+      var zMap = this;
       this.map = new BMap.Map("map"); // 创建地图实例
       // console.log('....',this.map)
       var point = new BMap.Point(121.481976, 31.226871); // 创建点坐标
@@ -90,15 +72,7 @@ export default {
       var marker = new BMap.Marker(new BMap.Point(121.481976, 31.226871)); // 创建标注
       this.map.addOverlay(marker);
       this.map.enableScrollWheelZoom(true);
-
       for (let i = 0; i < zmap.mapdetail.length; i++) {
-        var marker = new BMap.Marker(
-          new BMap.Point(
-            zmap.mapdetail[i].cen_loc.lng,
-            zmap.mapdetail[i].cen_loc.lat
-          )
-        ); // 创建标注
-        this.map.addOverlay(marker);
         var opts = {
           position: new BMap.Point(
             zmap.mapdetail[i].cen_loc.lng,
@@ -120,16 +94,56 @@ export default {
           height: "20px",
           lineHeight: "20px",
           fontFamily: "微软雅黑",
-          width: "120px"
+          width: "120px",
+          display: ""
         });
         this.map.addOverlay(label);
         label.addEventListener("click", function() {
           // map.openInfoWindow(infoWindow,point);   //提示信息
-          console.log("00000", zmap.mapdetail[i].address);
-          zmap.mapsd = zmap.mapdetail[i];
-          zmap.flag = true;
-          console.log("xccc", this.flag);
+          zmap.$axios
+            .post("map/get_w_j_count", {
+              region_id: zmap.mapdetail[i].area_id
+            })
+            .then(res => {
+              console.log((zmap.mapsd = res.data));
+              zmap.flag = true;
+            });
         });
+      }
+
+      //已开通区域
+      for (var i = 1; i < zMap.mapdetail.length; i++) {
+        if (zMap.mapdetail[i].active) {
+          var points = [
+            new BMap.Point(
+              zMap.mapdetail[i].locations.ld.lng,
+              zMap.mapdetail[i].locations.ld.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.lt.lng,
+              zMap.mapdetail[i].locations.lt.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.rt.lng,
+              zMap.mapdetail[i].locations.rt.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.rd.lng,
+              zMap.mapdetail[i].locations.rd.lat
+            )
+          ];
+          var key =
+            "" + points[0].lng + points[0].lat + points[2].lng + points[2].lat; //使用两个点的坐标作为key
+          var polygon = new BMap.Polygon(points, {
+            strokeColor: "red",
+            strokeWeight: 2,
+            strokeOpacity: 0.5
+          });
+          polygon.setFillColor("green");
+
+          zMap.map.addOverlay(polygon);
+          zMap.beSelectBounds[key] = polygon;
+        }
       }
       this.initProperty();
       this.initGrid();
@@ -140,8 +154,15 @@ export default {
         zmap.initGrid();
       });
       //添加放大或缩小时的事件
+
       this.map.addEventListener("zoomend", function() {
-        //   console.log("fun",this)
+        var ZoomNum = zmap.map.getZoom();
+        console.log(ZoomNum);
+        if (ZoomNum < 13) {
+          onoff2 = false;
+        } else {
+          onoff2 = true;
+        }
         var string = JSON.stringify(zmap.mapAyy);
         // console.log('string',string)
         // console.log("数据",zmap.mapAyy)
@@ -149,43 +170,53 @@ export default {
         zmap.initGrid();
       });
       //设置点击事件
-      // this.map.addEventListener("click", function (e) {
-      //   var point = e.point;
+      // this.map.addEventListener("click", function(e) {
+      //   //zmap.mapsd = zmap.mapdetail[i];
+      //   //zmap.flag = true;
+      //   var lat = e.point.lat;
+      //   var lng = e.point.lng;
+      //   var point = { lat: lat, lng: lng };
       //   //获取当前点是在哪个区块内,获取正方形的四个顶点
       //   var points = zmap.getGrid(point);
+      //   console.log(points);
       //   // console.log("0000",points)
       //   //判断当前区域是否已经被选中过，如果被选中过则取消选中
-      //   var key = '' + points[0].lng + points[0].lat + points[2].lng + points[2].lat;//使用两个点的坐标作为key
+      //   var key =
+      //     "" + points[0].lng + points[0].lat + points[2].lng + points[2].lat; //使用两个点的坐标作为key
       //   if (zmap.beSelectBounds[key]) {
       //     this.map.removeOverlay(zmap.beSelectBounds[key]);
       //     delete zmap.beSelectBounds[key];
       //     return;
       //   }
-      //   var polygon = new BMap.Polygon(points, {strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.5});
+      //   var polygon = new BMap.Polygon(points, {
+      //     strokeColor: "red",
+      //     strokeWeight: 2,
+      //     strokeOpacity: 0.5
+      //   });
+      //   polygon.setFillColor("red");
       //   zmap.map.addOverlay(polygon);
       //   zmap.beSelectBounds[key] = polygon;
-      //
       // });
 
-      var ac = new BMap.Autocomplete({
-        //建立一个自动完成的对象
-        input: "suggestId",
-        location: zmap.map
-      });
-      var myValue;
-      ac.addEventListener("onconfirm", function(e) {
-        //鼠标点击下拉列表后的事件
-        var _value = e.item.value;
-        myValue =
-          _value.province +
-          _value.city +
-          _value.district +
-          _value.street +
-          _value.business;
-        zmap.address_detail = myValue;
+      // var ac = new BMap.Autocomplete({
+      //   //建立一个自动完成的对象
+      //   input: "suggestId",
+      //   location: zmap.map
+      // });
+      // var myValue;
+      // ac.addEventListener("onconfirm", function(e) {
+      //   //鼠标点击下拉列表后的事件
+      //   var _value = e.item.value;
+      //   myValue =
+      //     _value.province +
+      //     _value.city +
+      //     _value.district +
+      //     _value.street +
+      //     _value.business;
+      //   zmap.address_detail = myValue;
 
-        setPlace();
-      });
+      //   setPlace();
+      // });
 
       function setPlace() {
         // zmap.map.clearOverlays();    //清除地图上所有覆盖物
@@ -202,12 +233,12 @@ export default {
           ); //添加标注
         }
 
-        var local = new BMap.LocalSearch(zmap.map, {
-          //智能搜索
-          onSearchComplete: myFun
-        });
-        console.log("myvalue", myValue);
-        local.search(myValue);
+        // var local = new BMap.LocalSearch(zmap.map, {
+        //   //智能搜索
+        //   onSearchComplete: myFun
+        // });
+        // console.log("myvalue", myValue);
+        // local.search(myValue);
 
         //测试输出坐标（指的是输入框最后确定地点的经纬度）
         // zmap.map.addEventListener("click",function(e){
@@ -249,6 +280,8 @@ export default {
       //初始化地图上的网格
       // console.log("网格数据",zMap.bounds.x1)
       // console.log("zMap.initCenter",span)
+      //开通区域
+
       for (
         var i =
           zMap.bounds.x1 +
@@ -333,11 +366,6 @@ export default {
       //	this.map.centerAndZoom(new BMap.Point(xpoints[0], ypoints[0]), zMap.level);
       // console.log("00011总",new BMap.Point(xpoints[0], ypoints[0]))
       // console.log("00011",new BMap.Point(xpoints[0]+0.0262, ypoints[0]+0.02246))
-      var marker = new BMap.Marker(
-        new BMap.Point(xpoints[0] + 0.0262, ypoints[0] + 0.02246)
-      ); // 创建标注
-      this.map.addOverlay(marker);
-
       return [
         new BMap.Point(xpoints[0], ypoints[0]),
         new BMap.Point(xpoints[0], ypoints[1]),
@@ -355,47 +383,32 @@ export default {
     },
     fromtext() {
       let that = this;
-      let params = {};
-      params.id = this.mapsd.area_id;
-      params.level = this.mapsd.level;
-      console.log("ddd", params);
-      this.$axios.post("map/map_data", params).then(res => {
-        console.log("返回数据", res);
-        that.mapsd.area_rate = res.data.area_rate;
-
-        var opts = {
-          position: new BMap.Point(
-            that.mapsd.cen_loc.lng,
-            that.mapsd.cen_loc.lat
-          ), // 指定文本标注所在的地理位置
-          offset: new BMap.Size(-50, 0) //设置文本偏移量
-        };
-        var label = new BMap.Label(
-          that.mapsd.area_id +
-            " 等级" +
-            that.mapsd.level +
-            " 系数:" +
-            that.mapsd.area_rate,
-          opts
-        ); // 创建文本标注对象
-        label.setStyle({
-          color: "red",
-          fontSize: "12px",
-          height: "20px",
-          lineHeight: "20px",
-          fontFamily: "微软雅黑",
-          width: "120px"
+      var onoff;
+      if (that.mapsd.active) {
+        onoff = 1;
+      } else {
+        onoff = 0;
+      }
+      this.$axios
+        .post("map/change_status", {
+          area_id: that.mapsd.region_id,
+          active: onoff
+        })
+        .then(res => {
+          if (res.data.active) {
+            that.flag = false;
+            this.$message({
+              showClose: true,
+              message: "区域已开通"
+            });
+          } else {
+            that.flag = false;
+            this.$message({
+              showClose: true,
+              message: "区域已关闭"
+            });
+          }
         });
-        this.map.addOverlay(label);
-        label.addEventListener("click", function() {
-          // map.openInfoWindow(infoWindow,point);   //提示信息
-          console.log("00000", that.mapsd);
-
-          that.flag = true;
-          // console.log("xccc",this.flag)
-        });
-        this.flag = false;
-      });
     },
     qvxiao() {
       this.flag = false;
@@ -405,6 +418,9 @@ export default {
 </script>
 
 <style scoped>
+.boxs {
+  height: 100%;
+}
 .map {
   width: 100%;
   height: 750px;

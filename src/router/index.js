@@ -103,6 +103,10 @@ const router = new Router({
     {
       path: "/simulation-gantt",
       component: () => import("@/views/admin/simulation-gantt")
+    },
+    {
+      path: "/strategy-map",
+      component: () => import("@/views/admin/strategy-map")
     }
 
   ]
