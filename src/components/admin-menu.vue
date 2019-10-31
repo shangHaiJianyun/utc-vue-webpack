@@ -50,6 +50,9 @@
       <el-menu-item index="/strategy-map">
         <router-link to="/strategy-map">战略地图</router-link>
       </el-menu-item>
+      <el-menu-item index="/official-account">
+        <router-link to="/official-account">公众号设置</router-link>
+      </el-menu-item>
 
       <el-menu-item index="8" @click="logout">退出登录</el-menu-item>
     </el-menu>

@@ -19,12 +19,12 @@
             width="40"
             height="40"
             class="head_pic"
-          >
+          />
         </template>
       </el-table-column>
       <el-table-column prop="qr_url" label="活动二维码" width="300">
         <template slot-scope="scope">
-          <img :src="scope.row.qr_url" width="40" height="40" class="head_pic">
+          <img :src="scope.row.qr_url" width="40" height="40" class="head_pic" />
         </template>
       </el-table-column>
       <el-table-column prop="modified_on" label="修改时间"></el-table-column>
@@ -32,9 +32,9 @@
       <el-table-column prop="is_active" label="活动状态" width="120" :formatter="formatSex"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
-          <el-button type="text" size="small">关闭</el-button>
-          <el-button type="text" size="small">开启</el-button>
+          <el-button @click="handleClick(scope.row)" type="text" size="small">删除活动</el-button>
+          <!-- <el-button type="text" size="small">关闭</el-button>
+          <el-button type="text" size="small">开启</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -45,7 +45,28 @@
         <el-form-item label="活动名称" :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.name"></el-input>
         </el-form-item>
-
+        <el-row>
+          <el-col :span="5">
+            <el-form-item label="图片位置" :label-width="formLabelWidth"></el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="top" placeholder="向上偏移量"></el-input>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="left" placeholder="向左偏移量"></el-input>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">
+            <el-form-item label="二维码图片大小" :label-width="formLabelWidth"></el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="width" placeholder="宽度"></el-input>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="height" placeholder="高度"></el-input>
+          </el-col>
+        </el-row>
         <el-form-item label="活动介绍" :label-width="formLabelWidth">
           <el-input
             type="textarea"
@@ -62,9 +83,9 @@
         </el-form-item>
         <el-form-item label="活动海报" :label-width="formLabelWidth">
           <div>
-            <input type="file" @change="uploads">
+            <input type="file" @change="uploads" />
             <p></p>
-            <img :src="imgUrl">
+            <img :src="imgUrl" />
           </div>
         </el-form-item>
       </el-form>
@@ -83,9 +104,15 @@ export default {
       imgUrl: "",
       dialogFormVisible: false,
       createactivityoperate: false,
+      top: "",
+      left: "",
+      width: "",
+      height: "",
       formLabelWidth: "120px",
       tableData: [],
       creatactivitydata: {
+        qr_box: "",
+        qr_size: "",
         name: "",
         event_type: "",
         description: "",
@@ -118,6 +145,10 @@ export default {
         this.$message.error("抱歉没有选择图片");
       } else {
         this._data.createactivityoperate = false;
+        this._data.creatactivitydata.qr_box =
+          "(" + this._data.left + "," + this._data.top + ")";
+        this._data.creatactivitydata.qr_size =
+          "(" + this._data.width + "," + this._data.height + ")";
         this.$axios
           .post(
             "http://wx.upctech.com.cn/wx/event/market_event_temp/create/",
@@ -160,6 +191,21 @@ export default {
       } else if (cellValue === "ME") {
         return "用户推广";
       }
+    },
+    handleClick(e) {
+      this.$axios
+        .get(
+          "http://wx.upctech.com.cn/wx/event/market_event_temp/delete?event_id=" +
+            e.id
+        )
+        .then(res => {
+          if (res.data.erro == "done") {
+            this.$message("删除成功");
+            window.location.reload();
+          } else {
+            this.$message.error("删除失败");
+          }
+        });
     }
   }
 };

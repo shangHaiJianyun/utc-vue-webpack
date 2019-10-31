@@ -107,6 +107,10 @@ const router = new Router({
     {
       path: "/strategy-map",
       component: () => import("@/views/admin/strategy-map")
+    },
+    {
+      path: "/official-account",
+      component: () => import("@/views/admin/official-account")
     }
 
   ]

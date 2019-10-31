@@ -49,7 +49,7 @@
 // import mapdetail from "@/assets/map"
 
 export default {
-  name: "map",
+  name: "maps",
   data() {
     return {
       list: [],
@@ -63,7 +63,7 @@ export default {
       span: null, //当前网格的跨度
       mapAyy: [],
       flag: false,
-      mapsd: "",
+      mapsd: {},
       mapdetail: "",
       address_detail: "", //详细地址
       userlocation: { lng: "", lat: "" }

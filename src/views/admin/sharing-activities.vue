@@ -30,9 +30,9 @@
       <el-table-column prop="event_type" label="活动对象" width="120" :formatter="callobject"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
-          <el-button type="text" size="small">关闭</el-button>
-          <el-button type="text" size="small">开启</el-button>
+          <el-button @click="handleClick(scope.row)" type="text" size="small">删除活动</el-button>
+          <!-- <el-button type="text" size="small">关闭</el-button>
+          <el-button type="text" size="small">开启</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -46,6 +46,7 @@
         <el-form-item label="分享人所得积分" :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.points"></el-input>
         </el-form-item>
+
         <el-form-item label="优惠劵id" :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.coupon_class_id"></el-input>
         </el-form-item>
@@ -69,6 +70,28 @@
             v-model="creatactivitydata.description"
           ></el-input>
         </el-form-item>
+        <el-row>
+          <el-col :span="5">
+            <el-form-item label="图片位置" :label-width="formLabelWidth"></el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="top" placeholder="向上偏移量"></el-input>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="left" placeholder="向左偏移量"></el-input>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="5">
+            <el-form-item label="二维码图片大小" :label-width="formLabelWidth"></el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="width" placeholder="宽度"></el-input>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="height" placeholder="高度"></el-input>
+          </el-col>
+        </el-row>
         <el-form-item label="活动对象" :label-width="formLabelWidth">
           <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
             <el-option label="用户对用户" value="MM"></el-option>
@@ -81,7 +104,7 @@
           <div>
             <input type="file" @change="uploads" />
             <p></p>
-            <img :src="imgUrl" />
+            <img :src="imgUrl" class="Posterpictures" />
           </div>
         </el-form-item>
       </el-form>
@@ -97,11 +120,17 @@ export default {
   data() {
     return {
       imgUrl: "",
+      top: "",
+      left: "",
+      width: "",
+      height: "",
       dialogFormVisible: false,
       createactivityoperate: false,
-      formLabelWidth: "120px",
+      formLabelWidth: "160px",
       tableData: [],
       creatactivitydata: {
+        qr_box: "",
+        qr_size: "",
         qr_action_name: "QR_STR_SCENE",
         qr_expire_days: "30",
         name: "",
@@ -152,6 +181,11 @@ export default {
         this.$message.error("没有填写活动时间");
       } else {
         this._data.createactivityoperate = false;
+        this._data.creatactivitydata.qr_box =
+          "(" + this._data.left + "," + this._data.top + ")";
+        this._data.creatactivitydata.qr_size =
+          "(" + this._data.width + "," + this._data.height + ")";
+        parseInt;
         this.$axios
           .post(
             "http://wx.upctech.com.cn/wx/event/user_event_temp/create/",
@@ -189,6 +223,22 @@ export default {
       } else if (cellValue === "WW") {
         return "技师对技师 ";
       }
+    },
+    handleClick(e) {
+      console.log(e.id);
+      this.$axios
+        .get(
+          "http://wx.upctech.com.cn/wx/event/user_event_temp/delete?event_id=" +
+            e.id
+        )
+        .then(res => {
+          if (res.data.erro == "done") {
+            this.$message("删除成功");
+            window.location.reload();
+          } else {
+            this.$message.error("删除失败");
+          }
+        });
     }
   }
 };
@@ -220,5 +270,8 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+.Posterpictures {
+  width: 100%;
 }
 </style>

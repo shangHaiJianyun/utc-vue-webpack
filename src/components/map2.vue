@@ -28,7 +28,7 @@
 // import mapdetail from "@/assets/map"
 
 export default {
-  name: "map",
+  name: "maps",
   data() {
     return {
       heights: document.documentElement.clientHeight - 61 + "px",
