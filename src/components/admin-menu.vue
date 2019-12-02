@@ -53,6 +53,12 @@
       <el-menu-item index="/official-account">
         <router-link to="/official-account">公众号设置</router-link>
       </el-menu-item>
+      <el-menu-item index="/official-list">
+        <router-link to="/official-list">公众号关注</router-link>
+      </el-menu-item>
+      <el-menu-item index="/source-query">
+        <router-link to="/source-query">来源记录</router-link>
+      </el-menu-item>
 
       <el-menu-item index="8" @click="logout">退出登录</el-menu-item>
     </el-menu>

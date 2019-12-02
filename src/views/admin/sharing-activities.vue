@@ -4,38 +4,69 @@
     <div class="pagetitle">用户活动</div>
 
     <el-button type="primary" @click="createactivity() " class="add">添加</el-button>
-    <el-table :data="tableData" border style="width: 100%">
+    <table class="fl-table">
+      <thead>
+        <tr>
+          <th>活动id</th>
+          <th>活动名</th>
+          <th>活动介绍</th>
+          <th>活动海报</th>
+          <th>活动对象</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody v-for="item1 in tableData">
+        <tr v-for="(item2,index) in item1.qr_parameters">
+          <td v-if="!index" :rowspan="item1.qr_parameters.length">{{item1.id}}</td>
+          <td v-if="!index" :rowspan="item1.qr_parameters.length">{{item1.name}}</td>
+          <td v-if="!index" :rowspan="item1.qr_parameters.length">{{item1.description}}</td>
+          <td>
+            <img
+              :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+item2.post_url"
+              width="40"
+              height="40"
+              class="head_pic"
+            />
+          </td>
+
+          <td
+            v-if="!index"
+            :rowspan="item1.qr_parameters.length"
+            v-text="callobject(item1.event_type)"
+          ></td>
+          <td v-if="!index" :rowspan="item1.qr_parameters.length">
+            <el-button @click="handleClick(index)" type="text" size="small">删除活动</el-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <el-table :data="tableData" border style="width: 100%" :key="index">
       <el-table-column prop="id" label="活动id"></el-table-column>
       <el-table-column prop="name" label="活动名"></el-table-column>
       <el-table-column prop="created_on" label="创建日期"></el-table-column>
       <el-table-column prop="description" label="活动介绍"></el-table-column>
       <el-table-column prop="modified_on" label="修改时间"></el-table-column>
       <el-table-column prop="qr_action_name" label="活动名称"></el-table-column>
-
-      <el-table-column prop="image" label="活动海报" width="300">
-        <template slot-scope="scope">
-          <img
-            :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+scope.row.post_url"
-            width="40"
-            height="40"
-            class="head_pic"
-          />
-        </template>
-      </el-table-column>
-      <!-- <el-table-column prop="qr_url" label="活动二维码" width="300">
-        <template slot-scope="scope">
-          <img :src="scope.row.qr_url" width="40" height="40" class="head_pic">
-        </template>
-      </el-table-column>-->
+      <template v-for="(items, index) in tableData[index].qr_parameters">
+        <el-table-column prop="items.post_url" label="活动海报" width="300" :key="index">
+          <template slot-scope="scope">
+            <img
+              :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+scope.row.post_url"
+              width="40"
+              height="40"
+              class="head_pic"
+            />
+          </template>
+        </el-table-column>
+      </template>
+    
       <el-table-column prop="event_type" label="活动对象" width="120" :formatter="callobject"></el-table-column>
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">删除活动</el-button>
-          <!-- <el-button type="text" size="small">关闭</el-button>
-          <el-button type="text" size="small">开启</el-button>-->
+         
         </template>
       </el-table-column>
-    </el-table>
+    </el-table>-->
 
     <!-- 创建活动 -->
     <el-dialog title="创建活动" :visible.sync="createactivityoperate">
@@ -70,28 +101,6 @@
             v-model="creatactivitydata.description"
           ></el-input>
         </el-form-item>
-        <el-row>
-          <el-col :span="5">
-            <el-form-item label="图片位置" :label-width="formLabelWidth"></el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-input v-model="top" placeholder="向上偏移量"></el-input>
-          </el-col>
-          <el-col :span="6">
-            <el-input v-model="left" placeholder="向左偏移量"></el-input>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="5">
-            <el-form-item label="二维码图片大小" :label-width="formLabelWidth"></el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-input v-model="width" placeholder="宽度"></el-input>
-          </el-col>
-          <el-col :span="6">
-            <el-input v-model="height" placeholder="高度"></el-input>
-          </el-col>
-        </el-row>
         <el-form-item label="活动对象" :label-width="formLabelWidth">
           <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
             <el-option label="用户对用户" value="MM"></el-option>
@@ -99,14 +108,69 @@
             <el-option label="技师对技师" value="WW"></el-option>
           </el-select>
         </el-form-item>
-
-        <el-form-item label="活动海报" :label-width="formLabelWidth">
-          <div>
-            <input type="file" @change="uploads" />
-            <p></p>
-            <img :src="imgUrl" class="Posterpictures" />
-          </div>
-        </el-form-item>
+        <el-row>
+          <el-col :span="4">
+            <el-form-item label="活动海报" :label-width="formLabelWidth"></el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="imgUrl.qr_box" placeholder="(左移量,上移量)"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="imgUrl.qr_size" placeholder="(宽,高)"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <div>
+              <input type="file" @change="uploads" />
+              <p></p>
+              <img
+                :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl.post_url"
+                class="Posterpictures"
+              />
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            <el-form-item label="活动海报" :label-width="formLabelWidth"></el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="imgUrl2.qr_box" placeholder="(左移量,上移量)"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="imgUrl2.qr_size" placeholder="(宽,高)"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <div>
+              <input type="file" @change="uploads2" />
+              <p></p>
+              <img
+                :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl2.post_url"
+                class="Posterpictures"
+              />
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            <el-form-item label="活动海报" :label-width="formLabelWidth"></el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="imgUrl3.qr_box" placeholder="(左移量,上移量)"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="imgUrl3.qr_size" placeholder="(宽,高)"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <div>
+              <input type="file" @change="uploads3" />
+              <p></p>
+              <img
+                :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl3.post_url"
+                class="Posterpictures"
+              />
+            </div>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="createactivityoperate = false">取 消</el-button>
@@ -119,24 +183,21 @@
 export default {
   data() {
     return {
-      imgUrl: "",
-      top: "",
-      left: "",
-      width: "",
-      height: "",
+      imgUrl: { qr_box: "", qr_size: "", post_url: "" },
+      imgUrl2: { qr_box: "", qr_size: "", post_url: "" },
+      imgUrl3: { qr_box: "", qr_size: "", post_url: "" },
       dialogFormVisible: false,
       createactivityoperate: false,
       formLabelWidth: "160px",
       tableData: [],
       creatactivitydata: {
-        qr_box: "",
-        qr_size: "",
+        qr_parameters: [],
         qr_action_name: "QR_STR_SCENE",
         qr_expire_days: "30",
         name: "",
         event_type: "",
         description: "",
-        post_url: "",
+
         points: "",
         coupon_class_id: "",
         usr_points: "",
@@ -165,8 +226,6 @@ export default {
         this.$message.error("没有填写活动对象");
       } else if (this._data.creatactivitydata.description == "") {
         this.$message.error("没有填写活动内容");
-      } else if (this._data.creatactivitydata.post_url == "") {
-        this.$message.error("抱歉没有选择图片");
       } else if (
         this._data.creatactivitydata.points == "" ||
         this._data.creatactivitydata.usr_points == ""
@@ -179,13 +238,25 @@ export default {
         this.$message.error("请输入优惠劵id");
       } else if (this._data.creatactivitydata.qr_expire_days == "") {
         this.$message.error("没有填写活动时间");
+      } else if (this._data.imgUrl.post_url == "") {
+        this.$message.error("没有选活动海报");
       } else {
         this._data.createactivityoperate = false;
-        this._data.creatactivitydata.qr_box =
-          "(" + this._data.left + "," + this._data.top + ")";
-        this._data.creatactivitydata.qr_size =
-          "(" + this._data.width + "," + this._data.height + ")";
+        if (this._data.imgUrl.post_url != "") {
+          this._data.creatactivitydata.qr_parameters.push(this._data.imgUrl);
+        }
+        if (this._data.imgUrl2.post_url != "") {
+          this._data.creatactivitydata.qr_parameters.push(this._data.imgUrl2);
+        }
+        if (this._data.imgUrl3.post_url != "") {
+          this._data.creatactivitydata.qr_parameters.push(this._data.imgUrl3);
+        }
         parseInt;
+        if( this._data.creatactivitydata.event_type=="WW"){
+           this._data.creatactivitydata.app_id="wx2c2a216f6d6e765c"
+        }else{
+           this._data.creatactivitydata.app_id="wxb4e2ec03cee28c82"
+        }
         this.$axios
           .post(
             "http://wx.upctech.com.cn/wx/event/user_event_temp/create/",
@@ -197,9 +268,26 @@ export default {
           });
       }
     },
+    // 第一张上传
     uploads(e) {
       const file = e.target.files[0]; //获取到当前文件对象
-      this.imgUrl = URL.createObjectURL(file); // 这是为了显示图片而已， 与上传没有关系（可选）
+      // 传递一个 FormData 对象 即可
+      let formData = new FormData();
+      formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
+      // 服务器只需按照正常的上传程序代码即可
+      this.$http
+        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
+        .then(rs => {
+          this._data.imgUrl.post_url = rs.data.img_name;
+
+          this.$message("上传成功");
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    uploads2(e) {
+      const file = e.target.files[0]; //获取到当前文件对象
 
       // 传递一个 FormData 对象 即可
       let formData = new FormData();
@@ -208,14 +296,35 @@ export default {
       this.$http
         .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
-          this._data.creatactivitydata.post_url = rs.data.img_name;
+          this._data.imgUrl2.post_url = rs.data.img_name;
+          console.log(imgUrl2);
+
           this.$message("上传成功");
         })
         .catch(err => {
           console.log(err);
         });
     },
-    callobject(row, column, cellValue) {
+    uploads3(e) {
+      const file = e.target.files[0]; //获取到当前文件对象
+
+      // 传递一个 FormData 对象 即可
+      let formData = new FormData();
+      formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
+      // 服务器只需按照正常的上传程序代码即可
+      this.$http
+        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
+        .then(rs => {
+          this._data.imgUrl3.post_url = rs.data.img_name;
+          console.log(imgUrl3);
+
+          this.$message("上传成功");
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    callobject(cellValue) {
       if (cellValue === "MM") {
         return "用户对用户";
       } else if (cellValue === "WM") {
@@ -224,12 +333,11 @@ export default {
         return "技师对技师 ";
       }
     },
-    handleClick(e) {
-      console.log(e.id);
+    handleClick(index) {
       this.$axios
         .get(
           "http://wx.upctech.com.cn/wx/event/user_event_temp/delete?event_id=" +
-            e.id
+            this._data.tableData[index].id
         )
         .then(res => {
           if (res.data.erro == "done") {
@@ -244,6 +352,10 @@ export default {
 };
 </script>
 <style>
+.head_pic {
+  display: inline;
+}
+
 .add {
   float: right;
   margin: 5px 47px 15px 0;
@@ -273,5 +385,46 @@ export default {
 }
 .Posterpictures {
   width: 100%;
+}
+.table-wrapper {
+  margin: 10px 70px 70px;
+  box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
+}
+
+.fl-table {
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: normal;
+  border: none;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
+  background-color: white;
+}
+
+.fl-table td,
+.fl-table th {
+  text-align: center;
+  padding: 8px;
+}
+
+.fl-table td {
+  font-size: 12px;
+  border: 1px solid #909399;
+}
+
+.fl-table thead th {
+  color: #ffffff;
+  background: #4fc3a1;
+}
+
+.fl-table thead th:nth-child(odd) {
+  color: #ffffff;
+  background: #324960;
+}
+
+.fl-table tr:nth-child(even) {
+  background: #f8f8f8;
 }
 </style>

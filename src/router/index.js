@@ -111,6 +111,18 @@ const router = new Router({
     {
       path: "/official-account",
       component: () => import("@/views/admin/official-account")
+    },
+    {
+      path: "/official-list",
+      component: () => import("@/views/admin/official-list")
+    },
+    {
+      path: "/source-query",
+      component: () => import("@/views/admin/source-query")
+    },
+    {
+      path: "/ditor",
+      component: () => import("@/views/admin/ditor")
     }
 
   ]

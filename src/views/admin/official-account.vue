@@ -2,117 +2,66 @@
   <div>
     <!-- 表格显示 -->
     <div class="pagetitle">用户活动</div>
-    <el-button type="primary" @click="createactivity() " class="add">添加</el-button>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="id" label="文章ID"></el-table-column>
-      <el-table-column prop="title" label="活动名称"></el-table-column>
-      <el-table-column prop="description" label="文章介绍"></el-table-column>
-      <el-table-column prop="created_on" label="创建日期"></el-table-column>
-      <el-table-column prop="url" label="文章链接"></el-table-column>
-
-      <el-table-column prop="image" label="活动海报" width="300">
-        <template slot-scope="scope">
-          <img :src="scope.row.picurl" width="40" height="40" class="head_pic" />
-        </template>
-      </el-table-column>
       <el-table-column prop="type" label="文章类型" width="120" :formatter="callobject"></el-table-column>
       <el-table-column prop="action" label="文章行为" width="120" :formatter="callobject2"></el-table-column>
+
+      <el-table-column prop="created_on" label="创建日期"></el-table-column>
+
       <el-table-column label="操作" width="300">
         <template slot-scope="scope">
-          <el-button @click="modifyactivity(scope.row)" type="text" size="small">修改</el-button>
-          <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
+          <el-button @click="modifyactivity(scope.row)" type="text" size="small">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <!-- 创建活动 -->
-    <el-dialog title="创建文章" :visible.sync="createactivityoperate">
-      <el-form :model="creatactivitydata">
-        <el-form-item label="文章名称" :label-width="formLabelWidth">
-          <el-input v-model="creatactivitydata.title"></el-input>
-        </el-form-item>
-        <el-form-item label="文章内容" :label-width="formLabelWidth">
-          <el-input v-model="creatactivitydata.description"></el-input>
-        </el-form-item>
-        <el-form-item label="文章类型" :label-width="formLabelWidth">
-          <el-select v-model="creatactivitydata.type" placeholder="文章类型">
-            <el-option label="用户" value="member"></el-option>
-            <el-option label="技师" value="worker"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="文章行为" :label-width="formLabelWidth">
-          <el-select v-model="creatactivitydata.action" placeholder="文章行为">
-            <el-option label="订阅" value="subscribe"></el-option>
-            <el-option label="扫描" value="scan"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="文章链接" :label-width="formLabelWidth">
-          <el-select v-model="creatactivitydata.url">
-            <el-option
-              v-for="(items,index) in articlelist"
-              :label="items.title"
-              :value="items.news_id"
-              :key="index"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="活动海报" :label-width="formLabelWidth">
-          <div>
-            <input type="file" @change="uploads" />
-            <p></p>
-            <img :src="imgUrl" class="Posterpictures" />
-          </div>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="createactivityoperate = false">取 消</el-button>
-        <el-button type="primary" @click="createactivities()">确 定</el-button>
-      </div>
-    </el-dialog>
     <!-- 修改活动 -->
     <el-dialog title="修改文章" :visible.sync="createactivityoperate2">
-      <el-form :model="modifydata">
-        <el-form-item label="文章名称" :label-width="formLabelWidth">
-          <el-input v-model="modifydata.title"></el-input>
-        </el-form-item>
-        <el-form-item label="文章内容" :label-width="formLabelWidth">
-          <el-input v-model="modifydata.description"></el-input>
-        </el-form-item>
-        <el-form-item label="文章类型" :label-width="formLabelWidth">
-          <el-select v-model="modifydata.type" placeholder="文章类型">
-            <el-option label="用户" value="member"></el-option>
-            <el-option label="技师" value="worker"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="文章行为" :label-width="formLabelWidth">
-          <el-select v-model="modifydata.action" placeholder="文章行为">
-            <el-option label="订阅" value="subscribe"></el-option>
-            <el-option label="扫描" value="scan"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="文章链接" :label-width="formLabelWidth">
-          <el-select v-model="modifydata.url">
-            <el-option
-              v-for="(items,index) in articlelist"
-              :label="items.title"
-              :value="items.news_id"
-              :key="index"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="文章图片" :label-width="formLabelWidth">
-          <div>
-            <input type="file" @change="uploads" />
-            <p></p>
-            <img :src="imgUrl" class="Posterpictures" />
-          </div>
-        </el-form-item>
+      <el-form v-show="modifydata.details" v-for="(item,index) in modifydata.details" :key="index">
+        <el-row>
+          <el-col :span="2">
+            <el-input
+              v-model="item.order"
+              placeholder="文章ID"
+              @input="inputFunction(index)"
+              id="myInput"
+            ></el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="item.title" placeholder="文章名称"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <el-input v-model="item.description" placeholder="文章介绍"></el-input>
+          </el-col>
+          <el-col :span="5" v-if="modifydata.type != 'agent'">
+            <el-select v-model="item.url">
+              <el-option
+                v-for="(items,index) in articlelist"
+                :label="items.title"
+                :value="items.news_id"
+                :key="index"
+              ></el-option>
+            </el-select>
+          </el-col>
+           <el-col :span="5" v-if="modifydata.type === 'agent'">
+           <el-input v-model="item.url" placeholder="文章链接"></el-input>
+          </el-col>
+          <el-col :span="5">
+            <div>
+              <input type="file" @change="uploads" />
+              <p></p>
+              <img :src="item.picurl" class="Posterpictures" />
+            </div>
+          </el-col>
+          <!-- <el-col :span="2">
+            <el-button @click="handleClick(index)" type="text" size="small">删除</el-button>
+          </el-col>-->
+        </el-row>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
+        <el-button type="warning" @click="add() ">添加文章</el-button>
         <el-button @click="createactivityoperate2 = false">取 消</el-button>
-        <el-button type="primary" @click="createactivities2()">确 定</el-button>
+        <el-button type="primary" @click="createactivities2()">修改文章</el-button>
       </div>
     </el-dialog>
   </div>
@@ -121,21 +70,12 @@
 export default {
   data() {
     return {
-      imgUrl: "",
+      indexs: "",
       articlelist: [],
-      createactivityoperate: false,
       createactivityoperate2: false,
       formLabelWidth: "160px",
       tableData: [],
-      modifydata: {},
-      creatactivitydata: {
-        type: "",
-        action: "",
-        title: "",
-        description: "",
-        picurl: "",
-        url: ""
-      }
+      modifydata: {}
     };
   },
   mounted() {
@@ -151,71 +91,49 @@ export default {
       });
   },
   methods: {
-    //显示创建活动模板
-    createactivity() {
-      this._data.createactivityoperate = true;
+    inputFunction(index) {
+      this._data.indexs = index;
+    },
+    add() {
+      this._data.modifydata.details.push({
+        url: "",
+        order: "",
+        title: "",
+        description: "",
+        picurl: ""
+      });
+      console.log();
     },
     modifyactivity(e) {
       this._data.createactivityoperate2 = true;
       this._data.modifydata = e;
-      this._data.modifydata.url = "";
-    },
-    //创建文章
-    createactivities() {
-      if (
-        this._data.creatactivitydata.type == "" ||
-        this._data.creatactivitydata.action == "" ||
-        this._data.creatactivitydata.title == "" ||
-        this._data.creatactivitydata.description == "" ||
-        this._data.creatactivitydata.url == ""
-      ) {
-        this.$message.error("请填写信息完整");
-      } else {
-        var data = this._data.creatactivitydata;
-        this._data.createactivityoperate = false;
-        data.url =
-          "wx.upctech.com.cn/wx/event/choose_template/get_content?news_id=" +
-          this._data.creatactivitydata.url;
-        this.$axios
-          .post(
-            "http://wx.upctech.com.cn/wx/event/choose_template/set_article/",
-            data
-          )
-          .then(res => {
-            console.log(res);
-            this.$message("创建成功");
-            window.location.reload();
-          });
-      }
     },
     createactivities2() {
-      if (
-        this._data.modifydata.type == "" ||
-        this._data.modifydata.action == "" ||
-        this._data.modifydata.title == "" ||
-        this._data.modifydata.description == "" ||
-        this._data.modifydata.url == ""
-      ) {
-        this.$message.error("请填写信息完整");
-      } else {
         this._data.createactivityoperate2 = false;
-        var data = this._data.modifydata;
-
-        console.log(data);
-        data.url =
-          "wx.upctech.com.cn/wx/event/choose_template/get_content?news_id=" +
-          this._data.modifydata.url;
-        this.$axios
-          .post(
-            "http://wx.upctech.com.cn/wx/event/choose_template/update_article/",
-            data
-          )
-          .then(res => {
-            console.log(res);
-            this.$message("修改成功");
-            // window.location.reload();
-          });
+      var data = this._data.modifydata;
+      if(this._data.modifydata.type !="agent"){
+          for (var i = 0; i < data.details.length; i++) {
+          data.details[i].url =
+            "wx.upctech.com.cn/" +
+            data.type +
+            "/news-information?news_id=" +
+            data.details[i].url;
+        }
       }
+    
+      
+      console.log("data", data);
+
+      // this.$axios
+      //   .post(
+      //     "http://wx.upctech.com.cn/wx/event/choose_template/update_article/",
+      //     data
+      //   )
+      //   .then(res => {
+      //     console.log(res);
+      //     this.$message("修改成功");
+      //     // window.location.reload();
+      //   });
     },
     uploads(e) {
       const file = e.target.files[0]; //获取到当前文件对象
@@ -228,8 +146,10 @@ export default {
       this.$http
         .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
-          this._data.creatactivitydata.picurl = rs.data.img_url;
-          this._data.modifydata.picurl = rs.data.img_url;
+          console.log(this._data.indexs);
+          this._data.modifydata.details[this._data.indexs].picurl =
+            rs.data.img_url;
+
           this.$message("上传成功");
         })
         .catch(err => {
@@ -239,19 +159,23 @@ export default {
     callobject(row, column, cellValue) {
       if (cellValue === "worker") {
         return "技师";
-      } else {
+      } else if(cellValue === "member"){
         return "用户";
+      }else{
+         return "代理";
       }
     },
     callobject2(row, column, cellValue) {
       if (cellValue === "subscribe") {
         return "订阅";
       } else {
-        return "扫描";
+        return "扫描"; 
       }
     },
     handleClick(e) {
-      console.log(e.id);
+      console.log(e);
+      this._data.modifydata.details.splice(e, 1);
+
       this.$axios
         .get(
           "http://wx.upctech.com.cn/wx/event/choose_template/delete_article/?id=" +
@@ -298,6 +222,6 @@ export default {
   display: block;
 }
 .Posterpictures {
-  width: 100%;
+  width: 18%;
 }
 </style>

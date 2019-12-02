@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="pagetitle">员工列表</div>
+    <div class="pagetitle">技师列表</div>
     <el-row class="choose">
       <el-button type="primary" @click="createstaff() " class="add">添加</el-button>
     </el-row>

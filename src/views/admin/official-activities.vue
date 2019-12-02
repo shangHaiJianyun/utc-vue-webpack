@@ -79,13 +79,14 @@
           <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
             <el-option label="用户" value="ME"></el-option>
             <el-option label="技师" value="MT"></el-option>
+             <el-option label="代理" value="MA"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="活动海报" :label-width="formLabelWidth">
           <div>
             <input type="file" @change="uploads" />
             <p></p>
-            <img :src="imgUrl" />
+            <img :src="imgUrl" class="Posterpictures" />
           </div>
         </el-form-item>
       </el-form>
@@ -190,6 +191,8 @@ export default {
         return "会员推广";
       } else if (cellValue === "ME") {
         return "用户推广";
+      }else  if (cellValue === "MA") {
+        return "代理推广";
       }
     },
     handleClick(e) {
@@ -211,6 +214,9 @@ export default {
 };
 </script>
 <style>
+.Posterpictures {
+  width: 100%;
+}
 .add {
   float: right;
   margin: 5px 47px 15px 0;

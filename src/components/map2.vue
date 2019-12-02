@@ -51,7 +51,7 @@ export default {
   },
   mounted() {
     this.$axios.get("map/map_data").then(res => {
-      this.mapdetail = res.data;
+       //this.mapdetail = res.data;
       console.log("shujv", this.mapdetail);
       this.Zmap();
     });
@@ -112,39 +112,39 @@ export default {
       }
 
       //已开通区域
-      for (var i = 1; i < zMap.mapdetail.length; i++) {
-        if (zMap.mapdetail[i].active) {
-          var points = [
-            new BMap.Point(
-              zMap.mapdetail[i].locations.ld.lng,
-              zMap.mapdetail[i].locations.ld.lat
-            ),
-            new BMap.Point(
-              zMap.mapdetail[i].locations.lt.lng,
-              zMap.mapdetail[i].locations.lt.lat
-            ),
-            new BMap.Point(
-              zMap.mapdetail[i].locations.rt.lng,
-              zMap.mapdetail[i].locations.rt.lat
-            ),
-            new BMap.Point(
-              zMap.mapdetail[i].locations.rd.lng,
-              zMap.mapdetail[i].locations.rd.lat
-            )
-          ];
-          var key =
-            "" + points[0].lng + points[0].lat + points[2].lng + points[2].lat; //使用两个点的坐标作为key
-          var polygon = new BMap.Polygon(points, {
-            strokeColor: "red",
-            strokeWeight: 2,
-            strokeOpacity: 0.5
-          });
-          polygon.setFillColor("green");
+      // for (var i = 1; i < zMap.mapdetail.length; i++) {
+      //   if (zMap.mapdetail[i].active) {
+      //     var points = [
+      //       new BMap.Point(
+      //         zMap.mapdetail[i].locations.ld.lng,
+      //         zMap.mapdetail[i].locations.ld.lat
+      //       ),
+      //       new BMap.Point(
+      //         zMap.mapdetail[i].locations.lt.lng,
+      //         zMap.mapdetail[i].locations.lt.lat
+      //       ),
+      //       new BMap.Point(
+      //         zMap.mapdetail[i].locations.rt.lng,
+      //         zMap.mapdetail[i].locations.rt.lat
+      //       ),
+      //       new BMap.Point(
+      //         zMap.mapdetail[i].locations.rd.lng,
+      //         zMap.mapdetail[i].locations.rd.lat
+      //       )
+      //     ];
+      //     var key =
+      //       "" + points[0].lng + points[0].lat + points[2].lng + points[2].lat; //使用两个点的坐标作为key
+      //     var polygon = new BMap.Polygon(points, {
+      //       strokeColor: "red",
+      //       strokeWeight: 2,
+      //       strokeOpacity: 0.5
+      //     });
+      //     polygon.setFillColor("green");
 
-          zMap.map.addOverlay(polygon);
-          zMap.beSelectBounds[key] = polygon;
-        }
-      }
+      //     zMap.map.addOverlay(polygon);
+      //     zMap.beSelectBounds[key] = polygon;
+      //   }
+      // }
       this.initProperty();
       this.initGrid();
 
@@ -260,6 +260,7 @@ export default {
         x2: this.map.getBounds().getNorthEast().lng,
         y2: this.map.getBounds().getNorthEast().lat
       };
+      console.log(this.bounds)
       // console.log("boundes",this.bounds)
       this.span = this.getSpan(); //需要使用level属性
     },
@@ -282,13 +283,7 @@ export default {
       // console.log("zMap.initCenter",span)
       //开通区域
 
-      for (
-        var i =
-          zMap.bounds.x1 +
-          ((zMap.initCenter.lng - zMap.bounds.x1) % span.x) -
-          span.x;
-        i < zMap.bounds.x2 + span.x;
-        i += span.x
+      for (var i = zMap.bounds.x1 + ((zMap.initCenter.lng - zMap.bounds.x1) % span.x) - span.x; i < zMap.bounds.x2 + span.x; i += span.x
       ) {
         var polyline = new BMap.Polyline(
           [
@@ -321,18 +316,15 @@ export default {
 
       console.log("网格数据", zMap.ygrids);
     },
-    getSpan: function() {
-      //获取网格的跨度
-      var scale = 0.75;
-      var x = 0.0524;
-
-      //0.00064;
-      //	for (var i = this.level; i < 19; i++) {
-      //    x *= 2;
-      //}
-      var y = 0.04492;
-      //parseFloat((scale * x).toFixed(5));
-      return { x: x, y: y };
+ getSpan: function () {//获取网格的跨度
+        var scale = 0.75;
+        var x = 0.00064;
+        for (var i = this.level; i < 19; i++) {
+            x *= 2;
+        }
+         var y = parseFloat((scale * x).toFixed(6));
+        // console.log(x,y)
+        return {x: x, y: y};
     },
     getGrid: function(point) {
       //返回当前点在所在区块的四个顶点

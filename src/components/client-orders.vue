@@ -59,20 +59,19 @@
     </div>
 
     <div class="grids">
-      <!--<kendo-datasource-->
-      <!--ref="datasource1"-->
-      <!--:transport-read-url="'http://dev.upctech.com.cn/api/dis/getorderlist'"-->
-      <!--:page-size='20'-->
-      <!--:server-paging="false"-->
-      <!--&gt;-->
-      <!--</kendo-datasource>-->
+      <!-- <kendo-datasource
+      ref="datasource1"
+     :transport-read-url="'http://dev.upctech.com.cn/api/dis/getorderlist'"
+     :page-size='20'
+     :server-paging="false"
+      &gt;
+      </kendo-datasource>-->
       <kendo-grid
         ref="grid"
         :data-source="datasource1"
         :sortable-mode="'multiple'"
         :sortable-allow-unsort="true"
         :sortable-show-indexes="true"
-        :pageable-button-count="5"
         :server-filtering="true"
         :pageable="true"
         :filterable-mode="'row'"
