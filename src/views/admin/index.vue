@@ -153,7 +153,7 @@ export default {
       var data = [];
       var date = {};
       _that.$axios
-        .get("http://dev.upctech.com.cn/api/sch/compare_worker_job")
+        .get("https://dev.upctech.com.cn/api/sch/compare_worker_job")
         .then(res => {
           for (var k in res.data.jobs_hrs) {
             date.product = k;
@@ -223,7 +223,7 @@ export default {
       var jobs = [];
       var obj = {};
       _that.$axios
-        .post("http://dev.upctech.com.cn/api/sch/load_by_region", {
+        .post("https://dev.upctech.com.cn/api/sch/load_by_region", {
           workday: date
         })
         .then(res => {
@@ -310,7 +310,7 @@ export default {
       var date = _that.getNowFormatDate();
       _that.$axios
         .get(
-          "http://dev.upctech.com.cn/api/sch/jobs_count_today?workday=" + date
+          "https://dev.upctech.com.cn/api/sch/jobs_count_today?workday=" + date
         )
         .then(res => {
           _that._data.sent_list = res.data.done_jobs_count;

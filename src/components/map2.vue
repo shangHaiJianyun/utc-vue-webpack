@@ -51,7 +51,7 @@ export default {
   },
   mounted() {
     this.$axios.get("map/map_data").then(res => {
-       //this.mapdetail = res.data;
+       this.mapdetail = res.data;
       console.log("shujv", this.mapdetail);
       this.Zmap();
     });
@@ -112,39 +112,39 @@ export default {
       }
 
       //已开通区域
-      // for (var i = 1; i < zMap.mapdetail.length; i++) {
-      //   if (zMap.mapdetail[i].active) {
-      //     var points = [
-      //       new BMap.Point(
-      //         zMap.mapdetail[i].locations.ld.lng,
-      //         zMap.mapdetail[i].locations.ld.lat
-      //       ),
-      //       new BMap.Point(
-      //         zMap.mapdetail[i].locations.lt.lng,
-      //         zMap.mapdetail[i].locations.lt.lat
-      //       ),
-      //       new BMap.Point(
-      //         zMap.mapdetail[i].locations.rt.lng,
-      //         zMap.mapdetail[i].locations.rt.lat
-      //       ),
-      //       new BMap.Point(
-      //         zMap.mapdetail[i].locations.rd.lng,
-      //         zMap.mapdetail[i].locations.rd.lat
-      //       )
-      //     ];
-      //     var key =
-      //       "" + points[0].lng + points[0].lat + points[2].lng + points[2].lat; //使用两个点的坐标作为key
-      //     var polygon = new BMap.Polygon(points, {
-      //       strokeColor: "red",
-      //       strokeWeight: 2,
-      //       strokeOpacity: 0.5
-      //     });
-      //     polygon.setFillColor("green");
+      for (var i = 1; i < zMap.mapdetail.length; i++) {
+        if (zMap.mapdetail[i].active) {
+          var points = [
+            new BMap.Point(
+              zMap.mapdetail[i].locations.ld.lng,
+              zMap.mapdetail[i].locations.ld.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.lt.lng,
+              zMap.mapdetail[i].locations.lt.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.rt.lng,
+              zMap.mapdetail[i].locations.rt.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.rd.lng,
+              zMap.mapdetail[i].locations.rd.lat
+            )
+          ];
+          var key =
+            "" + points[0].lng + points[0].lat + points[2].lng + points[2].lat; //使用两个点的坐标作为key
+          var polygon = new BMap.Polygon(points, {
+            strokeColor: "red",
+            strokeWeight: 2,
+            strokeOpacity: 0.5
+          });
+          polygon.setFillColor("green");
 
-      //     zMap.map.addOverlay(polygon);
-      //     zMap.beSelectBounds[key] = polygon;
-      //   }
-      // }
+          zMap.map.addOverlay(polygon);
+          zMap.beSelectBounds[key] = polygon;
+        }
+      }
       this.initProperty();
       this.initGrid();
 
@@ -282,7 +282,8 @@ export default {
       // console.log("网格数据",zMap.bounds.x1)
       // console.log("zMap.initCenter",span)
       //开通区域
-
+      var adbbsa=zMap.getMaxMinLongitudeLatitude(121.481976,31.226871,6);
+      console.log(adbbsa)
       for (var i = zMap.bounds.x1 + ((zMap.initCenter.lng - zMap.bounds.x1) % span.x) - span.x; i < zMap.bounds.x2 + span.x; i += span.x
       ) {
         var polyline = new BMap.Polyline(
@@ -318,12 +319,14 @@ export default {
     },
  getSpan: function () {//获取网格的跨度
         var scale = 0.75;
-        var x = 0.00064;
-        for (var i = this.level; i < 19; i++) {
-            x *= 2;
-        }
-         var y = parseFloat((scale * x).toFixed(6));
-        // console.log(x,y)
+        // var x = 0.00064;
+        // for (var i = this.level; i < 19; i++) {
+        //     x *= 2;
+        // }
+        //  var y = parseFloat((scale * x).toFixed(6));
+        //  console.log(x,y)
+         var y = 0.05395;
+        var x = 0.0630974;
         return {x: x, y: y};
     },
     getGrid: function(point) {
@@ -369,6 +372,22 @@ export default {
       //重置
       this.map.reset();
     },
+    getMaxMinLongitudeLatitude(longitude,latitude,distince){
+    console.log("MaxMinLongitudeLatitude",longitude,latitude);
+    let r = 6371.393;    // 地球半径千米
+    let lng = longitude;
+    let lat = latitude;
+    let dlng = 2 * Math.asin(Math.sin(distince / (2 * r)) / Math.cos(lat * Math.PI / 180));
+    dlng = dlng * 180 / Math.PI;// 角度转为弧度
+    let dlat = distince / r;
+    dlat = dlat * 180 / Math.PI;
+    console.log(dlat,dlng)
+    let minlat = lat - dlat;
+    let maxlat = lat + dlat;
+    let minlng = lng - dlng;
+    let maxlng = lng + dlng;
+    return minlng + "-" + maxlng + "-" + minlat + "-" + maxlat; 
+  },
     ZPoint: function(x, y, code) {
       this.code = code;
       this.point = new BMap.Point(x, y);

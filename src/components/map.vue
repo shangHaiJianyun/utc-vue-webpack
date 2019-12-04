@@ -292,12 +292,12 @@ export default {
       //获取网格的跨度
       var scale = 0.75;
       var x = 0.0524;
-
+ var y = 0.04492;
       //0.00064;
       //	for (var i = this.level; i < 19; i++) {
       //    x *= 2;
       //}
-      var y = 0.04492;
+     
       //parseFloat((scale * x).toFixed(5));
       return { x: x, y: y };
     },
