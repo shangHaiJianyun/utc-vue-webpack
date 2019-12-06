@@ -60,18 +60,16 @@ export default {
   },
   mounted() {
     var _that = this;
-    _that.$axios
-      .get("http://wx.upctech.com.cn/wx/event/market_event/result_list")
-      .then(res => {
-        _that._data.tableData = res.data.mkt_result;
-      });
+    _that.$axios.get("/wx/event/market_event/result_list").then(res => {
+      _that._data.tableData = res.data.mkt_result;
+    });
     _that._data.tableData1 = _that.getdata(
-      "http://wx.upctech.com.cn/wx/followers/",
-      "http://wx.upctech.com.cn/wx/user_info?uid="
+      "https://wx.upctech.com.cn/wx/followers/",
+      "https://wx.upctech.com.cn/wx/user_info?uid="
     );
     _that._data.tableData2 = _that.getdata(
-      "http://wx.upctech.com.cn/wx/worker/followers/",
-      "http://wx.upctech.com.cn/wx/worker/user_info?uid="
+      "https://wx.upctech.com.cn/wx/worker/followers/",
+      "https://wx.upctech.com.cn/wx/worker/user_info?uid="
     );
   },
   methods: {
@@ -93,10 +91,7 @@ export default {
       var user = {};
       var _that = this;
       _that.$axios
-        .get(
-          "http://wx.upctech.com.cn/wx/event/user_event/result_by_openid/?openid=" +
-            e.openid
-        )
+        .get("/wx/event/user_event/result_by_openid/?openid=" + e.openid)
         .then(res => {
           if (res.data.user_event_result == null) {
             _that.$message.error("抱歉，当前查询用户未记录");

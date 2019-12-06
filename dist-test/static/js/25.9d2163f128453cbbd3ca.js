@@ -1,0 +1,2 @@
+webpackJsonp([25],{vIAe:function(e,t,s){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=function(){var e=this.$createElement;this._self._c;return this._m(0)};i._withStripped=!0;var r={render:i,staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticClass:"home"},[t("h2",[this._v("Dispute Project")])])}]},n=r;var c=s("VU/8")({name:"DisputeProject"},n,!1,null,null,null);c.options.__file="src/views/dists/dispute-project.vue";t.default=c.exports}});
+//# sourceMappingURL=25.9d2163f128453cbbd3ca.js.map

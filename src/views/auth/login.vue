@@ -55,10 +55,10 @@ export default {
     //登录请求
     toLogin(params) {
       var _that = this;
-      console.log(params);
+      console.log(_that.$api);
 
       _that.$axios
-        .post("http://dev.upctech.com.cn/api/user/login", params)
+        .post(_that.$api + "/api/user/login", params)
         .then(res => {
           let rol = res.data.user_role;
           let promise = new Promise(function(resolve, reject) {

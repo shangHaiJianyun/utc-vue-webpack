@@ -42,7 +42,7 @@ export default {
     };
   },
   created() {
-    this.$axios.get("http://dev.upctech.com.cn/api/map/list_area").then(res => {
+    this.$axios.get(_that.$api + "/api/map/list_area").then(res => {
       console.log(res);
     });
   },

@@ -43,7 +43,7 @@ export default {
       var obj = {};
 
       _that.$axios
-        .post("http://dev.upctech.com.cn/api/sch/data_by_region_date", {
+        .post(_that.$api + "/api/sch/data_by_region_date", {
           workday: _that._data.sch_date,
           region_id: _that._data.input
         })

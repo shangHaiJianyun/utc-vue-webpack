@@ -34,12 +34,12 @@ export default {
   mounted() {
     var _that = this;
     _that._data.tableData = _that.getdata(
-      "http://wx.upctech.com.cn/wx/followers/",
-      "http://wx.upctech.com.cn/wx/user_info?uid="
+      "https://wx.upctech.com.cn/wx/followers/",
+      "https://wx.upctech.com.cn/wx/user_info?uid="
     );
     _that._data.tableData2 = _that.getdata(
-      "http://wx.upctech.com.cn/wx/worker/followers/",
-      "http://wx.upctech.com.cn/wx/worker/user_info?uid="
+      "https://wx.upctech.com.cn/wx/worker/followers/",
+      "https://wx.upctech.com.cn/wx/worker/user_info?uid="
     );
   },
   methods: {

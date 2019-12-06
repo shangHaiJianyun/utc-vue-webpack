@@ -85,7 +85,9 @@ Vue.prototype.delCookie = (name) => {
   if (cval != null)
     document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 }
-
+import api from './api/index.js' //切换环境js
+// 将API方法绑定到全局
+Vue.prototype.$api = api;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

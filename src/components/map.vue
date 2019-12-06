@@ -292,12 +292,12 @@ export default {
       //获取网格的跨度
       var scale = 0.75;
       var x = 0.0524;
- var y = 0.04492;
+      var y = 0.04492;
       //0.00064;
       //	for (var i = this.level; i < 19; i++) {
       //    x *= 2;
       //}
-     
+
       //parseFloat((scale * x).toFixed(5));
       return { x: x, y: y };
     },
@@ -354,12 +354,12 @@ export default {
       this.point = new BMap.Point(x, y);
     },
     fromtext() {
-      let that = this;
+      let _that = this;
       let params = {};
       params.id = this.mapsd.area_id;
       params.level = this.mapsd.level;
       console.log("ddd", params);
-      this.$axios.post("map/map_data", params).then(res => {
+      this.$axios.post(_that.$api + "/map/map_data", params).then(res => {
         console.log("返回数据", res);
         that.mapsd.area_rate = res.data.area_rate;
 

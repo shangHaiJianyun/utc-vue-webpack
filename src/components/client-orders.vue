@@ -149,7 +149,7 @@ export default {
     d = d < 10 ? "0" + d : d;
     var newTime = date.getFullYear() + "-" + m + "-" + d;
     console.log("当前时间", newTime);
-    let wrk_url = "http://dev.upctech.com.cn/api/dis/getworklist";
+    let wrk_url = _that.$api + "/api/dis/getworklist";
     let params = {};
     params.city = "上海市";
     params.date = newTime;
@@ -255,7 +255,7 @@ export default {
       var start_time = start.getFullYear() + "-" + m + "-" + d;
       console.log("shijian", start);
       console.log("时间...", start_time);
-      let url = "http://dev.upctech.com.cn/api/dis/getorderlist";
+      let url = _that.$api + "/api/dis/getorderlist";
       let postparams = {};
       postparams.order_status = 2;
       postparams.start_service_date = start_time;

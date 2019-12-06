@@ -83,7 +83,7 @@
       <el-table-column label="最近登录" prop="cuurent_login_time"></el-table-column>
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
-          <el-input v-model="search" size="mini" placeholder="输入关键字搜索"/>
+          <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
         </template>
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
@@ -147,10 +147,11 @@ export default {
     };
   },
   created() {
+    var _that = this;
     let params = {};
     params.city = "上海";
     this.$axios
-      .post("/dis/getMemberList", params)
+      .post("https://dev.upctech.com.cn/dis/getMemberList", params)
       .then(res => {
         console.log("USER", res.data);
         this.tableData = res.data;

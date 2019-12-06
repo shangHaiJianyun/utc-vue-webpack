@@ -1,0 +1,2 @@
+webpackJsonp([23],{YE6o:function(e,t,s){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=function(){var e=this.$createElement;this._self._c;return this._m(0)};i._withStripped=!0;var r={render:i,staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticClass:"home"},[t("h2",[this._v("submit project")])])}]},n=r;var c=s("VU/8")({name:"SubmitProject"},n,!1,null,null,null);c.options.__file="src/views/dists/submit-project.vue";t.default=c.exports}});
+//# sourceMappingURL=23.63838af652e68f638245.js.map

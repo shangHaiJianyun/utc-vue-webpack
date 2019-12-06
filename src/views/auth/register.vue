@@ -59,13 +59,14 @@ export default {
   methods: {
     //登录逻辑
     register() {
+      var _that = this;
       if (
         this.form.username != "" &&
         this.form.password != "" &&
         this.form.user_role != ""
       ) {
         this.$axios
-          .post("http://dev.upctech.com.cn//api/user/add_user", this.form)
+          .post(_that.$api + "/api/user/add_user", this.form)
           .then(res => {
             console.log(res);
             if (res.data.new_user) {

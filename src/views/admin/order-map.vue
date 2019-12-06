@@ -43,7 +43,7 @@ export default {
       _that._data.list = [];
 
       _that.$axios
-        .post("http://dev.upctech.com.cn/api/dis/getorderlist", {
+        .post(_that.$api + "/api/dis/getorderlist", {
           start_service_date: _that._data.Yesterday,
           end_service_date: _that._data.tomorrow
         })
@@ -63,7 +63,7 @@ export default {
       _that._data.list = [];
 
       _that.$axios
-        .post("http://dev.upctech.com.cn/api/dis/getorderlist", {
+        .post(_that.$api + "/api/dis/getorderlist", {
           start_service_date: _that._data.Today,
           end_service_date: _that._data.tomorrows,
           order_status: 2

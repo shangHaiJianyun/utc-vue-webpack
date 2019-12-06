@@ -42,8 +42,8 @@
               ></el-option>
             </el-select>
           </el-col>
-           <el-col :span="5" v-if="modifydata.type === 'agent'">
-           <el-input v-model="item.url" placeholder="文章链接"></el-input>
+          <el-col :span="5" v-if="modifydata.type === 'agent'">
+            <el-input v-model="item.url" placeholder="文章链接"></el-input>
           </el-col>
           <el-col :span="5">
             <div>
@@ -79,13 +79,14 @@ export default {
     };
   },
   mounted() {
+    var _that = this;
     this.$axios
-      .get("http://wx.upctech.com.cn/wx/event/choose_template/all_article")
+      .get("https://wx.upctech.com.cn/wx/event/choose_template/all_article")
       .then(res => {
         this._data.tableData = res.data.articles;
       });
     this.$axios
-      .get("http://wx.upctech.com.cn/wx/event/choose_template/all_content")
+      .get("https://wx.upctech.com.cn/wx/event/choose_template/all_content")
       .then(res => {
         this._data.articlelist = res.data.article_list;
       });
@@ -109,10 +110,10 @@ export default {
       this._data.modifydata = e;
     },
     createactivities2() {
-        this._data.createactivityoperate2 = false;
+      this._data.createactivityoperate2 = false;
       var data = this._data.modifydata;
-      if(this._data.modifydata.type !="agent"){
-          for (var i = 0; i < data.details.length; i++) {
+      if (this._data.modifydata.type != "agent") {
+        for (var i = 0; i < data.details.length; i++) {
           data.details[i].url =
             "wx.upctech.com.cn/" +
             data.type +
@@ -120,8 +121,7 @@ export default {
             data.details[i].url;
         }
       }
-    
-      
+
       console.log("data", data);
 
       // this.$axios
@@ -136,6 +136,7 @@ export default {
       //   });
     },
     uploads(e) {
+      var _that = this;
       const file = e.target.files[0]; //获取到当前文件对象
       this.imgUrl = URL.createObjectURL(file); // 这是为了显示图片而已， 与上传没有关系（可选）
 
@@ -144,7 +145,7 @@ export default {
       formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
       // 服务器只需按照正常的上传程序代码即可
       this.$http
-        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
+        .post("https://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
           console.log(this._data.indexs);
           this._data.modifydata.details[this._data.indexs].picurl =
@@ -159,26 +160,27 @@ export default {
     callobject(row, column, cellValue) {
       if (cellValue === "worker") {
         return "技师";
-      } else if(cellValue === "member"){
+      } else if (cellValue === "member") {
         return "用户";
-      }else{
-         return "代理";
+      } else {
+        return "代理";
       }
     },
     callobject2(row, column, cellValue) {
       if (cellValue === "subscribe") {
         return "订阅";
       } else {
-        return "扫描"; 
+        return "扫描";
       }
     },
     handleClick(e) {
       console.log(e);
-      this._data.modifydata.details.splice(e, 1);
+      var _that = this;
+      _that._data.modifydata.details.splice(e, 1);
 
-      this.$axios
+      _that.$axios
         .get(
-          "http://wx.upctech.com.cn/wx/event/choose_template/delete_article/?id=" +
+          "https://wx.upctech.com.cn/wx/event/choose_template/delete_article/?id=" +
             e.id
         )
         .then(res => {

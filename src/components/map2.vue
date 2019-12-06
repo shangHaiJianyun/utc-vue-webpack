@@ -50,8 +50,9 @@ export default {
     };
   },
   mounted() {
-    this.$axios.get("map/map_data").then(res => {
-       this.mapdetail = res.data;
+    var _that = this;
+    this.$axios.get(_that.$api + "/map/map_data").then(res => {
+      this.mapdetail = res.data;
       console.log("shujv", this.mapdetail);
       this.Zmap();
     });
@@ -260,7 +261,7 @@ export default {
         x2: this.map.getBounds().getNorthEast().lng,
         y2: this.map.getBounds().getNorthEast().lat
       };
-      console.log(this.bounds)
+      console.log(this.bounds);
       // console.log("boundes",this.bounds)
       this.span = this.getSpan(); //需要使用level属性
     },
@@ -282,9 +283,15 @@ export default {
       // console.log("网格数据",zMap.bounds.x1)
       // console.log("zMap.initCenter",span)
       //开通区域
-      var adbbsa=zMap.getMaxMinLongitudeLatitude(121.481976,31.226871,6);
-      console.log(adbbsa)
-      for (var i = zMap.bounds.x1 + ((zMap.initCenter.lng - zMap.bounds.x1) % span.x) - span.x; i < zMap.bounds.x2 + span.x; i += span.x
+      var adbbsa = zMap.getMaxMinLongitudeLatitude(121.481976, 31.226871, 6);
+      console.log(adbbsa);
+      for (
+        var i =
+          zMap.bounds.x1 +
+          ((zMap.initCenter.lng - zMap.bounds.x1) % span.x) -
+          span.x;
+        i < zMap.bounds.x2 + span.x;
+        i += span.x
       ) {
         var polyline = new BMap.Polyline(
           [
@@ -317,17 +324,18 @@ export default {
 
       console.log("网格数据", zMap.ygrids);
     },
- getSpan: function () {//获取网格的跨度
-        var scale = 0.75;
-        // var x = 0.00064;
-        // for (var i = this.level; i < 19; i++) {
-        //     x *= 2;
-        // }
-        //  var y = parseFloat((scale * x).toFixed(6));
-        //  console.log(x,y)
-         var y = 0.05395;
-        var x = 0.0630974;
-        return {x: x, y: y};
+    getSpan: function() {
+      //获取网格的跨度
+      var scale = 0.75;
+      // var x = 0.00064;
+      // for (var i = this.level; i < 19; i++) {
+      //     x *= 2;
+      // }
+      //  var y = parseFloat((scale * x).toFixed(6));
+      //  console.log(x,y)
+      var y = 0.05395;
+      var x = 0.0630974;
+      return { x: x, y: y };
     },
     getGrid: function(point) {
       //返回当前点在所在区块的四个顶点
@@ -372,22 +380,26 @@ export default {
       //重置
       this.map.reset();
     },
-    getMaxMinLongitudeLatitude(longitude,latitude,distince){
-    console.log("MaxMinLongitudeLatitude",longitude,latitude);
-    let r = 6371.393;    // 地球半径千米
-    let lng = longitude;
-    let lat = latitude;
-    let dlng = 2 * Math.asin(Math.sin(distince / (2 * r)) / Math.cos(lat * Math.PI / 180));
-    dlng = dlng * 180 / Math.PI;// 角度转为弧度
-    let dlat = distince / r;
-    dlat = dlat * 180 / Math.PI;
-    console.log(dlat,dlng)
-    let minlat = lat - dlat;
-    let maxlat = lat + dlat;
-    let minlng = lng - dlng;
-    let maxlng = lng + dlng;
-    return minlng + "-" + maxlng + "-" + minlat + "-" + maxlat; 
-  },
+    getMaxMinLongitudeLatitude(longitude, latitude, distince) {
+      console.log("MaxMinLongitudeLatitude", longitude, latitude);
+      let r = 6371.393; // 地球半径千米
+      let lng = longitude;
+      let lat = latitude;
+      let dlng =
+        2 *
+        Math.asin(
+          Math.sin(distince / (2 * r)) / Math.cos((lat * Math.PI) / 180)
+        );
+      dlng = (dlng * 180) / Math.PI; // 角度转为弧度
+      let dlat = distince / r;
+      dlat = (dlat * 180) / Math.PI;
+      console.log(dlat, dlng);
+      let minlat = lat - dlat;
+      let maxlat = lat + dlat;
+      let minlng = lng - dlng;
+      let maxlng = lng + dlng;
+      return minlng + "-" + maxlng + "-" + minlat + "-" + maxlat;
+    },
     ZPoint: function(x, y, code) {
       this.code = code;
       this.point = new BMap.Point(x, y);

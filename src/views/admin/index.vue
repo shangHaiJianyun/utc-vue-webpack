@@ -152,17 +152,15 @@ export default {
       var _that = this;
       var data = [];
       var date = {};
-      _that.$axios
-        .get("https://dev.upctech.com.cn/api/sch/compare_worker_job")
-        .then(res => {
-          for (var k in res.data.jobs_hrs) {
-            date.product = k;
-            date.jobs_hrs = res.data.jobs_hrs[k];
-            date.workers_hrs = res.data.workers_hrs[k];
-            data.push(date);
-            date = {};
-          }
-        });
+      _that.$axios.get(_that.$api + "/api/sch/compare_worker_job").then(res => {
+        for (var k in res.data.jobs_hrs) {
+          date.product = k;
+          date.jobs_hrs = res.data.jobs_hrs[k];
+          date.workers_hrs = res.data.workers_hrs[k];
+          data.push(date);
+          date = {};
+        }
+      });
       let myChart = this.$echarts.init(document.getElementById("hourcontrast"));
       // 绘制图表
       myChart.setOption({
@@ -223,7 +221,7 @@ export default {
       var jobs = [];
       var obj = {};
       _that.$axios
-        .post("https://dev.upctech.com.cn/api/sch/load_by_region", {
+        .post(_that.$api + "/api/sch/load_by_region", {
           workday: date
         })
         .then(res => {
@@ -309,9 +307,7 @@ export default {
       var _that = this;
       var date = _that.getNowFormatDate();
       _that.$axios
-        .get(
-          "https://dev.upctech.com.cn/api/sch/jobs_count_today?workday=" + date
-        )
+        .get(_that.$api + "/api/sch/jobs_count_today?workday=" + date)
         .then(res => {
           _that._data.sent_list = res.data.done_jobs_count;
           _that._data.general_order = res.data.jobs_count;

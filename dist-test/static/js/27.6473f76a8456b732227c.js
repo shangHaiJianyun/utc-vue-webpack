@@ -1,0 +1,2 @@
+webpackJsonp([27],{Vrpt:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var s=function(){var e=this.$createElement;this._self._c;return this._m(0)};s._withStripped=!0;var n={render:s,staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticClass:"home"},[t("h2",[this._v("Admin Projects")])])}]},i=n;var c=r("VU/8")({name:"Projects"},i,!1,null,null,null);c.options.__file="src/views/admin/projects.vue";t.default=c.exports}});
+//# sourceMappingURL=27.6473f76a8456b732227c.js.map

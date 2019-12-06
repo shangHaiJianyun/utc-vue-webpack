@@ -206,8 +206,9 @@ export default {
     };
   },
   mounted() {
+    var _that = this;
     this.$axios
-      .get("http://wx.upctech.com.cn/wx/event/user_event_temp/list/")
+      .get("https://wx.upctech.com.cn/wx/event/user_event_temp/list/")
       .then(res => {
         this._data.tableData = res.data;
       });
@@ -219,6 +220,7 @@ export default {
     },
     //创建活动
     createactivities() {
+      var _that = this;
       console.log(this._data.creatactivitydata);
       if (this._data.creatactivitydata.name == "") {
         this.$message.error("没有填写活动名称");
@@ -252,14 +254,14 @@ export default {
           this._data.creatactivitydata.qr_parameters.push(this._data.imgUrl3);
         }
         parseInt;
-        if( this._data.creatactivitydata.event_type=="WW"){
-           this._data.creatactivitydata.app_id="wx2c2a216f6d6e765c"
-        }else{
-           this._data.creatactivitydata.app_id="wxb4e2ec03cee28c82"
+        if (this._data.creatactivitydata.event_type == "WW") {
+          this._data.creatactivitydata.app_id = "wx2c2a216f6d6e765c";
+        } else {
+          this._data.creatactivitydata.app_id = "wxb4e2ec03cee28c82";
         }
         this.$axios
           .post(
-            "http://wx.upctech.com.cn/wx/event/user_event_temp/create/",
+            "https://wx.upctech.com.cn/wx/event/user_event_temp/create/",
             this._data.creatactivitydata
           )
           .then(res => {
@@ -270,13 +272,14 @@ export default {
     },
     // 第一张上传
     uploads(e) {
+      var _that = this;
       const file = e.target.files[0]; //获取到当前文件对象
       // 传递一个 FormData 对象 即可
       let formData = new FormData();
       formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
       // 服务器只需按照正常的上传程序代码即可
       this.$http
-        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
+        .post("https://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
           this._data.imgUrl.post_url = rs.data.img_name;
 
@@ -287,6 +290,7 @@ export default {
         });
     },
     uploads2(e) {
+      var _that = this;
       const file = e.target.files[0]; //获取到当前文件对象
 
       // 传递一个 FormData 对象 即可
@@ -294,7 +298,7 @@ export default {
       formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
       // 服务器只需按照正常的上传程序代码即可
       this.$http
-        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
+        .post("https://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
           this._data.imgUrl2.post_url = rs.data.img_name;
           console.log(imgUrl2);
@@ -306,6 +310,7 @@ export default {
         });
     },
     uploads3(e) {
+      var _that = this;
       const file = e.target.files[0]; //获取到当前文件对象
 
       // 传递一个 FormData 对象 即可
@@ -313,7 +318,7 @@ export default {
       formData.append("image", file); // 'file' 可变 相当于 input 表单的name 属性
       // 服务器只需按照正常的上传程序代码即可
       this.$http
-        .post("http://wx.upctech.com.cn/wx/img/image/upload/", formData)
+        .post("https://wx.upctech.com.cn/wx/img/image/upload/", formData)
         .then(rs => {
           this._data.imgUrl3.post_url = rs.data.img_name;
           console.log(imgUrl3);
@@ -334,9 +339,10 @@ export default {
       }
     },
     handleClick(index) {
+      var _that = this;
       this.$axios
         .get(
-          "http://wx.upctech.com.cn/wx/event/user_event_temp/delete?event_id=" +
+          "https://wx.upctech.com.cn/wx/event/user_event_temp/delete?event_id=" +
             this._data.tableData[index].id
         )
         .then(res => {

@@ -1,0 +1,2 @@
+webpackJsonp([26],{KqYw:function(e,t,s){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=function(){var e=this.$createElement;this._self._c;return this._m(0)};n._withStripped=!0;var i={render:n,staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticClass:"home"},[t("h2",[this._v("Sys Setting")])])}]},r=i;var a=s("VU/8")({name:"Settings"},r,!1,null,null,null);a.options.__file="src/views/admin/settings.vue";t.default=a.exports}});
+//# sourceMappingURL=26.660de59b9b4a10090c12.js.map

@@ -55,7 +55,7 @@
     </el-row>
     <el-row>
       <div class="nametext">派单详情</div>
-      <el-table :data="tableData" border style="width: 100%"   height="250">
+      <el-table :data="tableData" border style="width: 100%" height="250">
         <el-table-column prop="city" label="城市" width="180"></el-table-column>
         <el-table-column prop="created_on" label="创建时间" width="180"></el-table-column>
         <el-table-column prop="region_id" label="地区系数"></el-table-column>
@@ -79,9 +79,9 @@ export default {
     };
   },
   mounted() {
-    var that = this;
-    that.axios
-      .get("http://dev.upctech.com.cn/api/sch/show_schedule_task", {
+    var _that = this;
+    _that.axios
+      .get(_that.$api + "/api/sch/show_schedule_task", {
         city: "上海市"
       })
       .then(res => {
@@ -95,18 +95,19 @@ export default {
             }
           }
         });
-        that._data.tableData = arr;
+        _that._data.tableData = arr;
         console.log(arr);
       });
   },
   methods: {
     onSubmit() {
+      var _that = this;
       var regions = this._data.form.regions.split(",");
       var n_order = parseInt(this._data.form.n_order);
       var n_address = parseInt(this._data.form.n_address);
       var n_worker = parseInt(this._data.form.n_worker);
       this.axios
-        .post("http://dev.upctech.com.cn/api/sch/get_sim_data", {
+        .post(_that.$api + "/api/sch/get_sim_data", {
           regions: regions,
           n_order: n_order,
           n_address: n_address,
@@ -121,8 +122,9 @@ export default {
         });
     },
     distributeleaflets() {
+      var _that = this;
       this.axios
-        .post("http://dev.upctech.com.cn/api/sch/sch_simulate", {
+        .post(_that.$api + "/api/sch/sch_simulate", {
           sch_date: this._data.sch_date
         })
         .then(res => {
