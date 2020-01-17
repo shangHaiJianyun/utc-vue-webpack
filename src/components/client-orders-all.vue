@@ -41,7 +41,7 @@
     <div class="grids">
       <kendo-datasource
         ref="datasource1"
-        :transport-read-url="'http://dev.upctech.com.cn/api/dis/getorderlist'"
+        :transport-read-url="this.$api+'/api/dis/getorderlist'"
         :page-size="20"
         :server-paging="false"
       ></kendo-datasource>
@@ -141,6 +141,7 @@ export default {
       this.flag = false;
     },
     showDetails: function(e) {
+      var _that = this;
       e.preventDefault();
       var grid = this.$refs.grid.kendoWidget();
       var dataItem = grid.dataItem(e.currentTarget.closest("tr"));
@@ -161,11 +162,12 @@ export default {
         // console.log(dataItem.order_no);
 
         let params = {};
+        params.access_key = "xunjiepf";
         params.order_ids = this.orders_id;
         params.order_status = 2;
         console.log("系统ID", params);
         this.$axios
-          .post("/dis/updateOrderStatus", params)
+          .post(_that.$api + "/api/dis/updateOrderStatus", params)
           .then(res => {
             this.toDispatch.push(dataItem.order_no);
 

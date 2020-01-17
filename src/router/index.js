@@ -5,7 +5,8 @@ import Router from "vue-router";
 Vue.use(Router);
 const router = new Router({
   mode: "history",
-  base: process.env.BASE_URL,
+
+  base: "/bk/",
   routes: [{
       path: "/",
       name: "login",
@@ -123,8 +124,30 @@ const router = new Router({
     {
       path: "/ditor",
       component: () => import("@/views/admin/ditor")
+    },
+    {
+      path: "/base-setting",
+      component: () => import("@/views/admin/base-setting")
+    },
+    {
+      path: "/official-list2",
+      component: () => import("@/views/admin/official-list2")
+    },
+    {
+      path: "/property-address",
+      component: () => import("@/views/admin/property-address")
+    }, {
+      path: "/property-user",
+      component: () => import("@/views/admin/property-user")
+    },
+    {
+      path: "/agent-list",
+      component: () => import("@/views/admin/agent-list")
+    },
+    {
+      path: "/proxy-settings",
+      component: () => import("@/views/admin/proxy-settings")
     }
-
   ]
 });
 export default router

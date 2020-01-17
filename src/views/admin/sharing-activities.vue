@@ -3,39 +3,51 @@
     <!-- 表格显示 -->
     <div class="pagetitle">用户活动</div>
 
-    <el-button type="primary" @click="createactivity() " class="add">添加</el-button>
+    <el-button type="primary"
+               @click="createactivity() "
+               class="add">添加</el-button>
     <table class="fl-table">
       <thead>
         <tr>
           <th>活动id</th>
           <th>活动名</th>
           <th>活动介绍</th>
+          <th>活动状态</th>
           <th>活动海报</th>
           <th>活动对象</th>
           <th>操作</th>
         </tr>
       </thead>
-      <tbody v-for="item1 in tableData">
-        <tr v-for="(item2,index) in item1.qr_parameters">
-          <td v-if="!index" :rowspan="item1.qr_parameters.length">{{item1.id}}</td>
-          <td v-if="!index" :rowspan="item1.qr_parameters.length">{{item1.name}}</td>
-          <td v-if="!index" :rowspan="item1.qr_parameters.length">{{item1.description}}</td>
+      <tbody v-for="(item1,index2) in tableData"
+             :key="index2">
+        <tr v-for="(item2,index) in item1.qr_parameters"
+            :key="index">
+          <td v-if="!index"
+              :rowspan="item1.qr_parameters.length">{{item1.id}}</td>
+          <td v-if="!index"
+              :rowspan="item1.qr_parameters.length">{{item1.name}}</td>
+          <td v-if="!index"
+              :rowspan="item1.qr_parameters.length">{{item1.description}}</td>
+          <td v-if="!index"
+              :rowspan="item1.qr_parameters.length">{{item1.is_active==true ? '进行中':"关闭中"}}</td>
           <td>
-            <img
-              :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+item2.post_url"
-              width="40"
-              height="40"
-              class="head_pic"
-            />
+            <img :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+item2.post_url"
+                 width="40"
+                 height="40"
+                 class="head_pic" />
           </td>
 
-          <td
-            v-if="!index"
-            :rowspan="item1.qr_parameters.length"
-            v-text="callobject(item1.event_type)"
-          ></td>
-          <td v-if="!index" :rowspan="item1.qr_parameters.length">
-            <el-button @click="handleClick(index)" type="text" size="small">删除活动</el-button>
+          <td v-if="!index"
+              :rowspan="item1.qr_parameters.length"
+              v-text="callobject(item1.event_type)"></td>
+          <td v-if="!index"
+              :rowspan="item1.qr_parameters.length">
+            <el-button @click="handleClick(index2)"
+                       type="text"
+                       size="small">关闭活动</el-button>
+            <el-button @click="handleClick2(index2)"
+                       type="text"
+                       size="small">开启活动</el-button>
           </td>
         </tr>
       </tbody>
@@ -69,119 +81,142 @@
     </el-table>-->
 
     <!-- 创建活动 -->
-    <el-dialog title="创建活动" :visible.sync="createactivityoperate">
+    <el-dialog title="创建活动"
+               :visible.sync="createactivityoperate">
       <el-form :model="creatactivitydata">
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
+        <el-form-item label="活动名称"
+                      :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.name"></el-input>
         </el-form-item>
-        <el-form-item label="分享人所得积分" :label-width="formLabelWidth">
+        <el-form-item label="分享人所得积分"
+                      :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.points"></el-input>
         </el-form-item>
 
-        <el-form-item label="优惠劵id" :label-width="formLabelWidth">
+        <el-form-item label="优惠劵id"
+                      :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.coupon_class_id"></el-input>
         </el-form-item>
-        <el-form-item label="被分享人所得积分" :label-width="formLabelWidth">
+        <el-form-item label="被分享人所得积分"
+                      :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.usr_points"></el-input>
         </el-form-item>
-        <el-form-item label="被分享人所得优惠劵id" :label-width="formLabelWidth">
+        <el-form-item label="被分享人所得优惠劵id"
+                      :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.usr_coupon_class_id"></el-input>
         </el-form-item>
-        <el-form-item label="活动时间" :label-width="formLabelWidth">
+        <el-form-item label="活动时间"
+                      :label-width="formLabelWidth">
           <el-input v-model="creatactivitydata.qr_expire_days"></el-input>
         </el-form-item>
-        <el-form-item label="活动时间" :label-width="formLabelWidth">
-          <el-input v-model="creatactivitydata.qr_action_name" readonly="readonly"></el-input>
+        <el-form-item label="活动时间"
+                      :label-width="formLabelWidth">
+          <el-input v-model="creatactivitydata.qr_action_name"
+                    readonly="readonly"></el-input>
         </el-form-item>
-        <el-form-item label="活动介绍" :label-width="formLabelWidth">
-          <el-input
-            type="textarea"
-            :rows="2"
-            placeholder="请输入内容"
-            v-model="creatactivitydata.description"
-          ></el-input>
+        <el-form-item label="活动介绍"
+                      :label-width="formLabelWidth">
+          <el-input type="textarea"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="creatactivitydata.description"></el-input>
         </el-form-item>
-        <el-form-item label="活动对象" :label-width="formLabelWidth">
-          <el-select v-model="creatactivitydata.event_type" placeholder="请选择活动对象">
-            <el-option label="用户对用户" value="MM"></el-option>
-            <el-option label="技师对用户" value="WM"></el-option>
-            <el-option label="技师对技师" value="WW"></el-option>
+        <el-form-item label="活动对象"
+                      :label-width="formLabelWidth">
+          <el-select v-model="creatactivitydata.event_type"
+                     placeholder="请选择活动对象">
+            <el-option label="用户对用户"
+                       value="MM"></el-option>
+            <el-option label="技师对用户"
+                       value="WM"></el-option>
+            <el-option label="技师对技师"
+                       value="WW"></el-option>
+            <el-option label="代理对用户"
+                       value="AM"></el-option>
           </el-select>
         </el-form-item>
         <el-row>
           <el-col :span="4">
-            <el-form-item label="活动海报" :label-width="formLabelWidth"></el-form-item>
+            <el-form-item label="活动海报"
+                          :label-width="formLabelWidth"></el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-input v-model="imgUrl.qr_box" placeholder="(左移量,上移量)"></el-input>
+            <el-input v-model="imgUrl.qr_box"
+                      placeholder="(左移量,上移量)"></el-input>
           </el-col>
           <el-col :span="5">
-            <el-input v-model="imgUrl.qr_size" placeholder="(宽,高)"></el-input>
+            <el-input v-model="imgUrl.qr_size"
+                      placeholder="(宽,高)"></el-input>
           </el-col>
           <el-col :span="5">
             <div>
-              <input type="file" @change="uploads" />
+              <input type="file"
+                     @change="uploads" />
               <p></p>
-              <img
-                :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl.post_url"
-                class="Posterpictures"
-              />
+              <img :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl.post_url"
+                   class="Posterpictures" />
             </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="4">
-            <el-form-item label="活动海报" :label-width="formLabelWidth"></el-form-item>
+            <el-form-item label="活动海报"
+                          :label-width="formLabelWidth"></el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-input v-model="imgUrl2.qr_box" placeholder="(左移量,上移量)"></el-input>
+            <el-input v-model="imgUrl2.qr_box"
+                      placeholder="(左移量,上移量)"></el-input>
           </el-col>
           <el-col :span="5">
-            <el-input v-model="imgUrl2.qr_size" placeholder="(宽,高)"></el-input>
+            <el-input v-model="imgUrl2.qr_size"
+                      placeholder="(宽,高)"></el-input>
           </el-col>
           <el-col :span="5">
             <div>
-              <input type="file" @change="uploads2" />
+              <input type="file"
+                     @change="uploads2" />
               <p></p>
-              <img
-                :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl2.post_url"
-                class="Posterpictures"
-              />
+              <img :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl2.post_url"
+                   class="Posterpictures" />
             </div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="4">
-            <el-form-item label="活动海报" :label-width="formLabelWidth"></el-form-item>
+            <el-form-item label="活动海报"
+                          :label-width="formLabelWidth"></el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-input v-model="imgUrl3.qr_box" placeholder="(左移量,上移量)"></el-input>
+            <el-input v-model="imgUrl3.qr_box"
+                      placeholder="(左移量,上移量)"></el-input>
           </el-col>
           <el-col :span="5">
-            <el-input v-model="imgUrl3.qr_size" placeholder="(宽,高)"></el-input>
+            <el-input v-model="imgUrl3.qr_size"
+                      placeholder="(宽,高)"></el-input>
           </el-col>
           <el-col :span="5">
             <div>
-              <input type="file" @change="uploads3" />
+              <input type="file"
+                     @change="uploads3" />
               <p></p>
-              <img
-                :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl3.post_url"
-                class="Posterpictures"
-              />
+              <img :src="'https://s3.cn-northwest-1.amazonaws.com.cn/wechat-qr/'+imgUrl3.post_url"
+                   class="Posterpictures" />
             </div>
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer"
+           class="dialog-footer">
         <el-button @click="createactivityoperate = false">取 消</el-button>
-        <el-button type="primary" @click="createactivities()">确 定</el-button>
+        <el-button type="primary"
+                   @click="createactivities()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       imgUrl: { qr_box: "", qr_size: "", post_url: "" },
       imgUrl2: { qr_box: "", qr_size: "", post_url: "" },
@@ -205,7 +240,7 @@ export default {
       }
     };
   },
-  mounted() {
+  mounted () {
     var _that = this;
     this.$axios
       .get("https://wx.upctech.com.cn/wx/event/user_event_temp/list/")
@@ -215,11 +250,21 @@ export default {
   },
   methods: {
     //显示创建活动模板
-    createactivity() {
+    createactivity () {
       this._data.createactivityoperate = true;
     },
+    callobject (row, column, cellValue) {
+      console.log(cellValue)
+      // if (cellValue === "MT") {
+      //   return "会员推广";
+      // } else if (cellValue === "ME") {
+      //   return "用户推广";
+      // } else if (cellValue === "MA") {
+      //   return "代理推广";
+      // }
+    },
     //创建活动
-    createactivities() {
+    createactivities () {
       var _that = this;
       console.log(this._data.creatactivitydata);
       if (this._data.creatactivitydata.name == "") {
@@ -259,6 +304,7 @@ export default {
         } else {
           this._data.creatactivitydata.app_id = "wxb4e2ec03cee28c82";
         }
+        alert(this._data.creatactivitydata)
         this.$axios
           .post(
             "https://wx.upctech.com.cn/wx/event/user_event_temp/create/",
@@ -266,12 +312,12 @@ export default {
           )
           .then(res => {
             this.$message("创建成功");
-            window.location.reload();
+            // window.location.reload();
           });
       }
     },
     // 第一张上传
-    uploads(e) {
+    uploads (e) {
       var _that = this;
       const file = e.target.files[0]; //获取到当前文件对象
       // 传递一个 FormData 对象 即可
@@ -289,7 +335,7 @@ export default {
           console.log(err);
         });
     },
-    uploads2(e) {
+    uploads2 (e) {
       var _that = this;
       const file = e.target.files[0]; //获取到当前文件对象
 
@@ -309,7 +355,7 @@ export default {
           console.log(err);
         });
     },
-    uploads3(e) {
+    uploads3 (e) {
       var _that = this;
       const file = e.target.files[0]; //获取到当前文件对象
 
@@ -329,28 +375,48 @@ export default {
           console.log(err);
         });
     },
-    callobject(cellValue) {
+    callobject (cellValue) {
       if (cellValue === "MM") {
         return "用户对用户";
       } else if (cellValue === "WM") {
         return "技师对用户";
       } else if (cellValue === "WW") {
         return "技师对技师 ";
+      } else if (cellValue === "AM") {
+        return "代理对会员 ";
       }
     },
-    handleClick(index) {
+    handleClick (index) {
       var _that = this;
+      var id = index + 1;
       this.$axios
         .get(
           "https://wx.upctech.com.cn/wx/event/user_event_temp/delete?event_id=" +
-            this._data.tableData[index].id
+          id
         )
         .then(res => {
           if (res.data.erro == "done") {
-            this.$message("删除成功");
+            this.$message("关闭成功");
             window.location.reload();
           } else {
-            this.$message.error("删除失败");
+            this.$message.error("关闭失败");
+          }
+        });
+    },
+    handleClick2 (index) {
+      var _that = this;
+      var id = index + 1;
+      this.$axios
+        .get(
+          "https://wx.upctech.com.cn/wx/event/user_event_temp/active/?event_id=" +
+          id
+        )
+        .then(res => {
+          if (res.data.erro == "done") {
+            this.$message("开启成功");
+            window.location.reload();
+          } else {
+            this.$message.error("开启失败");
           }
         });
     }

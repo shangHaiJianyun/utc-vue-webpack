@@ -2,7 +2,7 @@
   <div class="boxs">
     <el-form label-width="80px" :ref="mapsd" :model="mapsd" v-show="flag" class="from">
       <el-form-item label="区域ID">
-        <el-input v-model="mapsd.region_id"></el-input>
+        <el-input v-model="mapsd.id"></el-input>
       </el-form-item>
       <el-form-item label="技师人数">
         <el-input v-model="mapsd.w_count"></el-input>
@@ -12,15 +12,29 @@
         <el-input v-model="mapsd.j_count"></el-input>
       </el-form-item>
       <el-form-item label="是否开通">
-        <el-switch v-model="mapsd.active" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        <el-select v-model="mapsd.active" placeholder="请选择活动对象">
+          <el-option label="未开通" value="0"></el-option>
+          <el-option label="已开通" value="1"></el-option>
+          <el-option label="待开通" value="2"></el-option>
+        </el-select>
       </el-form-item>
-
       <el-form-item>
         <el-button type="primary" @click="fromtext">更新</el-button>
         <el-button @click="qvxiao">取消</el-button>
       </el-form-item>
     </el-form>
     <div id="map" class="map" :style="{height:heights}"></div>
+    <div id="r-result">
+      请输入查询地址:
+      <input
+        type="text"
+        id="suggestId"
+        size="20"
+        name="address_detail"
+        v-model="address_detail"
+        style="width:150px;"
+      />
+    </div>
   </div>
 </template>
 
@@ -31,6 +45,7 @@ export default {
   name: "maps",
   data() {
     return {
+      onoff: "",
       heights: document.documentElement.clientHeight - 61 + "px",
       list: [],
       level: 13, //地图级别
@@ -51,7 +66,7 @@ export default {
   },
   mounted() {
     var _that = this;
-    this.$axios.get(_that.$api + "/map/map_data").then(res => {
+    this.$axios.get(_that.$api + "/api/map/map_data").then(res => {
       this.mapdetail = res.data;
       console.log("shujv", this.mapdetail);
       this.Zmap();
@@ -76,17 +91,17 @@ export default {
       for (let i = 0; i < zmap.mapdetail.length; i++) {
         var opts = {
           position: new BMap.Point(
-            zmap.mapdetail[i].cen_loc.lng,
-            zmap.mapdetail[i].cen_loc.lat
+            zmap.mapdetail[i].locations.cen.lng,
+            zmap.mapdetail[i].locations.cen.lat
           ), // 指定文本标注所在的地理位置
           offset: new BMap.Size(-50, 0) //设置文本偏移量
         };
         var label = new BMap.Label(
-          zmap.mapdetail[i].area_id +
+          zmap.mapdetail[i].id +
             " 等级:" +
-            zmap.mapdetail[i].level +
+            zmap.mapdetail[i].rate_level +
             " 系数:" +
-            zmap.mapdetail[i].area_rate,
+            zmap.mapdetail[i].rate,
           opts
         ); // 创建文本标注对象
         label.setStyle({
@@ -101,12 +116,20 @@ export default {
         this.map.addOverlay(label);
         label.addEventListener("click", function() {
           // map.openInfoWindow(infoWindow,point);   //提示信息
+
           zmap.$axios
-            .post("map/get_w_j_count", {
-              region_id: zmap.mapdetail[i].area_id
+            .post(zmap.$api + "/api/map/get_w_j_count", {
+              region_id: zmap.mapdetail[i].id
             })
             .then(res => {
-              console.log((zmap.mapsd = res.data));
+              zmap._data.mapsd = res.data;
+              if (zmap._data.mapsd.active == 0) {
+                zmap._data.mapsd.active = "未开通";
+              } else if (zmap._data.mapsd.active == 1) {
+                zmap._data.mapsd.active = "已开通";
+              } else if (zmap._data.mapsd.active == 2) {
+                zmap._data.mapsd.active = "待开通";
+              }
               zmap.flag = true;
             });
         });
@@ -114,7 +137,8 @@ export default {
 
       //已开通区域
       for (var i = 1; i < zMap.mapdetail.length; i++) {
-        if (zMap.mapdetail[i].active) {
+        if (zMap.mapdetail[i].is_active === 1) {
+          console.log(zMap.mapdetail[i]);
           var points = [
             new BMap.Point(
               zMap.mapdetail[i].locations.ld.lng,
@@ -141,6 +165,37 @@ export default {
             strokeOpacity: 0.5
           });
           polygon.setFillColor("green");
+
+          zMap.map.addOverlay(polygon);
+          zMap.beSelectBounds[key] = polygon;
+        }
+        if (zMap.mapdetail[i].is_active == 2) {
+          var points = [
+            new BMap.Point(
+              zMap.mapdetail[i].locations.ld.lng,
+              zMap.mapdetail[i].locations.ld.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.lt.lng,
+              zMap.mapdetail[i].locations.lt.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.rt.lng,
+              zMap.mapdetail[i].locations.rt.lat
+            ),
+            new BMap.Point(
+              zMap.mapdetail[i].locations.rd.lng,
+              zMap.mapdetail[i].locations.rd.lat
+            )
+          ];
+          var key =
+            "" + points[0].lng + points[0].lat + points[2].lng + points[2].lat; //使用两个点的坐标作为key
+          var polygon = new BMap.Polygon(points, {
+            strokeColor: "red",
+            strokeWeight: 2,
+            strokeOpacity: 0.5
+          });
+          polygon.setFillColor("blue");
 
           zMap.map.addOverlay(polygon);
           zMap.beSelectBounds[key] = polygon;
@@ -199,25 +254,25 @@ export default {
       //   zmap.beSelectBounds[key] = polygon;
       // });
 
-      // var ac = new BMap.Autocomplete({
-      //   //建立一个自动完成的对象
-      //   input: "suggestId",
-      //   location: zmap.map
-      // });
-      // var myValue;
-      // ac.addEventListener("onconfirm", function(e) {
-      //   //鼠标点击下拉列表后的事件
-      //   var _value = e.item.value;
-      //   myValue =
-      //     _value.province +
-      //     _value.city +
-      //     _value.district +
-      //     _value.street +
-      //     _value.business;
-      //   zmap.address_detail = myValue;
+      var ac = new BMap.Autocomplete({
+        //建立一个自动完成的对象
+        input: "suggestId",
+        location: zmap.map
+      });
+      var myValue;
+      ac.addEventListener("onconfirm", function(e) {
+        //鼠标点击下拉列表后的事件
+        var _value = e.item.value;
+        myValue =
+          _value.province +
+          _value.city +
+          _value.district +
+          _value.street +
+          _value.business;
+        zmap.address_detail = myValue;
 
-      //   setPlace();
-      // });
+        setPlace();
+      });
 
       function setPlace() {
         // zmap.map.clearOverlays();    //清除地图上所有覆盖物
@@ -234,20 +289,20 @@ export default {
           ); //添加标注
         }
 
-        // var local = new BMap.LocalSearch(zmap.map, {
-        //   //智能搜索
-        //   onSearchComplete: myFun
-        // });
-        // console.log("myvalue", myValue);
-        // local.search(myValue);
+        var local = new BMap.LocalSearch(zmap.map, {
+          //智能搜索
+          onSearchComplete: myFun
+        });
+        console.log("myvalue", myValue);
+        local.search(myValue);
 
-        //测试输出坐标（指的是输入框最后确定地点的经纬度）
+        // 测试输出坐标（指的是输入框最后确定地点的经纬度）
         // zmap.map.addEventListener("click",function(e){
         //   //经度
         //   console.log(zmap.userlocation.lng);
         //   //维度
         //   console.log(zmap.userlocation.lat);
-        //
+
         // })
       }
     },
@@ -283,8 +338,8 @@ export default {
       // console.log("网格数据",zMap.bounds.x1)
       // console.log("zMap.initCenter",span)
       //开通区域
-      var adbbsa = zMap.getMaxMinLongitudeLatitude(121.481976, 31.226871, 6);
-      console.log(adbbsa);
+      // var adbbsa = zMap.getMaxMinLongitudeLatitude(121.481976, 31.226871, 6);
+      // console.log(adbbsa);
       for (
         var i =
           zMap.bounds.x1 +
@@ -333,8 +388,10 @@ export default {
       // }
       //  var y = parseFloat((scale * x).toFixed(6));
       //  console.log(x,y)
-      var y = 0.05395;
-      var x = 0.0630974;
+      var x = 0.0524;
+      var y = 0.04492;
+      // var y = 0.05395;
+      // var x = 0.0630974;
       return { x: x, y: y };
     },
     getGrid: function(point) {
@@ -406,31 +463,35 @@ export default {
     },
     fromtext() {
       let that = this;
-      var onoff;
-      if (that.mapsd.active) {
-        onoff = 1;
-      } else {
-        onoff = 0;
+      console.log(that.mapsd);
+      if (that.mapsd.active == "1") {
+        this.$axios
+          .post(that.$api + "/api/map/update_area_address", {
+            area_id: that.mapsd.region_id
+          })
+          .then(res => {
+            console.log(res.data);
+          });
       }
       this.$axios
-        .post("map/change_status", {
+        .post(that.$api + "/api/map/change_status", {
           area_id: that.mapsd.region_id,
-          active: onoff
+          active: that.mapsd.active
         })
         .then(res => {
-          if (res.data.active) {
-            that.flag = false;
+          that.flag = false;
+          if (res.data.active == "1") {
             this.$message({
               showClose: true,
               message: "区域已开通"
             });
-          } else {
-            that.flag = false;
+          } else if (res.data.active == "0") {
             this.$message({
               showClose: true,
               message: "区域已关闭"
             });
           }
+          // window.location.reload();
         });
     },
     qvxiao() {
@@ -462,5 +523,10 @@ export default {
   right: 0;
   z-index: 10;
   background: white;
+}
+#r-result {
+  position: fixed;
+  top: 80px;
+  left: 20px;
 }
 </style>

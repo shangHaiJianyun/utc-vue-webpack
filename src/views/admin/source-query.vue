@@ -60,9 +60,11 @@ export default {
   },
   mounted() {
     var _that = this;
-    _that.$axios.get("/wx/event/market_event/result_list").then(res => {
-      _that._data.tableData = res.data.mkt_result;
-    });
+    _that.$axios
+      .get("https://wx.upctech.com.cn/wx/event/market_event/result_list")
+      .then(res => {
+        _that._data.tableData = res.data.mkt_result;
+      });
     _that._data.tableData1 = _that.getdata(
       "https://wx.upctech.com.cn/wx/followers/",
       "https://wx.upctech.com.cn/wx/user_info?uid="
@@ -77,8 +79,8 @@ export default {
       var _that = this;
       var datas = [];
       _that.$axios.get(url1).then(res => {
-        for (var items of res.data.data.openid) {
-          _that.$axios.get(url2 + items).then(res => {
+        for (var items of res.data) {
+          _that.$axios.get(url2 + items.openid).then(res => {
             datas.push(res.data);
             _that._data.userdata.push(res.data);
           });
@@ -91,7 +93,10 @@ export default {
       var user = {};
       var _that = this;
       _that.$axios
-        .get("/wx/event/user_event/result_by_openid/?openid=" + e.openid)
+        .get(
+          "https://wx.upctech.com.cn/wx/event/user_event/result_by_openid/?openid=" +
+            e.openid
+        )
         .then(res => {
           if (res.data.user_event_result == null) {
             _that.$message.error("抱歉，当前查询用户未记录");

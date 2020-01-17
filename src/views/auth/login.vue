@@ -1,26 +1,44 @@
 <template>
-  <div class="login" :style="{height:heights}">
-    <el-form label-position="left" label-width="0px" class="demo-ruleForm login-container">
+  <div class="login"
+       :style="{height:heights}">
+    <el-form label-position="left"
+             label-width="0px"
+             class="demo-ruleForm login-container">
       <h3 class="title">系统登录</h3>
       <el-form-item prop="account">
-        <el-input type="text" v-model="form.username" auto-complete="off" placeholder="账号"></el-input>
+        <el-input type="text"
+                  v-model="form.username"
+                  auto-complete="off"
+                  placeholder="账号"></el-input>
       </el-form-item>
       <el-form-item prop="checkPass">
-        <el-input type="password" v-model="form.password" auto-complete="off" placeholder="密码"></el-input>
+        <el-input type="password"
+                  v-model="form.password"
+                  auto-complete="off"
+                  placeholder="密码"></el-input>
       </el-form-item>
       <el-row>
         <el-col :span="12">
-          <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
+          <el-checkbox v-model="checked"
+                       checked
+                       class="remember">记住密码</el-checkbox>
         </el-col>
         <el-col :span="12">
-          <div @click="register()" class="registertext">用户注册</div>
+          <div @click="register()"
+               class="registertext">用户注册</div>
         </el-col>
       </el-row>
 
       <el-form-item style="width:100%;">
-        <el-button type="primary" style="width:100%;" @click="login()">登录</el-button>
+        <el-button type="primary"
+                   style="width:100%;"
+                   @click="login()">登录</el-button>
+        <el-button type="primary"
+                   style="width:100%;"
+                   @click="wxlogin()">微信登录</el-button>
       </el-form-item>
     </el-form>
+    <div id="login_container"></div>
   </div>
 </template>
 
@@ -28,7 +46,7 @@
 <script>
 export default {
   name: "login",
-  data() {
+  data () {
     return {
       heights: document.documentElement.clientHeight + "px",
       isLoging: false,
@@ -40,20 +58,20 @@ export default {
     };
   },
 
-  created() {},
+  created () { },
   methods: {
     //登录逻辑
-    login() {
+    login () {
       if (this.form.username != "" && this.form.password != "") {
         this.isLoging = true;
         this.toLogin(this.form);
       }
     },
-    register() {
+    register () {
       this.$router.push("/register");
     },
     //登录请求
-    toLogin(params) {
+    toLogin (params) {
       var _that = this;
       console.log(_that.$api);
 
@@ -61,13 +79,13 @@ export default {
         .post(_that.$api + "/api/user/login", params)
         .then(res => {
           let rol = res.data.user_role;
-          let promise = new Promise(function(resolve, reject) {
+          let promise = new Promise(function (resolve, reject) {
             _that.$store.commit("set_token", res.data.token);
             _that.$store.commit("set_role", res.data.user_role);
             resolve();
           });
 
-          promise.then(function() {
+          promise.then(function () {
             _that.isLoging = false;
             _that.$router.push("/admin?admin");
           });
@@ -86,6 +104,41 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    wxlogin () {
+      alert("微信登陆了")
+      var _that = this;
+      let openid = window.localStorage.getItem("openid");  // 从内存取得openid
+      if (!openid) {
+        // 检测是否参数内有code，若有则跳接口获取openid，若没有则跳授权页
+        var urls = window.location.href.split('?').toString();
+        // var urls = "https://wx.upctech.com.cn/bk";
+
+        var code = _that.getQueryString('code');
+        alert(code)
+        if (code !== '' && code !== null && code !== undefined) {
+          // _that.$http
+          //   .get('https://wx.upctech.com.cn/wx/worker/userinfo_by_code?code=' + code)
+          //   .then(function (response) {
+          //     alert("拿到用户信息");
+          //   })
+          //   .catch(function (error) {
+          //     console.log(error)
+          //   })
+        } else {
+          //					获取code
+          let link = 'https://open.weixin.qq.com/connect/qrconnect?appid=wx419b2ae85e0e33d8&redirect_uri=' + urls + '&response_type=code&scope=snsapi_login#wechat_redirect';
+          console.log(link);
+          window.location.href = link;
+
+        }
+      }
+    },
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = window.location.search.substr(1).match(reg)
+      if (r != null) return unescape(r[2])
+      return null
     }
   }
 };

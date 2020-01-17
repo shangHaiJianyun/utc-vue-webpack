@@ -23,6 +23,7 @@ export default {
     };
   },
   mounted() {
+    var _that = this;
     this.$axios
       .post(_that.$api + "/api/dis/getworklist", {
         city: "上海市"

@@ -2,76 +2,6 @@
   <div class="hello">
     <div class="pagetitle">用户列表</div>
 
-    <!--<div-->
-    <!--id="vueapp"-->
-    <!--class="vue-app"-->
-    <!--&gt;-->
-    <!--<kendo-datasource-->
-    <!--ref="datasource1"-->
-    <!--:transport-read-url="'https://demos.telerik.com/kendo-ui/service/Products'"-->
-    <!--:transport-read-data-type="'jsonp'"-->
-    <!--:transport-update-url="'https://demos.telerik.com/kendo-ui/service/Products/Update'"-->
-    <!--:transport-update-data-type="'jsonp'"-->
-    <!--:transport-destroy-url="'https://demos.telerik.com/kendo-ui/service/Products/Destroy'"-->
-    <!--:transport-destroy-data-type="'jsonp'"-->
-    <!--:transport-create-url="'https://demos.telerik.com/kendo-ui/service/Products/Create'"-->
-    <!--:transport-create-data-type="'jsonp'"-->
-    <!--:transport-parameter-map="parameterMap"-->
-    <!--:schema-model-id="'ProductID'"-->
-    <!--:schema-model-fields="schemaModelFields"-->
-    <!--:batch='true'-->
-    <!--:page-size='20'-->
-    <!--&gt;-->
-    <!--</kendo-datasource>-->
-
-    <!--<kendo-grid-->
-    <!--:height="600"-->
-    <!--:data-source="tableData"-->
-    <!--:navigatable="true"-->
-    <!--:pageable="true"-->
-    <!--:editable="'popup'"-->
-    <!--:sortable="true"-->
-    <!--:toolbar="['create']"-->
-    <!--&gt;-->
-    <!--<kendo-grid-column-->
-    <!--:field="'Name'"-->
-    <!--:title="'Name'"-->
-    <!--:width="200"-->
-    <!--&gt;</kendo-grid-column>-->
-    <!--<kendo-grid-column-->
-    <!--:field="'Mobile'"-->
-    <!--:title="'Mobile'"-->
-    <!--:width="150"-->
-    <!--:format="'{0:c}'"-->
-    <!--&gt;</kendo-grid-column>-->
-    <!--<kendo-grid-column-->
-    <!--:field="'Dept'"-->
-    <!--:title="'Dept'"-->
-    <!--:width="120"-->
-    <!--&gt;</kendo-grid-column>-->
-    <!--<kendo-grid-column-->
-    <!--:field="'cn_name'"-->
-    <!--:title="'cn_name'"-->
-    <!--:width="120"-->
-    <!--&gt;</kendo-grid-column>-->
-    <!--<kendo-grid-column-->
-    <!--:field="'email'"-->
-    <!--:title="'email'"-->
-    <!--:width="180"-->
-    <!--&gt;</kendo-grid-column>-->
-    <!--<kendo-grid-column-->
-    <!--:field="'wechat'"-->
-    <!--:title="'wechat'"-->
-    <!--:width="120"-->
-    <!--&gt;</kendo-grid-column>-->
-    <!--<kendo-grid-column-->
-    <!--:command="['edit','destroy']"-->
-    <!--:title="'&nbsp;'"-->
-    <!--:width="120"-->
-    <!--&gt;</kendo-grid-column>-->
-    <!--</kendo-grid>-->
-    <!--</div>-->
-
     <el-table
       :data="tableData.filter(data => !search || data.uid.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%"
@@ -95,46 +25,11 @@
 </template>
 
 <script>
-const items = [
-  {
-    Name: "天龙八部2",
-    Mobile: "15564896358",
-    Dept: "人事",
-    cn_name: "000",
-    email: "1105148155@qq.com",
-    wechat: "12333"
-  },
-  {
-    Name: "天龙八部",
-    Mobile: "15564896358",
-    Dept: "人事",
-    cn_name: "000",
-    email: "1105148155@qq.com",
-    wechat: "12333"
-  },
-  {
-    Name: "天龙八部",
-    Mobile: "15564896358",
-    Dept: "人事",
-    cn_name: "000",
-    email: "1105148155@qq.com",
-    wechat: "12333"
-  },
-  {
-    Name: "天龙八部",
-    Mobile: "15564896358",
-    Dept: "人事",
-    cn_name: "000",
-    email: "1105148155@qq.com",
-    wechat: "12333"
-  }
-];
 export default {
-  name: "Users",
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      tableData: "",
+      tableData: [],
       search: "",
       schemaModelFields: {
         ProductID: { editable: false, nullable: true },
@@ -149,12 +44,11 @@ export default {
   created() {
     var _that = this;
     let params = {};
-    params.city = "上海";
     this.$axios
-      .post("https://dev.upctech.com.cn/dis/getMemberList", params)
+      .get(_that.$api + "/api/dis/getMemberList?city=上海")
       .then(res => {
         console.log("USER", res.data);
-        this.tableData = res.data;
+        _that.tableData = res.data;
       })
       .catch(err => {
         console.log("err", err);

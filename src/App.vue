@@ -40,7 +40,9 @@ export default {
     UserMenu
   },
   created() {
+    
     console.log("session created", window.sessionStorage.getItem("role"));
+    
   }
 };
 </script>

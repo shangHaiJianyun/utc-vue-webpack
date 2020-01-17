@@ -3,7 +3,7 @@
     <div class="pagetitle">区域列表</div>
     <kendo-datasource
       ref="datasource1"
-      :transport-read-url="'http://dev.upctech.com.cn/api/map/list_area'"
+      :transport-read-url="'https://dev.upctech.com.cn/api/map/list_area'"
       :page-size="20"
       :server-paging="false"
     ></kendo-datasource>
@@ -42,6 +42,7 @@ export default {
     };
   },
   created() {
+    var _that = this;
     this.$axios.get(_that.$api + "/api/map/list_area").then(res => {
       console.log(res);
     });

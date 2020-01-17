@@ -142,6 +142,7 @@ export default {
     };
   },
   created() {
+    var _that = this;
     let date = new Date();
     var m = date.getMonth() + 1;
     m = m < 10 ? "0" + m : m;
@@ -207,17 +208,19 @@ export default {
         params.order_ids = this.orders_id;
         params.order_status = 2;
         console.log("系统ID", params);
-        this.$axios.post("/dis/updateOrderStatus", params).then(res => {
-          this.toDispatch.push(dataItem.order_no);
-          console.log(res);
-          //派单数据
-          let orders = {};
-          orders.order_id = this.orders_id;
-          orders.start_time = this.starttime;
-          orders.end_time = this.endtime;
-          this.orders.push(orders);
-          this.disabled = false;
-        });
+        this.$axios
+          .post(that.$api + "/api/dis/updateOrderStatus", params)
+          .then(res => {
+            this.toDispatch.push(dataItem.order_no);
+            console.log(res);
+            //派单数据
+            let orders = {};
+            orders.order_id = this.orders_id;
+            orders.start_time = this.starttime;
+            orders.end_time = this.endtime;
+            this.orders.push(orders);
+            this.disabled = false;
+          });
       } else if (dataItem.order_status == 2) {
         this.toDispatch.push(dataItem.order_no);
         this.disabled = false;
@@ -255,7 +258,7 @@ export default {
       var start_time = start.getFullYear() + "-" + m + "-" + d;
       console.log("shijian", start);
       console.log("时间...", start_time);
-      let url = _that.$api + "/api/dis/getorderlist";
+      let url = that.$api + "/api/dis/getorderlist";
       let postparams = {};
       postparams.order_status = 2;
       postparams.start_service_date = start_time;
@@ -294,7 +297,7 @@ export default {
       let params = {};
       params.order_no = dataItem.order_no;
       that.$axios
-        .post("/dis/getOrderDetail", params)
+        .post(that.$api + "/api/dis/getOrderDetail", params)
         .then(res => {
           console.log("系数", res);
           that.mapsd.car_rate = res.data.order_common_info.car_rate;
@@ -322,6 +325,7 @@ export default {
     },
     //请求派单接口
     postParmas() {
+      var _that = this;
       this.worker_id = "";
       // order_list.worker_id=parseInt(this.worker_id)
       // order_list.order_id=this.orders_id
@@ -329,7 +333,7 @@ export default {
       // order_list.end_time = this.endtime
       console.log("派单数据", this.order_list);
       this.$axios
-        .post("/dis/dispatchorder", this.order_list)
+        .post(_that.$api + "/api/dis/dispatchorder", this.order_list)
         .then(res => {
           this.toDispatch = [];
           this.orders = [];

@@ -2,7 +2,7 @@
   <div>
     <el-form label-width="80px" :ref="mapsd" :model="mapsd" v-show="flag" class="from">
       <el-form-item label="区间ID">
-        <el-input v-model="mapsd.area_id"></el-input>
+        <el-input v-model="mapsd.id"></el-input>
       </el-form-item>
       <el-form-item label="价格等级">
         <el-select placeholder="请选择价格等级" v-model="mapsd.level">
@@ -70,7 +70,8 @@ export default {
     };
   },
   mounted() {
-    this.$axios.get("map/map_data").then(res => {
+    var _that = this;
+    this.$axios.get(_that.$api + "/api/map/map_data").then(res => {
       this.mapdetail = res.data;
       console.log("shujv", this.mapdetail);
       this.Zmap();
@@ -94,24 +95,24 @@ export default {
       for (let i = 0; i < zmap.mapdetail.length; i++) {
         var marker = new BMap.Marker(
           new BMap.Point(
-            zmap.mapdetail[i].cen_loc.lng,
-            zmap.mapdetail[i].cen_loc.lat
+            zmap.mapdetail[i].locations.cen.lng,
+            zmap.mapdetail[i].locations.cen.lat
           )
         ); // 创建标注
         this.map.addOverlay(marker);
         var opts = {
           position: new BMap.Point(
-            zmap.mapdetail[i].cen_loc.lng,
-            zmap.mapdetail[i].cen_loc.lat
+            zmap.mapdetail[i].locations.cen.lng,
+            zmap.mapdetail[i].locations.cen.lat
           ), // 指定文本标注所在的地理位置
           offset: new BMap.Size(-50, 0) //设置文本偏移量
         };
         var label = new BMap.Label(
-          zmap.mapdetail[i].area_id +
+          zmap.mapdetail[i].id +
             " 等级:" +
-            zmap.mapdetail[i].level +
+            zmap.mapdetail[i].rate_level +
             " 系数:" +
-            zmap.mapdetail[i].area_rate,
+            zmap.mapdetail[i].rate,
           opts
         ); // 创建文本标注对象
         label.setStyle({
@@ -359,23 +360,24 @@ export default {
       params.id = this.mapsd.area_id;
       params.level = this.mapsd.level;
       console.log("ddd", params);
-      this.$axios.post(_that.$api + "/map/map_data", params).then(res => {
+      this.$axios.post(_that.$api + "/api/map/map_data", params).then(res => {
         console.log("返回数据", res);
         that.mapsd.area_rate = res.data.area_rate;
 
         var opts = {
           position: new BMap.Point(
-            that.mapsd.cen_loc.lng,
-            that.mapsd.cen_loc.lat
+            zmap.mapdetail[i].locations.cen.lng,
+            zmap.mapdetail[i].locations.cen.lat
           ), // 指定文本标注所在的地理位置
           offset: new BMap.Size(-50, 0) //设置文本偏移量
         };
+
         var label = new BMap.Label(
-          that.mapsd.area_id +
+          that.mapsd.id +
             " 等级" +
-            that.mapsd.level +
+            that.mapsd.rate_level +
             " 系数:" +
-            that.mapsd.area_rate,
+            that.mapsd.rate,
           opts
         ); // 创建文本标注对象
         label.setStyle({

@@ -11,7 +11,7 @@
         </el-table>
       </el-col>
       <el-col :span="11">
-        <div class="nametext">节油大师</div>
+        <div class="nametext">E帮工作台</div>
         <el-table :data="tableData2" :border="true" style="width: 100%">
           <el-table-column prop="nickname" label="用户名" width="180"></el-table-column>
           <el-table-column prop="unionid" label="Unionid"></el-table-column>
@@ -47,8 +47,8 @@ export default {
       var datas = [];
       var _that = this;
       _that.$axios.get(url1).then(res => {
-        for (var items of res.data.data.openid) {
-          _that.$axios.get(url2 + items).then(res => {
+        for (var items of res.data) {
+          _that.$axios.get(url2 + items.openid).then(res => {
             datas.push(res.data);
           });
         }
