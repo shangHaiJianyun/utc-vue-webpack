@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="pagetitle">洗车预约单</div>
-    <el-form label-width="80px" :ref="mapsd" :model="mapsd" v-show="flag" class="from">
+    <el-form label-width="80px"
+             :ref="mapsd"
+             :model="mapsd"
+             v-show="flag"
+             class="from">
       <el-form-item label="基准价格">
         <el-input v-model="mapsd.base_rate"></el-input>
       </el-form-item>
@@ -29,7 +33,8 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="fromtext">关闭</el-button>
+        <el-button type="primary"
+                   @click="fromtext">关闭</el-button>
       </el-form-item>
     </el-form>
     <div class="orders">
@@ -37,25 +42,29 @@
       <!-- <p>{{toDispatch}}</p> -->
 
       <ul class="wrk-list">
-        <li v-for="(j,index) in toDispatch" :key="j">
+        <li v-for="(j,index) in toDispatch"
+            :key="j">
           <div class="view">
-            <button class="destroy" @click="moveDist(index)">{{j}} -</button>
+            <button class="destroy"
+                    @click="moveDist(index)">{{j}} -</button>
           </div>
         </li>
       </ul>
       <h3>选择技师</h3>
       <div>
-        <el-select v-model="worker_id" placeholder="请选择" @change="getValue" :disabled="disabled">
-          <el-option
-            v-for="wk in workers"
-            :key="wk.uid"
-            :label="wk.nick_name"
-            :value="wk.uid"
-            class="select"
-          ></el-option>
+        <el-select v-model="worker_id"
+                   placeholder="请选择"
+                   @change="getValue"
+                   :disabled="disabled">
+          <el-option v-for="wk in workers"
+                     :key="wk.uid"
+                     :label="wk.nick_name"
+                     :value="wk.uid"
+                     class="select"></el-option>
         </el-select>
       </div>
-      <button class="btn" @click="postParmas">提交</button>
+      <button class="btn"
+              @click="postParmas">提交</button>
     </div>
 
     <div class="grids">
@@ -65,40 +74,55 @@
      :page-size='20'
      :server-paging="false"
       &gt;
-      </kendo-datasource>-->
-      <kendo-grid
-        ref="grid"
-        :data-source="datasource1"
-        :sortable-mode="'multiple'"
-        :sortable-allow-unsort="true"
-        :sortable-show-indexes="true"
-        :server-filtering="true"
-        :pageable="true"
-        :filterable-mode="'row'"
-      >
-        <kendo-grid-column :field="'order_no'" :width="220"></kendo-grid-column>
-        <kendo-grid-column :field="'order_id'" , :title="'系统订单编号'" :width="120"></kendo-grid-column>
-        <kendo-grid-column :field="'nick_name'" :title="'用户昵称'" :width="220"></kendo-grid-column>
-        <kendo-grid-column :field="'create_time'" :title="'下单时间'" :width="220"></kendo-grid-column>
+      </kendo-datasource> -->
+      <kendo-grid ref="grid"
+                  :data-source="datasource1"
+                  :sortable-mode="'multiple'"
+                  :sortable-allow-unsort="false"
+                  :sortable-show-indexes="false"
+                  :pageable="true"
+                  :filterable-mode="'row'">
+        <kendo-grid-column :field="'order_no'"
+                           :width="220"></kendo-grid-column>
+        <kendo-grid-column :field="'order_id'"
+                           ,
+                           :title="'系统订单编号'"
+                           :width="120"></kendo-grid-column>
+        <kendo-grid-column :field="'nick_name'"
+                           :title="'用户昵称'"
+                           :width="220"></kendo-grid-column>
+        <kendo-grid-column :field="'create_time'"
+                           :title="'下单时间'"
+                           :width="220"></kendo-grid-column>
 
-        <kendo-grid-column
-          :field="'item_title'"
-          :title="'服务项目'"
-          :width="120"
-          :filterable-cell-operator="'contains'"
-          :filterable-cell-suggestion-operator="'contains'"
-        ></kendo-grid-column>
-        <kendo-grid-column :field="'address_detail'" :title="'地址'" :width="250"></kendo-grid-column>
-        <kendo-grid-column :field="'order_status'" :title="'订单状态'" :width="120" :format="'{0:c}'"></kendo-grid-column>
-        <kendo-grid-column :field="'service_date'" :title="'服务时间'" :width="120" :format="'{0:c}'"></kendo-grid-column>
-        <kendo-grid-column :field="'start_time'" :title="'预约开始'" :width="120"></kendo-grid-column>
-        <kendo-grid-column :field="'end_time'" :title="'预约截止'" :width="120"></kendo-grid-column>
-        <kendo-grid-column
-          :command="{ text: '选择', click: showDetails }"
-          :title="'&nbsp;'"
-          :width="100"
-        ></kendo-grid-column>
-        <kendo-grid-column :command="{ text: '详情', click: show}" :title="'&nbsp;'" :width="100"></kendo-grid-column>
+        <kendo-grid-column :field="'item_title'"
+                           :title="'服务项目'"
+                           :width="120"
+                           :filterable-cell-operator="'contains'"
+                           :filterable-cell-suggestion-operator="'contains'"></kendo-grid-column>
+        <kendo-grid-column :field="'address_detail'"
+                           :title="'地址'"
+                           :width="250"></kendo-grid-column>
+        <kendo-grid-column :field="'order_status'"
+                           :title="'订单状态'"
+                           :width="120"
+                           :format="'{0:c}'"></kendo-grid-column>
+        <kendo-grid-column :field="'service_date'"
+                           :title="'服务时间'"
+                           :width="120"
+                           :format="'{0:c}'"></kendo-grid-column>
+        <kendo-grid-column :field="'start_time'"
+                           :title="'预约开始'"
+                           :width="120"></kendo-grid-column>
+        <kendo-grid-column :field="'end_time'"
+                           :title="'预约截止'"
+                           :width="120"></kendo-grid-column>
+        <kendo-grid-column :command="{ text: '选择', click: showDetails }"
+                           :title="'&nbsp;'"
+                           :width="100"></kendo-grid-column>
+        <kendo-grid-column :command="{ text: '详情', click: show}"
+                           :title="'&nbsp;'"
+                           :width="100"></kendo-grid-column>
       </kendo-grid>
     </div>
   </div>
@@ -114,7 +138,7 @@ import time from "../api/time";
 
 export default {
   name: "client_orders",
-  data() {
+  data () {
     return {
       orders: [],
       toDispatch: [],
@@ -127,7 +151,7 @@ export default {
       order_list: {},
       worker: {},
       disabled: true,
-      datasource1: "",
+      datasource1: [],
       mapsd: {
         car_rate: "",
         frequency_rate: "",
@@ -141,7 +165,7 @@ export default {
       flag: false
     };
   },
-  created() {
+  created () {
     var _that = this;
     let date = new Date();
     var m = date.getMonth() + 1;
@@ -160,13 +184,17 @@ export default {
     });
     this.GetOrders();
   },
+  mounted () {
+    var _that = this;
+    this.GetOrders();
+  },
   methods: {
     // parameterMap: function(options, operation) {
     //   if (operation !== "read" && options.models) {
     //     return { models: kendo.stringify(options.models) };
     //   }
     // },
-    showDetails: function(e) {
+    showDetails: function (e) {
       e.preventDefault();
       var grid = this.$refs.grid.kendoWidget();
       var dataItem = grid.dataItem(e.currentTarget.closest("tr"));
@@ -237,7 +265,7 @@ export default {
         });
       }
     },
-    GetOrders() {
+    GetOrders () {
       let that = this;
       let start_s = new Date();
       let start_date = start_s.getTime();
@@ -269,7 +297,7 @@ export default {
         that.datasource1 = res.data;
       });
     },
-    moveDist(j) {
+    moveDist (j) {
       if (j == 0) {
         // this.orders_id.shift()
         this.toDispatch.shift();
@@ -279,7 +307,7 @@ export default {
         this.toDispatch.splice(j, 1);
       }
     },
-    getValue() {
+    getValue () {
       this.order_list.data = [];
       console.log("...", this.worker_id);
       this.worker.worker_id = parseInt(this.worker_id);
@@ -287,7 +315,7 @@ export default {
       this.order_list.data.push(this.worker);
     },
     //获取派单数据
-    show(e) {
+    show (e) {
       let that = this;
       e.preventDefault();
       var grid = this.$refs.grid.kendoWidget();
@@ -320,11 +348,11 @@ export default {
           console.log(err);
         });
     },
-    fromtext() {
+    fromtext () {
       this.flag = false;
     },
     //请求派单接口
-    postParmas() {
+    postParmas () {
       var _that = this;
       this.worker_id = "";
       // order_list.worker_id=parseInt(this.worker_id)

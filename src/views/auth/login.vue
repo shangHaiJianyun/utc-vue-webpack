@@ -33,9 +33,19 @@
         <el-button type="primary"
                    style="width:100%;"
                    @click="login()">登录</el-button>
-        <el-button type="primary"
-                   style="width:100%;"
-                   @click="wxlogin()">微信登录</el-button>
+        <div>使用合作网站账号登陆后台：</div>
+        <div>
+          <div class="imgbox"
+               @click="wxlogin()">
+            <img src="../../assets/images/wxlogin.png"
+                 class="loginimg" />
+          </div>
+          <div class="imgbox">
+            <img src="../../assets/images/qqlogin.png"
+                 class="loginimg" />
+          </div>
+        </div>
+
       </el-form-item>
     </el-form>
     <div id="login_container"></div>
@@ -59,6 +69,20 @@ export default {
   },
 
   created () { },
+  mounted () {
+    var _that = this;
+    var code = _that.getQueryString('code');
+    if (code !== '' && code !== null && code !== undefined) {
+      // _that.$http
+      //   .get('https://wx.upctech.com.cn/wx/worker/userinfo_by_code?code=' + code)
+      //   .then(function (response) {
+      //     alert("拿到用户信息");
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error)
+      //   })
+    }
+  },
   methods: {
     //登录逻辑
     login () {
@@ -78,6 +102,7 @@ export default {
       _that.$axios
         .post(_that.$api + "/api/user/login", params)
         .then(res => {
+
           let rol = res.data.user_role;
           let promise = new Promise(function (resolve, reject) {
             _that.$store.commit("set_token", res.data.token);
@@ -111,27 +136,13 @@ export default {
       let openid = window.localStorage.getItem("openid");  // 从内存取得openid
       if (!openid) {
         // 检测是否参数内有code，若有则跳接口获取openid，若没有则跳授权页
-        var urls = window.location.href.split('?').toString();
-        // var urls = "https://wx.upctech.com.cn/bk";
+        // var urls = window.location.href.split('?').toString();
+        var urls = "https://wx.upctech.com.cn/bk";
+        //					获取code
+        let link = 'https://open.weixin.qq.com/connect/qrconnect?appid=wx419b2ae85e0e33d8&redirect_uri=' + urls + '&response_type=code&scope=snsapi_login#wechat_redirect';
+        console.log(link);
+        window.location.href = link;
 
-        var code = _that.getQueryString('code');
-        alert(code)
-        if (code !== '' && code !== null && code !== undefined) {
-          // _that.$http
-          //   .get('https://wx.upctech.com.cn/wx/worker/userinfo_by_code?code=' + code)
-          //   .then(function (response) {
-          //     alert("拿到用户信息");
-          //   })
-          //   .catch(function (error) {
-          //     console.log(error)
-          //   })
-        } else {
-          //					获取code
-          let link = 'https://open.weixin.qq.com/connect/qrconnect?appid=wx419b2ae85e0e33d8&redirect_uri=' + urls + '&response_type=code&scope=snsapi_login#wechat_redirect';
-          console.log(link);
-          window.location.href = link;
-
-        }
       }
     },
     getQueryString (name) {
@@ -144,6 +155,13 @@ export default {
 };
 </script>
 <style scoped>
+.loginimg {
+  width: 35px;
+}
+.imgbox {
+  width: 50%;
+  float: left;
+}
 .login {
   border: 0.1px solid #b2e7f5;
   background-image: url("../../assets/images/login.jpg");
