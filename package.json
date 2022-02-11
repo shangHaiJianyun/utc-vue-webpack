@@ -15,7 +15,7 @@
     "@progress/kendo-grid-vue-wrapper": "^2018.3.1025",
     "@progress/kendo-theme-default": "^2.62.0",
     "@progress/kendo-ui": "^2018.3.1219",
-    "ajv": "^6.5.4",
+    "ajv": "^6.12.3",
     "axios": "^0.18.1",
     "bootstrap-vue": "^2.1.0",
     "d3-gantt-chart": "^0.2.8",
